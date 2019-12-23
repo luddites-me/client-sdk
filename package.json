@@ -4,6 +4,9 @@
     "url": "https://github.com/ns8inc/protect-js-sdk/issues"
   },
   "description": "NS8 Protect SDK",
+  "dependencies": {
+    "typescript": "^3.7.3"
+  },
   "devDependencies": {
     "@ns8/eslint-config-ns8-typescript-eslint": "^0.0.7",
     "@types/chai": "^4.2.7",
@@ -22,7 +25,7 @@
     "prettier": "^1.19.1",
     "source-map-support": "^0.5.16",
     "ts-mocha": "^6.0.0",
-    "typescript": "^3.7.3"
+    "uglify-es": "^3.3.9"
   },
   "files": [
     "dist"
@@ -62,8 +65,10 @@
     "url": "git+https://github.com/ns8inc/protect-js-sdk.git"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -d --sourceMap",
+    "build": "rm -rf dist && tsc -d && yarn minify",
+    "build:dev": "rm -rf dist && tsc --sourceMap",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
+    "minify": "uglifyjs --compress --output dist/index.min.js -- dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
   },
   "version": "1.0.0"

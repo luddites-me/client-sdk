@@ -4,5 +4,5 @@ export default {
 };
 
 export function testFn() {
-  return 4;
+  return 42;
 }
