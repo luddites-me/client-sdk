@@ -1,0 +1,12 @@
+*.swp
+.nyc_output/
+.vscode/
+.DS_Store
+.DS_Store?
+.Trashes
+.yarn-integrity
+.env/
+coverage
+dist/
+node_modules/
+yarn-error.log
