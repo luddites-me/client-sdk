@@ -64,7 +64,7 @@
     "url": "git+https://github.com/ns8inc/protect-js-sdk.git"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -d && yarn minify",
+    "build": "rm -rf dist && tsc -d",
     "build:dev": "rm -rf dist && tsc --sourceMap",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
