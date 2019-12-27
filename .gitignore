@@ -19,6 +19,7 @@ pids
 
 # Dependency directories
 node_modules/
+package-lock.json
 
 # Optional npm cache directory
 .npm
@@ -40,6 +41,7 @@ node_modules/
 
 # build / generate output
 dist
+.awcache
 
 # OS files
 .DS_Store

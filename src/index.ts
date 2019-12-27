@@ -1,3 +1,1 @@
-import lib from './lib';
-
-console.log(lib.msg);
+export * from './lib';

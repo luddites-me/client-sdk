@@ -1,4 +1,15 @@
 {
+  "awesomeTypescriptLoaderOptions": {
+    "doTypeCheck": true,
+    "forkChecker": true,
+    "isolatedModules": true,
+    "reportFiles": [
+      "src/**/*.{ts}"
+    ],
+    "useCache": true,
+    "useTranspileModule": true,
+    "useWebpackText": true
+  },
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -19,19 +30,23 @@
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noLib": false,
-    "outDir": "dist",
+    "outDir": ".tmp",
     "removeComments": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2019"
+    "target": "es2019",
+    "types": [
+      "mocha"
+    ]
   },
   "exclude": [
     "node_modules",
-    "test/**/*"
+    "test/**/*",
+    "dist"
   ],
   "include": [
-    "src"
+    "src/**/*"
   ]
 }
