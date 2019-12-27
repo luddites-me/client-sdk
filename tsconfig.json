@@ -18,7 +18,6 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
-    "isolatedModules": true,
     "lib": [
       "dom",
       "dom.iterable",
