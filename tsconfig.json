@@ -11,7 +11,6 @@
     "useWebpackText": true
   },
   "compilerOptions": {
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
