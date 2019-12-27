@@ -32,7 +32,7 @@
   "homepage": "https://github.com/ns8inc/protect-js-sdk#readme",
   "husky": {
     "hooks": {
-      "pre-push": "yarn build && yarn lint"
+      "pre-push": "yarn build && yarn lint && yarn test"
     }
   },
   "license": "MIT",
