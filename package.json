@@ -1,30 +1,35 @@
 {
-  "author": "NS8.com",
-  "bugs": {
-    "url": "https://github.com/ns8inc/protect-js-sdk/issues"
-  },
-  "description": "NS8 Protect SDK",
+  "author": "ns8inc",
   "dependencies": {
-    "typescript": "^3.7.3"
+    "typescript": "3.7.3"
   },
+  "description": "NS8 Protect JavaScript SDK",
   "devDependencies": {
-    "@ns8/eslint-config-ns8-typescript-eslint": "^0.0.7",
-    "@types/chai": "^4.2.7",
-    "@types/mocha": "^5.2.7",
-    "@typescript-eslint/eslint-plugin": "^2.12.0",
-    "@typescript-eslint/parser": "^2.12.0",
-    "chai": "^4.2.0",
-    "eslint": "^6.7.2",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^3.1.0",
-    "mocha": "^6.2.2",
-    "nyc": "^15.0.0",
-    "prettier": "^1.19.1",
-    "source-map-support": "^0.5.16",
-    "ts-mocha": "^6.0.0"
+    "@ns8/eslint-config-ns8-typescript-eslint": "0.0.7",
+    "@ns8/ns8-protect-sdk": "0.1.24",
+    "@types/chai": "4.2.7",
+    "@types/mocha": "5.2.7",
+    "@types/node": "12.12.21",
+    "@types/semver": "6.2.0",
+    "@typescript-eslint/eslint-plugin": "2.12.0",
+    "@typescript-eslint/parser": "2.12.0",
+    "chai": "4.2.0",
+    "dotenv-extended": "2.7.0",
+    "eslint": "6.7.2",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-prettier": "3.1.2",
+    "husky": "3.1.0",
+    "mocha": "6.2.2",
+    "nyc": "15.0.0",
+    "prettier": "1.19.1",
+    "semver": "7.1.1",
+    "source-map-support": "0.5.16",
+    "ts-mocha": "6.0.0",
+    "ts-node": "8.5.4",
+    "typescript": "3.7.3",
+    "webpack": "4.41.4"
   },
   "files": [
     "dist"
@@ -39,35 +44,36 @@
   "main": ".eslintrc.js",
   "name": "protect-js-sdk",
   "nyc": {
-    "checkCoverage": true,
     "branches": 100,
-    "lines": 100,
-    "functions": 100,
-    "statements": 100,
+    "checkCoverage": true,
     "exclude": [],
     "extension": [
       ".ts"
+    ],
+    "functions": 100,
+    "instrument": true,
+    "lines": 100,
+    "reporter": [
+      "text-summary",
+      "html"
     ],
     "require": [
       "ts-node/register",
       "source-map-support/register"
     ],
-    "reporter": [
-      "text-summary",
-      "html"
-    ],
     "sourceMap": true,
-    "instrument": true
+    "statements": 100
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ns8inc/protect-js-sdk.git"
   },
   "scripts": {
+    "beautify": "ts-node ./build/sortJson.ts",
     "build": "rm -rf dist && tsc -d",
     "build:dev": "rm -rf dist && tsc --sourceMap",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
   },
-  "version": "1.0.0"
+  "version": "0.0.1"
 }
