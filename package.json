@@ -24,8 +24,7 @@
     "nyc": "^15.0.0",
     "prettier": "^1.19.1",
     "source-map-support": "^0.5.16",
-    "ts-mocha": "^6.0.0",
-    "uglify-es": "^3.3.9"
+    "ts-mocha": "^6.0.0"
   },
   "files": [
     "dist"
@@ -68,7 +67,6 @@
     "build": "rm -rf dist && tsc -d && yarn minify",
     "build:dev": "rm -rf dist && tsc --sourceMap",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
-    "minify": "uglifyjs --compress --output dist/index.min.js -- dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
   },
   "version": "1.0.0"
