@@ -47,7 +47,7 @@
     }
   },
   "license": "MIT",
-  "main": ".eslintrc.js",
+  "main": "dist/index.js",
   "name": "protect-js-sdk",
   "repository": {
     "type": "git",
