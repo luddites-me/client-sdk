@@ -41,11 +41,6 @@
     "dist"
   ],
   "homepage": "https://github.com/ns8inc/protect-js-sdk#readme",
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn build && yarn lint && yarn test"
-    }
-  },
   "license": "MIT",
   "main": "dist/index.js",
   "name": "protect-js-sdk",
