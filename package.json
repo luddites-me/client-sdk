@@ -49,27 +49,6 @@
   "license": "MIT",
   "main": ".eslintrc.js",
   "name": "protect-js-sdk",
-  "nyc": {
-    "branches": 100,
-    "checkCoverage": true,
-    "exclude": [],
-    "extension": [
-      ".ts"
-    ],
-    "functions": 100,
-    "instrument": true,
-    "lines": 100,
-    "reporter": [
-      "text-summary",
-      "html"
-    ],
-    "require": [
-      "ts-node/register",
-      "source-map-support/register"
-    ],
-    "sourceMap": true,
-    "statements": 100
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ns8inc/protect-js-sdk.git"
