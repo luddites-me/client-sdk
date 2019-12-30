@@ -16,7 +16,7 @@
     "awesome-typescript-loader": "5.2.1",
     "chai": "4.2.0",
     "create-ts-index": "1.12.0",
-    "dotenv-extended": "2.7.0",
+    "dotenv-extended": "2.7.1",
     "dts-bundle": "0.7.3",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.0.0",
@@ -32,7 +32,9 @@
     "source-map-support": "0.5.16",
     "ts-mocha": "6.0.0",
     "ts-node": "8.5.4",
-    "webpack": "4.41.4",
+    "typedoc": "0.15.6",
+    "typedoc-plugin-markdown": "2.2.14",
+    "webpack": "4.41.5",
     "webpack-cli": "3.3.10"
   },
   "files": [
@@ -78,6 +80,7 @@
     "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
     "clean": "rm -rf .awcache .tmp dist",
+    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown",
     "generate:exports": "yarn cti create ./src -w",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
