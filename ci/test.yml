@@ -1,0 +1,45 @@
+---
+resources:
+  - name: protect-js-sdk
+    type: git
+    icon: github-circle
+    source:
+      uri: https://github.com/ns8inc/protect-js-sdk.git
+jobs:
+  - name: test-and-lint
+    public: true
+    plan:
+      - get: protect-js-sdk
+        trigger: true
+      - task: test
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source: { repository: node, tag: "12" }
+          inputs:
+            - name: protect-js-sdk
+          run:
+            path: /bin/sh
+            args:
+              - -c
+              - |
+                cd protect-js-sdk
+                yarn install 
+                yarn test
+      - task: lint
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source: { repository: node, tag: "12" }
+          inputs:
+            - name: protect-js-sdk
+          run:
+            path: /bin/sh
+            args:
+              - -c
+              - |
+                cd protect-js-sdk
+                yarn install 
+                yarn lint
