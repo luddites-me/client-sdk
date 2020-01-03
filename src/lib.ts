@@ -1,8 +1,9 @@
-export default {
-  name: 'test name',
-  msg: 'hello, world',
-};
-
-export function testFn() {
+function testFn(): number {
   return 42;
 }
+
+const data = {
+  msg: 'Hello, world!',
+};
+
+export { data, testFn };

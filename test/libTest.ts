@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import lib, { testFn } from '../src/lib';
+import { data, testFn } from '../src/lib';
 
-describe('a test!', function() {
+describe('a test!', () => {
   it('should work', () => {
-    expect(lib.msg).to.equal('hello, world');
+    expect(data.msg).to.equal('Hello, world!');
     expect(testFn()).to.equal(42);
   });
 });

@@ -1,32 +1,13 @@
 # protect-js-sdk
 
-TODO:
-+ build status badge here
-+ npm version
-
-TODO: add description of what this SDK offers.
+[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-js-sdk/jobs/lint/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-js-sdk)
 
 ## Getting Started
 
 ### Installation
 
-#### CDN Script tag
-
-#### yarn
-
 `yarn add protect-js-sdk`
 
-#### npm
+### Running Tests
 
-`npm install protect-js-sdk`
-
-# Running Tests
-
-#### yarn
 `yarn test` 
-
-#### npm
-`npm test`
-
-
-# Getting Help
