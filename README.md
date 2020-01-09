@@ -29,7 +29,7 @@ Clone the repo and run yarn install
 - Generates documentation from typescript code.
 
 `npm generate:exports`
-- What does this do?
+- Exports SDK functions to a top-level index.ts file in the src directory.
 
 `npm lint`
 - Lints the codebase.
@@ -43,6 +43,7 @@ Clone the repo and run yarn install
 Clone the repo and run `yarn` to install.
 
 ### `package.json` scripts
+
 
 `npm beautify`
 - Perform aesthetic operations to make the project files easier to navigate and read.
@@ -63,7 +64,7 @@ Clone the repo and run `yarn` to install.
 - Generates documentation from typescript code.
 
 `npm generate:exports`
-- What does this do?
+- Exports SDK functions to a top-level index.ts file in the src directory.
 
 `npm lint`
 - Lints the codebase.
@@ -71,6 +72,8 @@ Clone the repo and run `yarn` to install.
 `npm test`
 - Runs tests and calculates test coverage.
 >>>>>>> 04a043c... rebase against master.
+
+
 
 ### Running Tests
 

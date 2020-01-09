@@ -87,7 +87,7 @@
       "dev": true
     },
     "generate:exports": {
-      "description": "What does this do?",
+      "description": "Exports SDK functions to a top-level index.ts file in the src directory.",
       "dev": true
     },
     "lint": {
