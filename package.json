@@ -50,14 +50,54 @@
   },
   "scripts": {
     "beautify": "ts-node ./build/sortJson.ts",
-    "build": "rm -rf dist && tsc -d && yarn bundle",
+    "build": "rm -rf dist && tsc -d --outDir dist && yarn bundle",
     "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
     "clean": "rm -rf .awcache .tmp dist",
-    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown",
+    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && docs:sync-build-scripts",
+    "docs:sync-build-scripts": "ts-node src/scriptsDocumentation.ts",
     "generate:exports": "yarn cti create ./src -w",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
+    "lint-fix": "yarn eslint --fix src/**/*.ts test/**/*.ts",
     "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
+  },
+  "scriptsDocumentation": {
+    "beautify": {
+      "description": "Perform aesthetic operations to make the project files easier to navigate and read.",
+      "dev": true
+    },
+    "build": {
+      "description": "Builds and bundles the project.",
+      "dev": true
+    },
+    "build:dev": {
+      "description": "Build the project with source maps for easier development",
+      "dev": true
+    },
+    "bundle": {
+      "description": "Bundles the project.",
+      "dev": true
+    },
+    "clean": {
+      "description": "Removes build artifacts.",
+      "dev": true
+    },
+    "docs": {
+      "description": "Generates documentation from typescript code.",
+      "dev": true
+    },
+    "generate:exports": {
+      "description": "What does this do?",
+      "dev": true
+    },
+    "lint": {
+      "description": "Lints the codebase.",
+      "dev": true
+    },
+    "test": {
+      "description": "Runs tests and calculates test coverage.",
+      "dev": true
+    }
   },
   "version": "0.0.1"
 }

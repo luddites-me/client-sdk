@@ -3,6 +3,6 @@ export default {
   msg: 'hello, world',
 };
 
-export function testFn() {
+export function testFn(): number {
   return 42;
 }

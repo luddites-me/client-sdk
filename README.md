@@ -1,32 +1,39 @@
-# protect-js-sdk
+# Test README
 
-TODO:
-+ build status badge here
-+ npm version
+This is a test readme.
 
-TODO: add description of what this SDK offers.
+# Getting Started
 
-## Getting Started
+Clone the repo and run yarn install
 
-### Installation
+### `package.json` scripts
 
-#### CDN Script tag
 
-#### yarn
+`npm beautify`
+- Perform aesthetic operations to make the project files easier to navigate and read.
 
-`yarn add protect-js-sdk`
+`npm build`
+- Builds and bundles the project.
 
-#### npm
+`npm build:dev`
+- Build the project with source maps for easier development
 
-`npm install protect-js-sdk`
+`npm bundle`
+- Bundles the project.
 
-# Running Tests
+`npm clean`
+- Removes build artifacts.
 
-#### yarn
-`yarn test` 
+`npm docs`
+- Generates documentation from typescript code.
 
-#### npm
+`npm generate:exports`
+- What does this do?
+
+`npm lint`
+- Lints the codebase.
+
 `npm test`
+- Runs tests and calculates test coverage.
 
 
-# Getting Help
