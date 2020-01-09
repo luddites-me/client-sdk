@@ -1,6 +1,6 @@
 const data = {
   name: 'test name',
-  msg: 'hello, world!',
+  msg: 'hello, world',
 };
 
 function testFn(): number {
