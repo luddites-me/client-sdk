@@ -36,7 +36,8 @@
     "strict": true,
     "target": "es2019",
     "types": [
-      "mocha"
+      "mocha",
+      "node"
     ]
   },
   "exclude": [
