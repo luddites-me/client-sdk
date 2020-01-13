@@ -17,20 +17,15 @@ run:
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
       cd protect-js-sdk
-      if ! yarn install
+
+      if ! yarn version patch
       then
-        echo "ERROR: yarn install failed" 
+        echo "ERROR: yarn version patch update failed"
         exit 1
       fi
 
-      if ! yarn lint
+      if ! yarn publish
       then
-        echo "ERROR: yarn lint failed" 
-        exit 1
-      fi
-
-      if ! yarn test
-      then
-        echo "ERROR: yarn test failed" 
+        echo "ERROR: yarn publish failed"
         exit 1
       fi
