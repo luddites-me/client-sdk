@@ -18,7 +18,7 @@ run:
 
       cd protect-js-sdk
 
-      if ! yarn version patch
+      if ! yarn version --patch
       then
         echo "ERROR: yarn version patch update failed"
         exit 1
