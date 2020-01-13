@@ -7,21 +7,33 @@ export class ClientConfig {
   }
 
   /**
-   * The URL for the Client API (Middleware)
-   */
-  public clientApi!: string;
-
-  /**
    * An array of CSS class names to attach to.
    * In Magento, this was `['ns8-protect-client-iframe']`
    */
   public classNames!: string[];
 
   /**
+   * The URL for the Client API (Middleware)
+   */
+  public clientApi!: string;
+
+  /**
    * The ID of the root DOM node to which the Client is attached.
    * In Magento, this was `'ns8-protect-wrapper'`
    */
   public clientContainerId!: string;
+
+  /**
+   * The height to set the client iframe.
+   * In Magento, this was `calc(100vh - ${container.offsetTop}px - 20px)`
+   */
+  public clientHeight!: string;
+
+  /**
+   * Padding (in pixels) to add to the top of the container.
+   * In Magento, this was `419`.
+   */
+  public clientPaddingTop!: number;
 
   /**
    * The ID of the root DOM node to which an order.
