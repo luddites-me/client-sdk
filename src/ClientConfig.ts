@@ -66,9 +66,9 @@ export class ApiConfig {
 
   /**
    * The URL for the Client API (Middleware).
-   * In almost all cases, this should be `https://protect-client.ns8.com`.
+   * In almost all cases, this should start with `https://protect-client.ns8.com`.
    */
-  public clientApi!: string;
+  public clientApiUrl!: string;
 
   /**
    * The base url of the order detail view for the platform.

@@ -21,7 +21,7 @@ import Client from '@ns8/protect-js-sdk';
 // Instantiate the client with all of the platform specific options
 const protectClient = new Client({
   api: {
-    clientApi: 'https://protect-client.ns8.com',
+    clientApiUrl: 'https://protect-client.ns8.com',
     platformOrderBaseUrl: '/sales/order/view/order_id/',
   },
   page: {
