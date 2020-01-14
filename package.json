@@ -55,7 +55,7 @@
   },
   "scripts": {
     "beautify": "ts-node ./build/sortJson.ts",
-    "build": "tsc -d --outDir dist && yarn bundle",
+    "build": "rm -rf dist && tsc -d --outDir dist && yarn bundle",
     "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
     "clean": "rm -rf .awcache .tmp dist",
