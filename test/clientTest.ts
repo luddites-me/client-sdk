@@ -13,6 +13,7 @@ import 'mocha';
 let browser: any;
 let page: any;
 
+// We need to inform the compiler that ProtectJSSDK is a global variable
 declare let ProtectJSSDK: any;
 
 describe('Asserts that we can access a headless browser', () => {
@@ -49,6 +50,9 @@ describe('Asserts that we can access a headless browser', () => {
   });
 
   it('inserts an iframe using the Client ', async () => {
+    // This is the only way to accurately pass the SDK methods from the node context,
+    // which is the context in which the tests are running and the browser context,
+    // which is what executes inside page.evaluate
     await page.addScriptTag({ path: './dist/index.js' });
     await page.addScriptTag({ path: './node_modules/postmate/build/postmate.min.js' });
     /* istanbul ignore next */
@@ -74,14 +78,11 @@ describe('Asserts that we can access a headless browser', () => {
         },
       });
       protectClient.render();
-
-      return {
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight,
-        deviceScaleFactor: window.devicePixelRatio,
-      };
+      // At this point, the test should probably assert a does-not-throw,
+      // as that is all this test currently accomplishes
+      return { width: document.documentElement.clientWidth };
     });
-    // 800 is the default browser width when constructing a new page
+    // We don't have a more sophisticated assertion for this test yet
     expect(dimensions.width).to.equal(800);
   });
 

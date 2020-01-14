@@ -58,7 +58,7 @@ export class Client implements ProtectClient {
      * 2. Use window.requestAnimationFrame
      *    - This seems like overkill given that we don't really need 60Hz for a iframe height change
      * 3. Poll every so often and run the function to fill the viewport height
-     *    - We've gone with this approach using a 200ms interval for now
+     *    - We've tried this approach using a 200ms interval, which is a nightmare
      */
     const salesOrderContainerElement: HTMLElement | null = document.getElementById(this.config.page.orderContainerId);
     if (salesOrderContainerElement) {
