@@ -20,13 +20,17 @@ import Client from '@ns8/protect-js-sdk';
 
 // Instantiate the client with all of the platform specific options
 const protectClient = new Client({
-    classNames: ['ns8-protect-client-iframe'],
+  api: {
     clientApi: 'https://protect-client.ns8.com',
+    platformOrderBaseUrl: '/sales/order/view/order_id/',
+  },
+  page: {
+    classNames: ['ns8-protect-client-iframe'],
     clientContainerId: 'ns8-protect-wrapper',
     clientHeight: `calc(100vh - ${container.offsetTop}px - 20px)`,
     clientPaddingTop: 419,
     orderContainerId: 'sales_order_view_tabs_ns8_protect_order_review_content',
-    platformOrderBaseUrl: '/sales/order/view/order_id/',
+  },
 });
 // Render the client in an iframe and attach to all events
 protectClient.render();

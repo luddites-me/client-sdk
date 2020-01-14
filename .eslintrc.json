@@ -1,5 +1,6 @@
 {
   "env": {
+    "browser": true,
     "node": true
   },
   "extends": [
@@ -25,39 +26,30 @@
     "sourceType": "module"
   },
   "plugins": [
+    "eslint-plugin-tsdoc",
     "prettier"
   ],
   "rules": {
-    "import/extensions": [
-      "error",
-      {
-        ".ts": "ignorePackages"
-      }
-    ],
+    "@typescript-eslint/no-var-requires": "off",
+    "import/extensions": ["error", {
+      ".ts": "ignorePackages"
+    }],
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
     "linebreak-style": "off",
+    "max-classes-per-file": "off",
     "no-confusing-arrow": "off",
     "no-multiple-empty-lines": "error",
-    "no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ],
+    "no-unused-vars": ["warn", {
+      "argsIgnorePattern": "^_"
+    }],
     "prettier/prettier": "error",
-    "sort-imports": [
-      "error",
-      {
-        "ignoreDeclarationSort": true
-      }
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "sort-imports": ["error", {
+      "ignoreDeclarationSort": true
+    }],
+    "tsdoc/syntax": "warn"
   },
   "settings": {
     "import/resolver": {
