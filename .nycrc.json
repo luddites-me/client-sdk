@@ -10,7 +10,8 @@
   "lines": 100,
   "reporter": [
     "text-summary",
-    "html"
+    "html",
+    "text"
   ],
   "require": [
     "ts-node/register",

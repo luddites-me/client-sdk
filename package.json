@@ -63,8 +63,9 @@
     "docs:sync-build-scripts": "ts-node src/scriptsDocumentation.ts",
     "generate:exports": "yarn cti create ./src -w",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
-    "lint-fix": "yarn eslint --fix src/**/*.ts test/**/*.ts",
-    "test": "nyc --reporter=html --reporter=text mocha test/**/*Test.ts"
+    "lint:fix": "yarn eslint --fix src/**/*.ts test/**/*.ts",
+    "test": "nyc mocha test/**/*Test.ts",
+    "test:debug": "mocha -r ts-node/register test/**/*Test.ts"
   },
   "scriptsDocumentation": {
     "beautify": {

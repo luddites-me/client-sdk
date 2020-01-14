@@ -40,7 +40,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
-    library: 'index',
+    library: 'ProtectJSSDK',
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
@@ -62,7 +62,7 @@ const config = {
     ],
   },
   plugins: [new DtsBundlePlugin(), new HardSourceWebpackPlugin()],
-  target: 'node',
+  target: 'web',
   node: {
     __dirname: false,
     __filename: false,
