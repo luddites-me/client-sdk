@@ -1,7 +1,9 @@
 /* eslint-disable
     @typescript-eslint/no-explicit-any,
+    @typescript-eslint/no-unused-vars,
     no-console,
     no-empty,
+    no-unused-vars,
   */
 /* global ProtectJSSDK */
 import puppeteer from 'puppeteer';
