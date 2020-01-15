@@ -53,7 +53,7 @@ describe('Asserts that we can access a headless browser', () => {
     // This is the only way to accurately pass the SDK methods from the node context,
     // which is the context in which the tests are running and the browser context,
     // which is what executes inside page.evaluate
-    await page.addScriptTag({ path: './dist/index.js' });
+    await page.addScriptTag({ path: './dist/protect.js' });
     await page.addScriptTag({ path: './node_modules/postmate/build/postmate.min.js' });
     /* istanbul ignore next */
     const dimensions = await page.evaluate(async () => {
@@ -64,7 +64,7 @@ describe('Asserts that we can access a headless browser', () => {
       container.id = 'ns8-protect-wrapper';
       body.appendChild(container);
 
-      const protectClient = new ProtectJSSDK.Client({
+      const protectClient = new Protect.Client({
         api: {
           clientApi: 'http://example.com',
           platformOrderBaseUrl: '/sales/order/view/order_id/',

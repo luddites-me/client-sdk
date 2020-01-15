@@ -21,7 +21,7 @@ DtsBundlePlugin.prototype.apply = function(compiler) {
     dts.bundle({
       name: 'app',
       main: '.tmp/index.d.ts',
-      out: '../dist/index.d.ts',
+      out: '../dist/protect.d.ts',
       removeSource: false,
       outputAsModuleFolder: true, // to use npm in-package typings
     });
@@ -39,8 +39,8 @@ const config = {
   mode,
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: mode === 'production' ? 'index.min.js' : 'index.js',
-    library: 'ProtectJSSDK',
+    filename: mode === 'production' ? 'protect.min.js' : 'protect.js',
+    library: 'Protect',
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
