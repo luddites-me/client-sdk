@@ -1,20 +1,73 @@
+/* eslint-disable no-underscore-dangle */
+import { EventBinding, EventNames } from './Events';
+
 /**
  * Configuration options for rendering the Protect Client
  */
 export class ClientConfig {
+  public static readonly PROTECT_TEST_URL = 'https://test-protect-client.ns8.com';
+
+  public static readonly PROTECT_PROD_URL = 'https://protect-client.ns8.com';
+
   public constructor(partial?: Partial<ClientConfig>) {
     Object.assign(this, partial || {});
   }
 
+  public static DEBUG = false;
+
   /**
-   * Configuration options for the APIs and URLs
+   * The Protect access token required for authenticating the request to inject the IFrame
    */
-  public api!: ApiConfig;
+  public accessToken!: string;
+
+  /**
+   * Internal collection of events. This should only ever be set once, on or immediately after construction.
+   */
+  private _events: EventBinding | undefined;
+
+  /**
+   * Events to which we will bind on client initialization
+   */
+  public get events(): EventBinding {
+    if (!this._events) {
+      this._events = {};
+      this._events[EventNames.ORDER_DETAIL_NAME_CLICK] = (data: any): Promise<any> => {
+        return Promise.resolve();
+      };
+    }
+    return this._events;
+  }
+
+  /**
+   * If events have not yet been defined, you can set them now. Note this can be done only once.
+   */
+  public set events(val) {
+    if (!this._events) {
+      this._events = val;
+    } else {
+      throw new Error('Events cannot be redefined once set.');
+    }
+  }
 
   /**
    * Configuration options for rendering the Client
    */
   public page!: PageConfig;
+
+  /**
+   * Constructs the URL for the IFrame which represents the Protect Client
+   *
+   * @param accessToken - optional override for the original access token
+   */
+  public getIFrameUrl = (accessToken: string | undefined = undefined): string => {
+    const token = accessToken || this.accessToken;
+    let iFrameUrl = ClientConfig.PROTECT_PROD_URL;
+    if (!token) throw new Error('An access token is required');
+    if (ClientConfig.DEBUG) {
+      iFrameUrl = ClientConfig.PROTECT_TEST_URL;
+    }
+    return `${iFrameUrl}?accessToken=${token}&noredirect=1`;
+  };
 }
 
 /**
@@ -54,25 +107,4 @@ export class PageConfig {
    * In Magento, this was `'sales_order_view_tabs_ns8_protect_order_review_content'`
    */
   public orderContainerId!: string;
-}
-
-/**
- * Configuration options to connect the Client to the platform and Protect APIs
- */
-export class ApiConfig {
-  public constructor(partial?: Partial<ApiConfig>) {
-    Object.assign(this, partial || {});
-  }
-
-  /**
-   * The URL for the Client API (Middleware).
-   * In almost all cases, this should start with `https://protect-client.ns8.com`.
-   */
-  public clientApiUrl!: string;
-
-  /**
-   * The base url of the order detail view for the platform.
-   * In Magento, this was ~ `/sales/order/view/order_id/{orderId}`
-   */
-  public platformOrderBaseUrl!: string;
 }

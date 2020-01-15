@@ -4,7 +4,7 @@
     no-param-reassign,
 */
 import { ClientConfig } from './ClientConfig';
-import { ProtectClient, ProtectClientEvents } from './ProtectClient';
+import { ProtectClient } from './ProtectClient';
 
 const Postmate = require('postmate').default;
 
@@ -26,27 +26,36 @@ export class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  public render = (): void => {
+  public render = (): Promise<any> => {
     const container: HTMLElement | null = document.getElementById(this.config.page.clientContainerId);
     if (!container) throw new Error(`Could not find element named "${this.config.page.clientContainerId}"`);
 
+    Postmate.debug = true;
     const handshake = new Postmate({
       container,
-      url: this.config.api.clientApiUrl,
+      url: this.config.getIFrameUrl(),
       classListArray: this.config.page.classNames,
     });
 
+    // TODO: this will be refactored as part of the iframe resizing work in progress
     this.resizeClientToFitView(container, this.config.page.clientPaddingTop, this.config.page.clientHeight);
 
-    handshake.then((child: any) => {
-      child.on(ProtectClientEvents.ORDER_DETAIL_NAME_CLICK, (data: any) => this.navigateToPlatformOrder(data.orderId));
+    return new Promise((resolve, reject) => {
+      try {
+        handshake.then((child: any) => {
+          try {
+            resolve(child);
+            Object.keys(this.config.events).forEach((key) => {
+              child.on(key, this.config.events[key]);
+            });
+          } catch (error) {
+            reject(error);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
-  };
-
-  // @inheritdoc
-  public navigateToPlatformOrder = (orderId: string): void => {
-    const orderUrl = `${this.config.api.platformOrderBaseUrl}/${orderId}`;
-    window.location.href = orderUrl;
   };
 
   // @inheritdoc
