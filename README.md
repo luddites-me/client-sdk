@@ -6,38 +6,45 @@
 
 Clone the repo and run `yarn` to install.
 
-### `package.json` scripts
-
-
-`npm beautify`
-- Perform aesthetic operations to make the project files easier to navigate and read.
-
-`npm build`
-- Builds and bundles the project.
-
-`npm build:dev`
-- Build the project with source maps for easier development
-
-`npm bundle`
-- Bundles the project.
-
-`npm clean`
-- Removes build artifacts.
-
-`npm docs`
-- Generates documentation from typescript code.
-
-`npm generate:exports`
-- Exports SDK functions to a top-level index.ts file in the src directory.
-
-`npm lint`
-- Lints the codebase.
-
-`npm test`
-- Runs tests and calculates test coverage.
-
-
 
 ### Running Tests
 
 `yarn test`
+
+### `package.json` scripts
+
+
+`yarn beautify`
+- Perform aesthetic operations to make the project files easier to navigate and read.
+
+`yarn build`
+- Builds and bundles the project.
+
+`yarn build:dev`
+- Build the project with source maps for easier development.
+
+`yarn build:prod`
+- Builds and minifies the project for distribution.
+
+`yarn bundle`
+- Bundles the project.
+
+`yarn clean`
+- Removes build artifacts.
+
+`yarn docs`
+- Generates documentation from typescript code.
+
+`yarn docs:sync-build-scripts`
+- Updates the project README.md with the scriptsDocumentation information from package.json.
+
+`yarn generate:exports`
+- Exports SDK functions to a top-level index.ts file in the src directory.
+
+`yarn lint`
+- Lints the codebase.
+
+`yarn test`
+- Runs tests and calculates test coverage.
+
+
