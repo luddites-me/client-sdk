@@ -40,6 +40,4 @@ Clone the repo and run `yarn` to install.
 
 ### Running Tests
 
-
 `yarn test` 
-

@@ -1,17 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-
-const packageJSONPath = join(__dirname, '..', 'package.json');
-const readmePath = join(__dirname, '..', 'README.md');
-
-type Docs = any;
-
-interface MainArgs {
-  targetHeader: string;
-  readme: string;
-  docs: Docs;
-}
 
 interface PatchData {
   readme: string;
@@ -19,20 +7,24 @@ interface PatchData {
   updates: string;
 }
 
-interface ScriptDescription {
-  script: string;
+interface ScriptDoc {
   description: string;
+  dev: boolean;
 }
 
-function format({ script, description }: ScriptDescription): string {
-  return `\`npm ${script}\`\n- ${description}\n`;
+interface ScriptsDocs {
+  [index: string]: ScriptDoc;
 }
 
-function formatScriptsDocumentation({ docs }: Docs): string {
+function format(name: string, description: string): string {
+  return `\`npm ${name}\`\n- ${description}\n`;
+}
+
+function formatScriptsDocs(docs: ScriptsDocs): string {
   return Object.keys(docs)
-    .map((script) => {
-      const { description } = docs[script];
-      return format({ script, description });
+    .map((scriptName) => {
+      const { description } = docs[scriptName];
+      return format(scriptName, description);
     })
     .join('\n');
 }
@@ -60,20 +52,19 @@ function replaceReadmeSection({ readme, targetHeader, updates }: PatchData): str
   return [...lines.slice(0, targetStart), ...linesToInsert, '\n', ...lines.slice(restIndex)].join('\n');
 }
 
-function main({ targetHeader, readme, docs }: MainArgs): string {
-  const updates = formatScriptsDocumentation({ docs });
-  return replaceReadmeSection({ targetHeader, readme, updates });
-}
-
-export { main, format, replaceReadmeSection, formatScriptsDocumentation };
-
-/* MAIN SCRIPT EXECUTION */
-
-const { scriptsDocumentation } = JSON.parse(readFileSync(packageJSONPath, 'utf8'));
+const packageJSONPath = join(__dirname, '..', 'package.json');
+const readmePath = join(__dirname, '..', 'README.md');
 const readme = readFileSync(readmePath, 'utf8');
-const updatedReadme = main({
+const packageJSON = JSON.parse(readFileSync(packageJSONPath, 'utf8'));
+const { scriptsDocumentation } = packageJSON;
+const updates = formatScriptsDocs(scriptsDocumentation);
+
+const updatedReadme = replaceReadmeSection({
   readme,
-  docs: scriptsDocumentation,
+  updates,
   targetHeader: '### `package.json` scripts',
 });
+
 writeFileSync(join(__dirname, '..', 'README.md'), updatedReadme);
+
+export { format, replaceReadmeSection, formatScriptsDocs };
