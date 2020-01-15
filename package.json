@@ -57,6 +57,7 @@
     "beautify": "ts-node ./build/sortJson.ts",
     "build": "rm -rf dist && tsc -d && yarn bundle",
     "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
+    "build:prod": "rm -rf dist && NODE_ENV=production yarn build",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
     "clean": "rm -rf .awcache .tmp dist",
     "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && yarn docs:sync-build-scripts",

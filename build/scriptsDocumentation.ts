@@ -20,7 +20,7 @@ function formatScriptsDocumentation(docs: ScriptsDocs): string {
   return Object.keys(docs)
     .map((scriptName) => {
       const { description } = docs[scriptName];
-      return `\`npm ${scriptName}\`\n- ${description}\n`;
+      return `\`yarn ${scriptName}\`\n- ${description}\n`;
     })
     .join('\n');
 }
@@ -48,12 +48,10 @@ function updateReadme({ readme, targetHeader, updates }: PatchData): string {
   return [...lines.slice(0, targetStart), ...linesToInsert, '\n', ...lines.slice(restIndex)].join('\n');
 }
 
+/* istanbul ignore next */
 function main() {
 
-  /* istanbul ignore next */
-  if (process?.mainModule?.filename === __filename) {
-    return
-  }
+  // if it's the main module, don't run the top-level code
 
   const packageJSONPath = join(__dirname, '..', 'package.json');
   const readmePath = join(__dirname, '..', 'README.md');
@@ -72,8 +70,10 @@ function main() {
 
 }
 
-
-main()
+/* istanbul ignore next */
+if (__filename === process?.mainModule?.filename) {
+  main()
+}
 
 export { formatScriptsDocumentation, updateReadme };
 export default formatScriptsDocumentation

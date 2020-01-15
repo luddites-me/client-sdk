@@ -25,13 +25,13 @@ This is a test readme.
 # Getting Started
 Clone the repo and run yarn install
 ### \`package.json\` scripts
-\`npm old-script1\`
+\`yarn old-script1\`
 - old-script1 description
-\`npm old-script2\`
+\`yarn old-script2\`
 - old-script2 description
-\`npm old-script3\`
+\`yarn old-script3\`
 - old-script3 description
-\`npm old-script4\`
+\`yarn old-script4\`
 - old-script4 description
 `;
 
@@ -41,13 +41,13 @@ This is a test readme.
 # Getting Started
 Clone the repo and run yarn install
 ### \`package.json\` scripts
-\`npm script1\`
+\`yarn script1\`
 - script 1 description
-\`npm script2\`
+\`yarn script2\`
 - script 2 description
-\`npm script3\`
+\`yarn script3\`
 - script 3 description
-\`npm script4\`
+\`yarn script4\`
 - script 4 description
 `;
 
@@ -58,13 +58,13 @@ This is a test readme.
 # Getting Started
 Clone the repo and run yarn install
 ### \`package.json\` scripts
-\`npm outdated-script1\`
+\`yarn outdated-script1\`
 - outdated-script1 description
-\`npm outdated-script2\`
+\`yarn outdated-script2\`
 - outdated-script2 description
-\`npm outdated-script3\`
+\`yarn outdated-script3\`
 - outdated-script3 description
-\`npm outdated-script4\`
+\`yarn outdated-script4\`
 - outdated-script4 description
 ### extra section
 this is an extra section
@@ -76,13 +76,13 @@ This is a test readme.
 # Getting Started
 Clone the repo and run yarn install
 ### \`package.json\` scripts
-\`npm script1\`
+\`yarn script1\`
 - script 1 description
-\`npm script2\`
+\`yarn script2\`
 - script 2 description
-\`npm script3\`
+\`yarn script3\`
 - script 3 description
-\`npm script4\`
+\`yarn script4\`
 - script 4 description
 ### extra section
 this is an extra section
@@ -133,13 +133,13 @@ This is a test readme.
 # Getting Started
 Clone the repo and run yarn install
 ### \`package.json\` scripts
-\`npm script1\`
+\`yarn script1\`
 - script 1 description
-\`npm script2\`
+\`yarn script2\`
 - script 2 description
-\`npm script3\`
+\`yarn script3\`
 - script 3 description
-\`npm script4\`
+\`yarn script4\`
 - script 4 description
 `;
     const expected = removeBlankLines(README_NO_SCRIPT_DOCS_EXPECTED);
