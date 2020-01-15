@@ -1,14 +1,3 @@
-# Test README
-
-[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-js-sdk/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-js-sdk)
-
-# Getting Started
-
-Clone the repo and run `yarn` to install.
-
-### `package.json` scripts
-
-
 `npm beautify`
 - Perform aesthetic operations to make the project files easier to navigate and read.
 
@@ -35,9 +24,3 @@ Clone the repo and run `yarn` to install.
 
 `npm test`
 - Runs tests and calculates test coverage.
-
-
-
-### Running Tests
-
-`yarn test` 

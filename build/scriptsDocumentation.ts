@@ -48,20 +48,32 @@ function updateReadme({ readme, targetHeader, updates }: PatchData): string {
   return [...lines.slice(0, targetStart), ...linesToInsert, '\n', ...lines.slice(restIndex)].join('\n');
 }
 
-const packageJSONPath = join(__dirname, '..', 'package.json');
-const readmePath = join(__dirname, '..', 'README.md');
-const readme = readFileSync(readmePath, 'utf8');
-const packageJSON = JSON.parse(readFileSync(packageJSONPath, 'utf8'));
-const { scriptsDocumentation } = packageJSON;
-const updates = formatScriptsDocumentation(scriptsDocumentation);
+function main() {
 
-const updatedReadme = updateReadme({
-  readme,
-  updates,
-  targetHeader: '### `package.json` scripts',
-});
+  /* istanbul ignore next */
+  if (process?.mainModule?.filename === __filename) {
+    return
+  }
 
-writeFileSync(join(__dirname, '..', 'README.md'), updates);
+  const packageJSONPath = join(__dirname, '..', 'package.json');
+  const readmePath = join(__dirname, '..', 'README.md');
+  const readme = readFileSync(readmePath, 'utf8');
+  const packageJSON = JSON.parse(readFileSync(packageJSONPath, 'utf8'));
+  const { scriptsDocumentation } = packageJSON;
+  const updates = formatScriptsDocumentation(scriptsDocumentation);
+
+  const updatedReadme = updateReadme({
+    readme,
+    updates,
+    targetHeader: '### `package.json` scripts',
+  });
+
+  writeFileSync(join(__dirname, '..', 'README.md'), updates);
+
+}
+
+
+main()
 
 export { formatScriptsDocumentation, updateReadme };
 export default formatScriptsDocumentation
