@@ -78,8 +78,12 @@
       "dev": true
     },
     "build:dev": {
-      "description": "Build the project with source maps for easier development",
+      "description": "Build the project with source maps for easier development.",
       "dev": true
+    },
+    "build:prod": {
+      "description": "Builds and minifies the project for distribution.",
+      "dev": false
     },
     "bundle": {
       "description": "Bundles the project.",
@@ -91,6 +95,10 @@
     },
     "docs": {
       "description": "Generates documentation from typescript code.",
+      "dev": true
+    },
+    "docs:sync-build-scripts": {
+      "description": "Updates the project README.md with the scriptsDocumentation information from package.json.",
       "dev": true
     },
     "generate:exports": {
