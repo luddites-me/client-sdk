@@ -39,7 +39,7 @@ const config = {
   mode,
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
+    filename: mode === 'production' ? 'index.min.js' : 'index.js',
     library: 'ProtectJSSDK',
     libraryTarget: 'umd',
     umdNamedDefine: true,
