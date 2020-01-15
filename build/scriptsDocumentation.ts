@@ -51,7 +51,6 @@ function updateReadme({ readme, targetHeader, updates }: PatchData): string {
 /* istanbul ignore next */
 function main() {
 
-  // if it's the main module, don't run the top-level code
 
   const packageJSONPath = join(__dirname, '..', 'package.json');
   const readmePath = join(__dirname, '..', 'README.md');
@@ -66,9 +65,12 @@ function main() {
     targetHeader: '### `package.json` scripts',
   });
 
-  writeFileSync(join(__dirname, '..', 'README.md'), updates);
+  writeFileSync(join(__dirname, '..', 'README.md'), updatedReadme);
 
 }
+
+// if the main module is this filename, it's being run a script.
+// execute top level code in this case only.
 
 /* istanbul ignore next */
 if (__filename === process?.mainModule?.filename) {
