@@ -59,12 +59,12 @@
     "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
     "clean": "rm -rf .awcache .tmp dist",
-    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && docs:sync-build-scripts",
-    "docs:sync-build-scripts": "ts-node src/scriptsDocumentation.ts",
+    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && yarn docs:sync-build-scripts",
+    "docs:sync-build-scripts": "ts-node build/scriptsDocumentation.ts",
     "generate:exports": "yarn cti create ./src -w",
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
     "lint:fix": "yarn eslint --fix src/**/*.ts test/**/*.ts",
-    "test": "nyc mocha test/**/*Test.ts",
+    "test": "yarn build && nyc mocha test/**/*Test.ts",
     "test:debug": "mocha -r ts-node/register test/**/*Test.ts"
   },
   "scriptsDocumentation": {

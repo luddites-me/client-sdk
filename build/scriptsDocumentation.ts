@@ -16,20 +16,16 @@ interface ScriptsDocs {
   [index: string]: ScriptDoc;
 }
 
-function format(name: string, description: string): string {
-  return `\`npm ${name}\`\n- ${description}\n`;
-}
-
-function formatScriptsDocs(docs: ScriptsDocs): string {
+function formatScriptsDocumentation(docs: ScriptsDocs): string {
   return Object.keys(docs)
     .map((scriptName) => {
       const { description } = docs[scriptName];
-      return format(scriptName, description);
+      return `\`npm ${scriptName}\`\n- ${description}\n`;
     })
     .join('\n');
 }
 
-function replaceReadmeSection({ readme, targetHeader, updates }: PatchData): string {
+function updateReadme({ readme, targetHeader, updates }: PatchData): string {
   const lines = readme.split('\n');
   const linesToInsert = [targetHeader, '\n', ...updates.split('\n')];
   const targetStart = lines.findIndex((line) => line === targetHeader);
@@ -57,14 +53,15 @@ const readmePath = join(__dirname, '..', 'README.md');
 const readme = readFileSync(readmePath, 'utf8');
 const packageJSON = JSON.parse(readFileSync(packageJSONPath, 'utf8'));
 const { scriptsDocumentation } = packageJSON;
-const updates = formatScriptsDocs(scriptsDocumentation);
+const updates = formatScriptsDocumentation(scriptsDocumentation);
 
-const updatedReadme = replaceReadmeSection({
+const updatedReadme = updateReadme({
   readme,
   updates,
   targetHeader: '### `package.json` scripts',
 });
 
-writeFileSync(join(__dirname, '..', 'README.md'), updatedReadme);
+writeFileSync(join(__dirname, '..', 'README.md'), updates);
 
-export { format, replaceReadmeSection, formatScriptsDocs };
+export { formatScriptsDocumentation, updateReadme };
+export default formatScriptsDocumentation

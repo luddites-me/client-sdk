@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { format, main } from '../build/scriptsDocumentation';
+import { formatScriptsDocumentation, updateReadme } from '../build/scriptsDocumentation';
 
 const removeBlankLines = (content: string): string => {
   return content
@@ -17,30 +17,6 @@ const removeBlankLines = (content: string): string => {
  * - readme has build script info as the last section
  * - readme has build script info as a middle section
  */
-
-// no pre-existing build script info in readme
-const README_NO_SCRIPT_DOCS_ACTUAL = `
-# Test README
-This is a test readme.
-# Getting Started
-Clone the repo and run yarn install
-`;
-
-const README_NO_SCRIPT_DOCS_EXPECTED = `
-# Test README
-This is a test readme.
-# Getting Started
-Clone the repo and run yarn install
-### \`package.json\` scripts
-\`npm script1\`
-- script 1 description
-\`npm script2\`
-- script 2 description
-\`npm script3\`
-- script 3 description
-\`npm script4\`
-- script 4 description
-`;
 
 // pre-existing build script info, at the end
 const README_SCRIPT_AT_END_DOCS_ACTUAL = `
@@ -140,25 +116,37 @@ const parsedPackageJson = {
 };
 
 const { scriptsDocumentation: docs } = parsedPackageJson;
-
-describe('SYNC-BUILD-SCRIPTS-WITH-README: properly formats a build-script README.md entry', () => {
-  it('turns script object into a formatted readme string ', () => {
-    const actual = format({
-      script: 'testCommand',
-      description: 'This is a test command',
-    }).trim();
-    const expected = '`npm testCommand`\n- This is a test command';
-    expect(actual.trim()).to.equal(expected);
-  });
-});
+const updates = formatScriptsDocumentation(docs);
 
 describe('SYNC-BUILD-SCRIPTS-WITH-README: script updates README.md', () => {
   it('concatenates build script info to the end of readme when there is no build script section.', () => {
+    const README_NO_SCRIPT_DOCS_ACTUAL = `
+# Test README
+This is a test readme.
+# Getting Started
+Clone the repo and run yarn install
+`;
+
+    const README_NO_SCRIPT_DOCS_EXPECTED = `
+# Test README
+This is a test readme.
+# Getting Started
+Clone the repo and run yarn install
+### \`package.json\` scripts
+\`npm script1\`
+- script 1 description
+\`npm script2\`
+- script 2 description
+\`npm script3\`
+- script 3 description
+\`npm script4\`
+- script 4 description
+`;
     const expected = removeBlankLines(README_NO_SCRIPT_DOCS_EXPECTED);
     const actual = removeBlankLines(
-      main({
+      updateReadme({
         readme: README_NO_SCRIPT_DOCS_ACTUAL,
-        docs,
+        updates,
         targetHeader: '### `package.json` scripts',
       }),
     );
@@ -169,10 +157,10 @@ describe('SYNC-BUILD-SCRIPTS-WITH-README: script updates README.md', () => {
   it('replaces build scripts that exist at the end of the document', () => {
     const expected = removeBlankLines(README_SCRIPT_AT_END_DOCS_EXPECTED);
     const actual = removeBlankLines(
-      main({
-        docs,
-        targetHeader: '### `package.json` scripts',
+      updateReadme({
         readme: README_SCRIPT_AT_END_DOCS_ACTUAL,
+        updates,
+        targetHeader: '### `package.json` scripts',
       }),
     );
 
@@ -182,10 +170,10 @@ describe('SYNC-BUILD-SCRIPTS-WITH-README: script updates README.md', () => {
   it('simply adds build scripts info to the readme when there is no build script section.', () => {
     const expected = removeBlankLines(README_SCRIPT_IN_MIDDLE_DOCS_EXPECTED);
     const actual = removeBlankLines(
-      main({
-        docs,
-        targetHeader: '### `package.json` scripts',
+      updateReadme({
         readme: README_SCRIPT_IN_MIDDLE_DOCS_ACTUAL,
+        updates,
+        targetHeader: '### `package.json` scripts',
       }),
     );
 
