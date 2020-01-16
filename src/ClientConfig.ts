@@ -13,10 +13,14 @@ export class ClientConfig {
     Object.assign(this, partial || {});
   }
 
+  /**
+   * This can be set to true to allow more verbose options when debugging.
+   */
   public static DEBUG = false;
 
   /**
-   * The Protect access token required for authenticating the request to inject the IFrame
+   * The Protect access token required for authenticating the request to inject the IFrame.
+   * This should always be a UUID.
    */
   public accessToken!: string;
 
@@ -57,7 +61,7 @@ export class ClientConfig {
   /**
    * Constructs the URL for the IFrame which represents the Protect Client
    *
-   * @param accessToken - optional override for the original access token
+   * @param accessToken - optional UUID to override the original access token.
    */
   public getIFrameUrl = (accessToken: string | undefined = undefined): string => {
     const token = accessToken || this.accessToken;
