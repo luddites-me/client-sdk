@@ -115,5 +115,5 @@ export class IFrameConfig {
    * The ID of the root DOM node to which the Client is attached.
    * In Magento, this was `'ns8-protect-wrapper'`
    */
-  public clientContainerId!: string;
+  public attachToId!: string;
 }

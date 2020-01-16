@@ -7,6 +7,8 @@ import { ClientConfig } from './ClientConfig';
 import { ProtectClient } from './ProtectClient';
 import { EventCallback } from './Events';
 
+// KLUDGE: Postmate is going away. For now, this is a hack to support differences between
+// the way that node require vs browser require behave
 const Postmate = require('postmate').default || require('postmate');
 
 /**
@@ -28,8 +30,8 @@ export class Client implements ProtectClient {
 
   // @inheritdoc
   public render = (): Promise<any> => {
-    const container: HTMLElement | null = document.getElementById(this.config.iFrame.clientContainerId);
-    if (!container) throw new Error(`Could not find element named "${this.config.iFrame.clientContainerId}"`);
+    const container: HTMLElement | null = document.getElementById(this.config.iFrame.attachToId);
+    if (!container) throw new Error(`Could not find element named "${this.config.iFrame.attachToId}"`);
 
     if (ClientConfig.DEBUG) {
       try {

@@ -11,7 +11,7 @@ import puppeteer from 'puppeteer';
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
 import 'mocha';
-import { Client, ClientConfig } from '../src';
+import { Client, ClientConfig, IFrameConfig } from '../src';
 
 let browser: any;
 let page: any;
@@ -38,16 +38,16 @@ const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const clientDomId = 'ns8-protect-client-iframe';
 const clientClassName = 'ns8-protect-client-iframe';
 const getClientConfig = (): any => {
-  return {
+  return new ClientConfig({
     accessToken: uuid,
     events: {
       ready: (data: any): Promise<any> => Promise.resolve(),
     },
-    iFrame: {
+    iFrame: new IFrameConfig({
       classNames: [clientClassName],
-      clientContainerId: clientDomId,
-    },
-  };
+      attachToId: clientDomId,
+    }),
+  });
 };
 
 /**
@@ -58,10 +58,10 @@ const initVirtualDom = (): JSDOM => {
   global.document = jsdom.window.document;
   global.window = jsdom.window;
   return jsdom;
-}
+};
 
 /**
- * Tests our ability to interact with Puppeteer
+ ;* Tests our ability to interact with Puppeteer
  */
 describe('Asserts that we can access a headless browser', () => {
   before(async () => {
@@ -142,7 +142,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
         accessToken: '2953f28c-5820-443a-972a-23a2ee570b47',
         iFrame: {
           classNames: ['ns8-protect-client-iframe'],
-          clientContainerId: 'ns8-protect-wrapper',
+          attachToId: 'ns8-protect-wrapper',
         },
       });
 
@@ -196,9 +196,9 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   it('throws when client container id does not exist ', async () => {
     expect(() => {
       const config = getClientConfig();
-      config.iFrame.clientContainerId = '';
+      config.iFrame.attachToId = '';
       const client = new Client(config);
-      // The clientContainerId is invalid and this will throw
+      // The attachToId is invalid and this will throw
       client.render();
     }).to.throw();
   });
@@ -218,7 +218,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       ClientConfig.DEBUG = true;
       initVirtualDom();
       const config = getClientConfig();
-      config.iFrame.clientContainerId = 'does-not-exist';
+      config.iFrame.attachToId = 'does-not-exist';
       const client = new Client(config);
       client.render();
     }).to.throw();

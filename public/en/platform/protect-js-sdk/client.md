@@ -11,6 +11,14 @@ Goals:
 * Handle navigation and browser events (e.g. resizing)
 * Event bus for communication between the client and the platform
 
+## Configuration
+
+The Protect Client requires a minimal amount of configuration in order to render on the platform. This requires instantiating the `Client` class with a `ClientConfig` object. This defines:
+
+* `accessToken`: your NS8 Protect access token used for authenticating API calls to Protect. This is required for loading the IFrame.
+* `events`: a collection of events to which you will bind. The `EventNames` enum defines static events which are guaranteed to execute. All other events are defined, subscribed and published by you.
+* `iFrame`: an object representing the configuration of the IFrame that Protect will occupy. `attachToId` is required, and `classNames` is optional.
+
 ## Example Protect Client Implementations
 
 The following serve as examples of implementation of the Client to demonstrate intended uses:
@@ -20,18 +28,20 @@ import Client from '@ns8/protect-js-sdk';
 
 // Instantiate the client with all of the platform specific options
 const protectClient = new Client({
-  api: {
-    clientApiUrl: 'https://protect-client.ns8.com',
-    platformOrderBaseUrl: '/sales/order/view/order_id/',
+  accessToken: '27802062-34c4-450c-a18f-667324f14375',
+  events: {
+    // Define a response to this event that will navigate the user from Protect back to the Platform order page
+    'order-detail-name-click': (data: any): Promise<any> => {
+      const orderId = data.orderId;
+      const orderUrl = `https://www.my-magento-store.com/index.php/admin_demo/sales/order/view/order_id/${orderId}`;
+      window.location.href = orderUrl;
+    },
   },
-  page: {
+  iFrame: {
     classNames: ['ns8-protect-client-iframe'],
-    clientContainerId: 'ns8-protect-wrapper',
-    clientHeight: `calc(100vh - ${container.offsetTop}px - 20px)`,
-    clientPaddingTop: 419,
-    orderContainerId: 'sales_order_view_tabs_ns8_protect_order_review_content',
+    attachToId: 'ns8-protect-wrapper',
   },
 });
-// Render the client in an iframe and attach to all events
-protectClient.render();
+// Render the client in an iframe and attach to all events. Returns a promise which resolves when the client is ready.
+const clientReady = protectClient.render();
 ```

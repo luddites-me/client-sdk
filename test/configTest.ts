@@ -17,7 +17,7 @@ const getBasicConfig = (): ClientConfig => {
     accessToken: uuid,
     iFrame: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
-      clientContainerId: 'ns8-protect-wrapper',
+      attachToId: 'ns8-protect-wrapper',
     }),
   });
 };
@@ -27,7 +27,7 @@ const getNoAccessTokenConfig = (): ClientConfig => {
     accessToken: '',
     iFrame: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
-      clientContainerId: 'ns8-protect-wrapper',
+      attachToId: 'ns8-protect-wrapper',
     }),
   });
 };
@@ -37,7 +37,7 @@ const getInvalidAccessTokenConfig = (): ClientConfig => {
     accessToken: '123!@$',
     iFrame: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
-      clientContainerId: 'ns8-protect-wrapper',
+      attachToId: 'ns8-protect-wrapper',
     }),
   });
 };
