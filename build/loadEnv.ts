@@ -9,6 +9,10 @@
  */
 import dotEnvExtended from 'dotenv-extended';
 
+/**
+ * This loads the environment variables defined in `.env` and returns them.
+ * The variables are also available on `process.env`.
+ */
 export const env = dotEnvExtended.load({
   encoding: 'utf8',
   silent: true,
@@ -23,6 +27,10 @@ export const env = dotEnvExtended.load({
   overrideProcessEnv: false,
 });
 
+/**
+ * Logic to help determine if the current environment is set to dev,
+ * which is any enviroment not set to "production".
+ */
 export const isDev = (): boolean => {
   if (!env || !env.NODE_ENV) return false;
   if (

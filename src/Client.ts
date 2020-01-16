@@ -5,8 +5,9 @@
 */
 import { ClientConfig } from './ClientConfig';
 import { ProtectClient } from './ProtectClient';
+import { EventCallback } from './Events';
 
-const Postmate = require('postmate').default;
+const Postmate = require('postmate').default || require('postmate');
 
 /**
  * Responsible for rendering the Protect Client SPA
@@ -27,18 +28,21 @@ export class Client implements ProtectClient {
 
   // @inheritdoc
   public render = (): Promise<any> => {
-    const container: HTMLElement | null = document.getElementById(this.config.page.clientContainerId);
-    if (!container) throw new Error(`Could not find element named "${this.config.page.clientContainerId}"`);
+    const container: HTMLElement | null = document.getElementById(this.config.iFrame.clientContainerId);
+    if (!container) throw new Error(`Could not find element named "${this.config.iFrame.clientContainerId}"`);
 
-    Postmate.debug = true;
+    if (ClientConfig.DEBUG) {
+      try {
+        Postmate.debug = true;
+      } catch (error) {
+        // log error
+      }
+    }
     const handshake = new Postmate({
       container,
       url: this.config.getIFrameUrl(),
-      classListArray: this.config.page.classNames,
+      classListArray: this.config.iFrame.classNames,
     });
-
-    // TODO: this will be refactored as part of the iframe resizing work in progress
-    this.resizeClientToFitView(container, this.config.page.clientPaddingTop, this.config.page.clientHeight);
 
     return new Promise((resolve, reject) => {
       try {
@@ -59,21 +63,11 @@ export class Client implements ProtectClient {
   };
 
   // @inheritdoc
-  public resizeClientToFitView = (container: HTMLElement, paddingTop: number, containerHeight: string): void => {
-    /*
-     * Here, we have a few options for keeping the viewport height full of an element
-     * 1. Listen for window.onresize
-     *    - This may not account for changes in content height caused by the platform
-     * 2. Use window.requestAnimationFrame
-     *    - This seems like overkill given that we don't really need 60Hz for a iframe height change
-     * 3. Poll every so often and run the function to fill the viewport height
-     *    - We've tried this approach using a 200ms interval, which is a nightmare
-     */
-    const salesOrderContainerElement: HTMLElement | null = document.getElementById(this.config.page.orderContainerId);
-    if (salesOrderContainerElement) {
-      container.style.paddingTop = `${paddingTop}px`;
-      return;
+  public trigger = (eventName: string, data: any = null): Promise<any> => {
+    const event: EventCallback | undefined = this.config?.events?.[eventName];
+    if (!event) {
+      throw new Error(`The event named '${eventName}' is not defined on this client.`);
     }
-    container.style.height = containerHeight;
+    return event(data);
   };
 }

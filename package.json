@@ -7,6 +7,7 @@
   "devDependencies": {
     "@ns8/eslint-config-ns8-typescript-eslint": "0.0.7",
     "@types/chai": "4.2.7",
+    "@types/jsdom": "12.2.4",
     "@types/mocha": "5.2.7",
     "@types/node": "13.1.8",
     "@types/postmate": "1.5.0",
@@ -28,6 +29,7 @@
     "hard-source-webpack-plugin": "0.13.1",
     "husky": "4.0.10",
     "mocha": "7.0.0",
+    "jsdom": "16.0.0",
     "nyc": "15.0.0",
     "postmate": "1.5.2",
     "prettier": "1.19.1",
@@ -39,6 +41,7 @@
     "ts-node": "8.6.2",
     "typedoc": "0.16.7",
     "typedoc-plugin-markdown": "2.2.16",
+    "uuid-validate": "0.0.3",
     "webpack": "4.41.5",
     "webpack-cli": "3.3.10"
   },

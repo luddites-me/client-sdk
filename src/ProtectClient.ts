@@ -4,15 +4,20 @@
 export interface ProtectClient {
   /**
    * Initializes the Protect Client SPA in the platform context
+   *
+   * @returns A promise which will be resolved when the iFrame is injected successfully.
    */
   render(): Promise<any>;
 
   /**
-   * Responsible for sizing the SPA to fit the parent container
+   * Manually trigger an event on the client. Useful for testing/debugging.
    *
-   * @param container - The parent DOM node to which the iframe will be attached.
-   * @param paddingTop - Padding (in pixels) to add to the top of the iframe. In Magento, this was `'419'`.
-   * @param containerHeight - Height of the container. In Magento, this was `calc(100vh - ${container.offsetTop}px - 20px)`.
+   * @param eventName - The name of an event registered on the Client.
+   * @param data - Optional data to pass into the callback
+   * 
+   * @throws Throws an error if the event name is not registered.
+   *
+   * @returns The return of the registered event, if any.
    */
-  resizeClientToFitView(container: HTMLElement, paddingTop: number, containerHeight: string): void;
+  trigger(eventName: string, data: any): Promise<any>;
 }

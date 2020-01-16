@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import validate from 'uuid-validate';
 import { EventBinding, EventNames } from './Events';
-
 /**
  * Configuration options for rendering the Protect Client
  */
@@ -11,6 +11,12 @@ export class ClientConfig {
 
   public constructor(partial?: Partial<ClientConfig>) {
     Object.assign(this, partial || {});
+    if (!this.events && !this._events) {
+      // We will never reach this condition, becase the events getter will initialize the _events object
+      /* istanbul ignore next */
+      throw new Error('Events cannot be empty');
+    }
+    Object.freeze(this._events);
   }
 
   /**
@@ -19,10 +25,27 @@ export class ClientConfig {
   public static DEBUG = false;
 
   /**
+   * Internal access token to allow for validation on set.
+   */
+  private _accessToken: string | undefined;
+
+  /**
    * The Protect access token required for authenticating the request to inject the IFrame.
    * This should always be a UUID.
    */
-  public accessToken!: string;
+  public get accessToken(): string {
+    return this._accessToken || '';
+  }
+
+  /**
+   * Sets the access token if the value is a valid UUID
+   */
+  public set accessToken(val) {
+    if (!validate(val)) {
+      throw new Error(`${val} is not a valid UUID.`);
+    }
+    this._accessToken = val;
+  }
 
   /**
    * Internal collection of events. This should only ever be set once, on or immediately after construction.
@@ -56,7 +79,7 @@ export class ClientConfig {
   /**
    * Configuration options for rendering the Client
    */
-  public page!: PageConfig;
+  public iFrame!: IFrameConfig;
 
   /**
    * Constructs the URL for the IFrame which represents the Protect Client
@@ -66,7 +89,7 @@ export class ClientConfig {
   public getIFrameUrl = (accessToken: string | undefined = undefined): string => {
     const token = accessToken || this.accessToken;
     let iFrameUrl = ClientConfig.PROTECT_PROD_URL;
-    if (!token) throw new Error('An access token is required');
+    if (!validate(token)) throw new Error(`An access token UUID is required. ${token} is not a valid access token.`);
     if (ClientConfig.DEBUG) {
       iFrameUrl = ClientConfig.PROTECT_TEST_URL;
     }
@@ -77,8 +100,8 @@ export class ClientConfig {
 /**
  * Configuration options for rendering the Client
  */
-export class PageConfig {
-  public constructor(partial?: Partial<PageConfig>) {
+export class IFrameConfig {
+  public constructor(partial?: Partial<IFrameConfig>) {
     Object.assign(this, partial || {});
   }
 
@@ -93,22 +116,4 @@ export class PageConfig {
    * In Magento, this was `'ns8-protect-wrapper'`
    */
   public clientContainerId!: string;
-
-  /**
-   * The height to set the client iframe.
-   * In Magento, this was `calc(100vh - ${container.offsetTop}px - 20px)`
-   */
-  public clientHeight!: string;
-
-  /**
-   * Padding (in pixels) to add to the top of the container.
-   * In Magento, this was `419`.
-   */
-  public clientPaddingTop!: number;
-
-  /**
-   * The ID of the root DOM node to which an order.
-   * In Magento, this was `'sales_order_view_tabs_ns8_protect_order_review_content'`
-   */
-  public orderContainerId!: string;
 }
