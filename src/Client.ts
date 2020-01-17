@@ -18,7 +18,7 @@ export class Client implements ProtectClient {
   /**
    * Configuration for DOM ids and CSS names
    */
-  private readonly config: ClientConfig;
+  protected readonly config: ClientConfig;
 
   /**
    *
