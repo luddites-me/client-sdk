@@ -6,7 +6,6 @@
   "description": "NS8 Protect JavaScript SDK",
   "devDependencies": {
     "@ns8/eslint-config-ns8-typescript-eslint": "0.0.7",
-    "@ns8/ns8-protect-sdk": "0.1.24",
     "@types/chai": "4.2.7",
     "@types/mocha": "5.2.7",
     "@types/node": "13.1.1",
@@ -35,6 +34,7 @@
     "puppeteer": "2.0.0",
     "semver": "7.1.1",
     "source-map-support": "0.5.16",
+    "sorted-json": "0.2.6",
     "ts-mocha": "6.0.0",
     "ts-node": "8.5.4",
     "typedoc": "0.15.6",
