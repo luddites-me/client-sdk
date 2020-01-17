@@ -2,10 +2,13 @@
 ---
 branches: 100
 checkCoverage: true
-exclude: []
+exclude:
+  - test/**/*.ts
 extension:
   - ts
 functions: 100
+include:
+  - src/**/*.ts
 instrument: true
 lines: 100
 reporter:
