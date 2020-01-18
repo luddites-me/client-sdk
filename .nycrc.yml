@@ -1,18 +1,19 @@
+
 ---
 branches: 100
 checkCoverage: true
 exclude: []
 extension:
-  -".ts"
+  - ts
 functions: 100
 instrument: true
 lines: 100
 reporter:
-  -text - summary -
-  html -
-  text
+  - html
+  - text-summary
+  - text
 require:
-  -ts - node / register -
-  source - map - support / register
+  - source-map-support/register
+  - ts-node/register
 sourceMap: true
 statements: 100
