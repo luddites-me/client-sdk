@@ -1,0 +1,18 @@
+---
+branches: 100
+checkCoverage: true
+exclude: []
+extension:
+  -".ts"
+functions: 100
+instrument: true
+lines: 100
+reporter:
+  -text - summary -
+  html -
+  text
+require:
+  -ts - node / register -
+  source - map - support / register
+sourceMap: true
+statements: 100
