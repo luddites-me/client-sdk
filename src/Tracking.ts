@@ -26,22 +26,20 @@ export class Tracking {
     if (trackingUrl === Tracking.TRUE_STATS_URL && Tracking._trackingScript) {
       return Tracking._trackingScript;
     }
-    return new Promise((resolve, reject) => {
-      fetch(trackingUrl)
-        .then((res) => {
-          if (res.ok) {
-            return res.text().then((text) => {
-              Tracking._trackingScript = `<script>${text}</script>`;
-              resolve(Tracking._trackingScript);
-            });
-          }
-          /* istanbul ignore next */
-          return reject(res.statusText);
-        })
-        .catch((error) => {
-          /* istanbul ignore next */
-          reject(error);
-        });
-    });
+    try {
+      const res = await fetch(trackingUrl);
+      if (!res.ok) {
+        // TODO: investigate missing coverage in unit test
+        /* istanbul ignore next */
+        throw new Error(res.statusText);
+      }
+      const text = await res.text();
+      Tracking._trackingScript = `<script>${text}</script>`;
+      return Tracking._trackingScript;
+    } catch (error) {
+      // TODO: investigate missing coverage in unit test
+      /* istanbul ignore next */
+      throw new Error(`Failed to get tracking script. ${error.message}`);
+    }
   };
 }
