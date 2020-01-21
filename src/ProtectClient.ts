@@ -14,7 +14,7 @@ export interface ProtectClient {
    *
    * @param eventName - The name of an event registered on the Client.
    * @param data - Optional data to pass into the callback
-   * 
+   *
    * @throws Throws an error if the event name is not registered.
    *
    * @returns The return of the registered event, if any.

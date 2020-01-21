@@ -29,16 +29,12 @@ export class Tracking {
     try {
       const res = await fetch(trackingUrl);
       if (!res.ok) {
-        // TODO: investigate missing coverage in unit test
-        /* istanbul ignore next */
         throw new Error(res.statusText);
       }
       const text = await res.text();
       Tracking._trackingScript = `<script>${text}</script>`;
       return Tracking._trackingScript;
     } catch (error) {
-      // TODO: investigate missing coverage in unit test
-      /* istanbul ignore next */
       throw new Error(`Failed to get tracking script. ${error.message}`);
     }
   };

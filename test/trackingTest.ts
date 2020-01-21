@@ -1,30 +1,45 @@
 /* eslint-disable no-unused-expressions */
-import { expect } from 'chai';
+
+import { expect, use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import nock from 'nock';
 import 'mocha';
 import { Tracking } from '../src/Tracking';
 
 describe('Asserts that we can access the TrueStats tracking script', () => {
+  use(chaiAsPromised);
+
   it('gets the tracking script ', async () => {
+    const url = new URL(Tracking.TRUE_STATS_URL);
+    const scope = nock(url.origin)
+      .get(url.pathname)
+      .reply(200, 'MOCK SCRIPT CONTENTS');
     const script = await Tracking.getTrackingScript();
     expect(script).to.be.string;
+    expect(scope.isDone()).to.be.true;
     const cachedScript = await Tracking.getTrackingScript();
     expect(cachedScript).to.be.string;
   });
 
-  it('fails to get the tracking script from invalid url ', async () => {
-    expect(async () => {
-      await Tracking.getTrackingScript('https://nope.doesnotexist.ever');
-    }).to.throw;
+  it('fails to get the tracking script from invalid url', async () => {
+    const noResolveUrlStr = 'https://nope.doesnotexist.ever';
+    const url = new URL(noResolveUrlStr);
+    const scope = nock(url.origin)
+      .get(url.pathname)
+      .replyWithError('getaddrinfo ENOTFOUND');
+
+    expect(Tracking.getTrackingScript(noResolveUrlStr)).to.eventually.be.rejected;
+    expect(scope.isDone()).to.be.true;
   });
 
   it('fails to get the tracking script from invalid route ', async () => {
-    expect(async () => {
-      await Tracking.getTrackingScript('https://test-api-v1.ns8.com/noweb');
-    }).to.throw;
-  });
+    const badPathUrlStr = 'https://test-api-v1.ns8.com/noweb';
+    const url = new URL(badPathUrlStr);
+    const scope = nock(url.origin)
+      .get(url.pathname)
+      .reply(404);
 
-  it('gets the tracking script with valid url ', async () => {
-    const script = await Tracking.getTrackingScript(Tracking.TRUE_STATS_URL);
-    expect(script).to.be.string;
+    expect(Tracking.getTrackingScript(badPathUrlStr)).to.eventually.be.rejected;
+    expect(scope.isDone()).to.be.true;
   });
 });

@@ -13,8 +13,8 @@ import { JSDOM } from 'jsdom';
 import 'mocha';
 import { Client, ClientConfig, IFrameConfig } from '../src';
 
-let browser: any;
-let page: any;
+let browser: puppeteer.Browser;
+let page: puppeteer.Page;
 
 // We need to inform the compiler that Protect is a global variable
 declare let Protect: any;
@@ -175,6 +175,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     // We don't have a more sophisticated assertion for this test yet
     expect(complete).to.be.true;
   });
+
   it('triggers a "ready" method without error ', async () => {
     expect(() => {
       const config = getClientConfig();
