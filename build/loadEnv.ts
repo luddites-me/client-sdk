@@ -32,13 +32,14 @@ export const env = dotEnvExtended.load({
  * which is any enviroment not set to "production".
  */
 export const isDev = (): boolean => {
-  if (!env || !env.NODE_ENV) return false;
-  if (
-    !env.NODE_ENV.toLowerCase()
+  // This is production mode if either the env loaded from the `.env` file
+  // or the node process env's NODE_ENV is set to "prod"
+  const isProd =
+    env?.NODE_ENV?.toLowerCase()
       .trim()
-      .startsWith('prod')
-  ) {
-    return true;
-  }
-  return false;
+      .startsWith('prod') === true ||
+    process?.env?.NODE_ENV?.toLowerCase()
+      .trim()
+      .startsWith('prod') === true;
+  return !isProd;
 };
