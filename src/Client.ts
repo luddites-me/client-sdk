@@ -3,14 +3,16 @@
     import/prefer-default-export,
     no-param-reassign,
 */
+import * as log from 'loglevel';
+import Postmate from 'postmate';
+
 import { ClientConfig } from './ClientConfig';
 import { ProtectClient } from './ProtectClient';
 import { EventCallback } from './Events';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
 // the way that node require vs browser require behave
-const Postmate = require('postmate').default || require('postmate');
-
+// const Postmate = require('postmate').default || require('postmate');
 /**
  * Responsible for rendering the Protect Client SPA
  */
@@ -29,40 +31,30 @@ export class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  public render = (): Promise<any> => {
+  public async render(): Promise<void> {
     const container: HTMLElement | null = document.getElementById(this.config.iFrame.attachToId);
     if (!container) throw new Error(`Could not find element named "${this.config.iFrame.attachToId}"`);
 
-    if (ClientConfig.DEBUG) {
-      try {
-        Postmate.debug = true;
-      } catch (error) {
-        // log error
-      }
+    if (ClientConfig.DEBUG && Postmate != null) {
+      Postmate.debug = true;
     }
+
     const handshake = new Postmate({
       container,
       url: this.config.getIFrameUrl(),
       classListArray: this.config.iFrame.classNames,
     });
 
-    return new Promise((resolve, reject) => {
-      try {
-        handshake.then((child: any) => {
-          try {
-            resolve(child);
-            Object.keys(this.config.events).forEach((key) => {
-              child.on(key, this.config.events[key]);
-            });
-          } catch (error) {
-            reject(error);
-          }
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
+    try {
+      const child = await handshake;
+      Object.keys(this.config.events).forEach((key) => {
+        child.on(key, this.config.events[key]);
+      });
+    } catch (error) {
+      log.error(error);
+      throw error;
+    }
+  }
 
   // @inheritdoc
   public trigger = (eventName: string, data: any = null): Promise<any> => {

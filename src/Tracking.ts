@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-// import https from 'https';
+import * as log from 'loglevel';
 import fetch from 'node-fetch';
 
 /**
@@ -35,7 +35,9 @@ export class Tracking {
       Tracking._trackingScript = `<script>${text}</script>`;
       return Tracking._trackingScript;
     } catch (error) {
-      throw new Error(`Failed to get tracking script. ${error.message}`);
+      const msg = `Failed to get tracking script. ${error.message}`;
+      log.error(msg);
+      throw new Error(msg);
     }
   };
 }

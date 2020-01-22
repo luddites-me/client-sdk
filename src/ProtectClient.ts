@@ -7,7 +7,7 @@ export interface ProtectClient {
    *
    * @returns A promise which will be resolved when the iFrame is injected successfully.
    */
-  render(): Promise<any>;
+  render(): Promise<void>;
 
   /**
    * Manually trigger an event on the client. Useful for testing/debugging.

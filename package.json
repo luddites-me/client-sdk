@@ -1,6 +1,7 @@
 {
   "author": "ns8inc",
   "dependencies": {
+    "loglevel": "1.6.6",
     "typescript": "3.7.5"
   },
   "description": "NS8 Protect JavaScript SDK",

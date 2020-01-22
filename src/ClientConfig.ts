@@ -12,7 +12,7 @@ export class ClientConfig {
   public constructor(partial?: Partial<ClientConfig>) {
     Object.assign(this, partial || {});
     if (!this.events && !this._events) {
-      // We will never reach this condition, becase the events getter will initialize the _events object
+      // We will never reach this condition, because the events getter will initialize the _events object
       /* istanbul ignore next */
       throw new Error('Events cannot be empty');
     }
