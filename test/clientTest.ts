@@ -8,7 +8,8 @@
   */
 /* global Protect, Postmate */
 import puppeteer from 'puppeteer';
-import { expect } from 'chai';
+import { expect, use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { JSDOM } from 'jsdom';
 import 'mocha';
 import { Client, ClientConfig, IFrameConfig } from '../src';
@@ -102,6 +103,8 @@ describe('Asserts that we can access a headless browser', () => {
  * Tests that cover the implementation of the Client
  */
 describe('Asserts that we can manipulate an iframe through the Client', () => {
+  use(chaiAsPromised);
+
   before(async () => {
     browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -195,44 +198,36 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('throws when client container id does not exist ', async () => {
-    expect(() => {
-      const config = getClientConfig();
-      config.iFrame.attachToId = '';
-      const client = new Client(config);
-      // The attachToId is invalid and this will throw
-      client.render();
-    }).to.throw();
+    const config = getClientConfig();
+    config.iFrame.attachToId = '';
+    const client = new Client(config);
+    // The attachToId is invalid and this will throw
+    expect(client.render()).to.eventually.be.rejected;
   });
 
-  // it('does not throw when client container exists in the DOM ', async () => {
-  //   expect(() => {
-  //     ClientConfig.DEBUG = true;
-  //     initVirtualDom();
-  //     const config = getClientConfig();
-  //     const client = new Client(config);
-  //     client.render();
-  //   }).not.to.throw();
-  // });
+  it('does not throw when client container exists in the DOM ', async () => {
+    ClientConfig.DEBUG = true;
+    initVirtualDom();
+    const config = getClientConfig();
+    const client = new Client(config);
+    expect(client.render()).to.eventually.be.fulfilled;
+  });
 
   it('throws when client container does not exist in the DOM ', async () => {
-    expect(() => {
-      ClientConfig.DEBUG = true;
-      initVirtualDom();
-      const config = getClientConfig();
-      config.iFrame.attachToId = 'does-not-exist';
-      const client = new Client(config);
-      client.render();
-    }).to.throw();
+    ClientConfig.DEBUG = true;
+    initVirtualDom();
+    const config = getClientConfig();
+    config.iFrame.attachToId = 'does-not-exist';
+    const client = new Client(config);
+    expect(client.render()).to.eventually.be.rejected;
   });
 
   it('throws when client container is not valid ', async () => {
-    expect(() => {
-      ClientConfig.DEBUG = true;
-      const config = getClientConfig();
-      const client = new Client(config);
-      initVirtualDom();
-      client.render();
-    }).to.throw();
+    ClientConfig.DEBUG = true;
+    initVirtualDom();
+    const config = getClientConfig();
+    const client = new Client(config);
+    expect(client.render()).to.eventually.be.rejected;
   });
 
   after(async () => {
