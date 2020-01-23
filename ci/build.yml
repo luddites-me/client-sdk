@@ -6,7 +6,7 @@ image_resource:
   source: { repository: node, tag: "12" }
 
 inputs:
-  - name: protect-js-sdk
+  - name: protect-js-sdk-master
 
 run:
   path: /bin/sh
