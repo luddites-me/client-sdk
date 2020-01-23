@@ -1,0 +1,25 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: { repository: node, tag: "12" }
+
+inputs:
+  - name: protect-js-sdk
+
+run:
+  path: /bin/sh
+  args:
+    - -c
+    - |
+
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      cd protect-js-sdk
+
+      if ! yarn build:prod
+      then
+        echo "ERROR: yarn build:prod failed"
+        exit 1
+      fi
