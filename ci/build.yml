@@ -1,6 +1,5 @@
 ---
-config:
-  platform: linux
+platform: linux
   image_resource:
     type: registry-image
     source: { repository: node, tag: "12" }
