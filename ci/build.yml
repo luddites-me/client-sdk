@@ -16,6 +16,8 @@ run:
 
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
+      cd protect-js-sdk
+
       if ! yarn build:prod
       then
         echo "ERROR: yarn build:prod failed"
