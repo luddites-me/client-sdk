@@ -181,21 +181,17 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('triggers a "ready" method without error ', async () => {
-    expect(() => {
-      const config = getClientConfig();
-      const client = new Client(config);
-      // The `ready` method is defined and will not throw
-      client.trigger('ready');
-    }).not.to.throw();
+    const config = getClientConfig();
+    const client = new Client(config);
+    // The `ready` method is defined and will not throw
+    expect(() => client.trigger('ready')).not.to.throw();
   });
 
   it('throws when method does not exist ', async () => {
-    expect(() => {
-      const config = getClientConfig();
-      const client = new Client(config);
-      // The `does-not-exist` method is not defined and will throw
-      client.trigger('does-not-exist');
-    }).to.throw();
+    const config = getClientConfig();
+    const client = new Client(config);
+    // The `ready` method is defined and will not throw
+    expect(() => client.trigger('does-not-exist')).to.throw();
   });
 
   it('throws when client container id does not exist ', async () => {

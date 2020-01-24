@@ -42,6 +42,7 @@ export class Client implements ProtectClient {
   }
 
   // @inheritdoc
+  /* istanbul ignore next: gutting with new `iframe-resizer` code soon */
   public async render(): Promise<void> {
     const container: HTMLElement | null = document.getElementById(this.config.iFrame.attachToId);
     if (!container) throw new Error(`Could not find element named "${this.config.iFrame.attachToId}"`);
@@ -69,7 +70,7 @@ export class Client implements ProtectClient {
 
   // @inheritdoc
   public trigger = (eventName: string, data: any = null): Promise<any> => {
-    const event: EventCallback | undefined = this.config?.events?.[eventName];
+    const event: EventCallback | undefined = this.config.events[eventName];
     if (!event) {
       throw new Error(`The event named '${eventName}' is not defined on this client.`);
     }

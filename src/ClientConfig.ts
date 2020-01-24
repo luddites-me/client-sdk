@@ -10,11 +10,11 @@ export class ClientConfig {
 
   public static readonly PROTECT_PROD_URL = 'https://protect-client.ns8.com';
 
+  /* istanbul ignore next: changing default events construction soon */
   public constructor(partial?: Partial<ClientConfig>) {
     Object.assign(this, partial || {});
     if (!this.events && !this._events) {
       // We will never reach this condition, because the events getter will initialize the _events object
-      /* istanbul ignore next */
       throw new Error('Events cannot be empty');
     }
     Object.freeze(this._events);
@@ -28,14 +28,14 @@ export class ClientConfig {
   /**
    * Internal access token to allow for validation on set.
    */
-  private _accessToken: string | undefined;
+  private _accessToken = '';
 
   /**
    * The Protect access token required for authenticating the request to inject the IFrame.
    * This should always be a UUID.
    */
   public get accessToken(): string {
-    return this._accessToken || '';
+    return this._accessToken;
   }
 
   /**
@@ -109,8 +109,8 @@ export class ClientConfig {
  * Configuration options for rendering the Client
  */
 export class IFrameConfig {
-  public constructor(partial?: Partial<IFrameConfig>) {
-    Object.assign(this, partial || {});
+  public constructor(partial: Partial<IFrameConfig>) {
+    Object.assign(this, partial);
   }
 
   /**
