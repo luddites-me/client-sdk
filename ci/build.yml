@@ -1,36 +1,31 @@
 ---
-platform: linux
-
 config:
   platform: linux
   image_resource:
     type: registry-image
-    source:
-      repository: debian
-      tag: buster
+    source: { repository: node, tag: "12" }
   inputs:
     - name: protect-js-sdk-master
   outputs:
-    - name: protect-js-sdk-master-built
+    - name: protect-js-sdk-master
+  run:
+    path: /bin/sh
+    args:
+      - -c
+      - |
 
-run:
-  path: /bin/sh
-  args:
-    - -c
-    - |
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
-      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        cd protect-js-sdk-master
 
-      cd protect-js-sdk-master
+        if ! yarn install
+        then
+          echo "ERROR: yarn install failed" 
+          exit 1
+        fi
 
-      if ! yarn install
-      then
-        echo "ERROR: yarn install failed" 
-        exit 1
-      fi
-
-      if ! yarn build:prod
-      then
-        echo "ERROR: yarn build:prod failed"
-        exit 1
-      fi
+        if ! yarn build:prod
+        then
+          echo "ERROR: yarn build:prod failed"
+          exit 1
+        fi
