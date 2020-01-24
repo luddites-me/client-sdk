@@ -1,12 +1,17 @@
 ---
 platform: linux
 
-image_resource:
-  type: registry-image
-  source: { repository: node, tag: "12" }
-
-inputs:
-  - name: protect-js-sdk-master
+config:
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: debian
+      tag: buster
+  inputs:
+    - name: protect-js-sdk-master
+  outputs:
+    - name: protect-js-sdk-master-built
 
 run:
   path: /bin/sh
