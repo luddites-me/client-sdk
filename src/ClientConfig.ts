@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import log from 'loglevel';
 import validate from 'uuid-validate';
 import { EventBinding, EventNames } from './Events';
 /**
@@ -76,6 +77,17 @@ export class ClientConfig {
     }
   }
 
+  // TODO: allow setting protect-client URL
+  /* eslint-disable-next-line class-methods-use-this */
+  public get protectClientUrl(): string {
+    const urlStr = ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
+    return urlStr.replace(/\/+$/, '');
+  }
+
+  public get protectClientLogEndpoint(): URL {
+    return new URL(`${this.protectClientUrl}/api/util/log-client-error`);
+  }
+
   /**
    * Configuration options for rendering the Client
    */
@@ -88,12 +100,8 @@ export class ClientConfig {
    */
   public getIFrameUrl = (accessToken: string | undefined = undefined): string => {
     const token = accessToken || this.accessToken;
-    let iFrameUrl = ClientConfig.PROTECT_PROD_URL;
     if (!validate(token)) throw new Error(`An access token UUID is required. ${token} is not a valid access token.`);
-    if (ClientConfig.DEBUG) {
-      iFrameUrl = ClientConfig.PROTECT_TEST_URL;
-    }
-    return `${iFrameUrl}?accessToken=${token}&noredirect=1`;
+    return `${this.protectClientUrl}?accessToken=${token}&noredirect=1`;
   };
 }
 
@@ -116,4 +124,10 @@ export class IFrameConfig {
    * In Magento, this was `'ns8-protect-wrapper'`
    */
   public attachToId!: string;
+}
+
+export interface ProtectClientErrorLogOptions {
+  url: string;
+  level: log.LogLevelNumbers;
+  includeStack: boolean;
 }

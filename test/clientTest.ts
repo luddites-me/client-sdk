@@ -11,6 +11,7 @@ import puppeteer from 'puppeteer';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { JSDOM } from 'jsdom';
+import log from 'loglevel';
 import 'mocha';
 import { Client, ClientConfig, IFrameConfig } from '../src';
 
@@ -206,7 +207,6 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('does not throw when client container exists in the DOM ', async () => {
-    ClientConfig.DEBUG = true;
     initVirtualDom();
     const config = getClientConfig();
     const client = new Client(config);
@@ -214,7 +214,6 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('throws when client container does not exist in the DOM ', async () => {
-    ClientConfig.DEBUG = true;
     initVirtualDom();
     const config = getClientConfig();
     config.iFrame.attachToId = 'does-not-exist';
@@ -223,11 +222,19 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('throws when client container is not valid ', async () => {
-    ClientConfig.DEBUG = true;
     initVirtualDom();
     const config = getClientConfig();
     const client = new Client(config);
     expect(client.render()).to.eventually.be.rejected;
+  });
+
+  it('configures the protect client error log ', async () => {
+    initVirtualDom();
+    const config = getClientConfig();
+    const client = new Client(config);
+    const originalMethodFactory = log.methodFactory;
+    client.configureProtectClientLog();
+    expect(log.methodFactory).not.to.equal(originalMethodFactory);
   });
 
   after(async () => {

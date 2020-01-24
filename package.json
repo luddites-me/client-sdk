@@ -1,7 +1,10 @@
 {
   "author": "ns8inc",
   "dependencies": {
+    "format-util": "1.0.5",
     "loglevel": "1.6.6",
+    "loglevel-plugin-remote": "0.6.8",
+    "stacktrace-js": "2.0.2",
     "typescript": "3.7.5"
   },
   "description": "NS8 Protect JavaScript SDK",
@@ -9,6 +12,7 @@
     "@ns8/eslint-config-ns8-typescript-eslint": "0.0.7",
     "@types/chai": "4.2.7",
     "@types/chai-as-promised": "7.1.2",
+    "@types/format-util": "1.0.1",
     "@types/jsdom": "12.2.4",
     "@types/mocha": "5.2.7",
     "@types/node": "13.1.8",
@@ -76,6 +80,7 @@
     "lint": "yarn eslint src/**/*.ts test/**/*.ts",
     "lint:fix": "yarn eslint --fix src/**/*.ts test/**/*.ts",
     "test": "yarn build && nyc mocha test/**/*Test.ts",
+    "test:coverage": "nyc yarn test:debug",
     "test:debug": "mocha -r ts-node/register test/**/*Test.ts"
   },
   "scriptsDocumentation": {

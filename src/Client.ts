@@ -3,12 +3,14 @@
     import/prefer-default-export,
     no-param-reassign,
 */
-import * as log from 'loglevel';
+import log from 'loglevel';
+
 import Postmate from 'postmate';
 
-import { ClientConfig } from './ClientConfig';
+import { ClientConfig, ProtectClientErrorLogOptions } from './ClientConfig';
 import { ProtectClient } from './ProtectClient';
 import { EventCallback } from './Events';
+import { configureRootLogger } from './ProtectClientErrorLog';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
 // the way that node require vs browser require behave
@@ -28,6 +30,15 @@ export class Client implements ProtectClient {
    */
   public constructor(partial?: Partial<ClientConfig>) {
     this.config = new ClientConfig(partial);
+  }
+
+  public configureProtectClientLog(): void {
+    const config: ProtectClientErrorLogOptions = {
+      url: this.config.protectClientLogEndpoint.toString(),
+      includeStack: true,
+      level: log.levels.ERROR,
+    };
+    configureRootLogger(log, config);
   }
 
   // @inheritdoc

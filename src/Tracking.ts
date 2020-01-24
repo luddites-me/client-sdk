@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import * as log from 'loglevel';
+import log from 'loglevel';
 import fetch from 'node-fetch';
 
 /**
