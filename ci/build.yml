@@ -18,6 +18,12 @@ run:
 
       cd protect-js-sdk-master
 
+      if ! yarn install
+      then
+        echo "ERROR: yarn install failed" 
+        exit 1
+      fi
+
       if ! yarn build:prod
       then
         echo "ERROR: yarn build:prod failed"
