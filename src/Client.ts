@@ -1,16 +1,9 @@
-/* eslint-disable
-    @typescript-eslint/no-explicit-any,
-    import/prefer-default-export,
-    no-param-reassign,
-*/
-import log from 'loglevel';
-
 import Postmate from 'postmate';
 
-import { ClientConfig, ProtectClientErrorLogOptions } from './ClientConfig';
-import { ProtectClient } from './ProtectClient';
+import { ClientConfig } from './ClientConfig';
+import { ProtectClient } from './types';
 import { EventCallback } from './Events';
-import { configureRootLogger } from './ProtectClientErrorLog';
+import { protectLogger } from './logger';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
 // the way that node require vs browser require behave
@@ -18,27 +11,15 @@ import { configureRootLogger } from './ProtectClientErrorLog';
 /**
  * Responsible for rendering the Protect Client SPA
  */
-export class Client implements ProtectClient {
-  /**
-   * Configuration for DOM ids and CSS names
-   */
-  protected readonly config: ClientConfig;
+class Client implements ProtectClient {
+  protected config: ClientConfig;
 
   /**
    *
    * @param config - Configuration object that defines the IDs and names to be fetched from the DOM
    */
-  public constructor(partial?: Partial<ClientConfig>) {
-    this.config = new ClientConfig(partial);
-  }
-
-  public configureProtectClientLog(): void {
-    const config: ProtectClientErrorLogOptions = {
-      url: this.config.protectClientLogEndpoint.toString(),
-      includeStack: true,
-      level: log.levels.ERROR,
-    };
-    configureRootLogger(log, config);
+  public constructor(config: ClientConfig) {
+    this.config = config;
   }
 
   // @inheritdoc
@@ -63,13 +44,13 @@ export class Client implements ProtectClient {
         child.on(key, this.config.events[key]);
       });
     } catch (error) {
-      log.error(error);
+      protectLogger.error(error);
       throw error;
     }
   }
 
   // @inheritdoc
-  public trigger = (eventName: string, data: any = null): Promise<any> => {
+  public trigger = (eventName: string, data: unknown = null): Promise<unknown> => {
     const event: EventCallback | undefined = this.config.events[eventName];
     if (!event) {
       throw new Error(`The event named '${eventName}' is not defined on this client.`);
@@ -77,3 +58,5 @@ export class Client implements ProtectClient {
     return event(data);
   };
 }
+
+export const createClient = (config: ClientConfig): ProtectClient => new Client(config);

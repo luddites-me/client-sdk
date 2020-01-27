@@ -4,20 +4,20 @@ import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import nock from 'nock';
 import 'mocha';
-import { Tracking } from '../src/Tracking';
+import { TRUE_STATS_URL, getTrackingScript } from '../src/Tracking';
 
 describe('Asserts that we can access the TrueStats tracking script', () => {
   use(chaiAsPromised);
 
   it('gets the tracking script ', async () => {
-    const url = new URL(Tracking.TRUE_STATS_URL);
+    const url = new URL(TRUE_STATS_URL);
     const scope = nock(url.origin)
       .get(url.pathname)
       .reply(200, 'MOCK SCRIPT CONTENTS');
-    const script = await Tracking.getTrackingScript();
+    const script = await getTrackingScript();
     expect(script).to.be.string;
     expect(scope.isDone()).to.be.true;
-    const cachedScript = await Tracking.getTrackingScript();
+    const cachedScript = await getTrackingScript();
     expect(cachedScript).to.be.string;
   });
 
@@ -28,7 +28,7 @@ describe('Asserts that we can access the TrueStats tracking script', () => {
       .get(url.pathname)
       .replyWithError('getaddrinfo ENOTFOUND');
 
-    expect(Tracking.getTrackingScript(noResolveUrlStr)).to.eventually.be.rejected;
+    expect(getTrackingScript(noResolveUrlStr)).to.eventually.be.rejected;
     expect(scope.isDone()).to.be.true;
   });
 
@@ -39,7 +39,7 @@ describe('Asserts that we can access the TrueStats tracking script', () => {
       .get(url.pathname)
       .reply(404);
 
-    expect(Tracking.getTrackingScript(badPathUrlStr)).to.eventually.be.rejected;
+    expect(getTrackingScript(badPathUrlStr)).to.eventually.be.rejected;
     expect(scope.isDone()).to.be.true;
   });
 });

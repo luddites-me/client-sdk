@@ -11,9 +11,9 @@ import puppeteer from 'puppeteer';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { JSDOM } from 'jsdom';
-import log from 'loglevel';
+
 import 'mocha';
-import { Client, ClientConfig, IFrameConfig } from '../src';
+import { ClientConfig, IFrameConfig, createClient } from '../src';
 
 let browser: puppeteer.Browser;
 let page: puppeteer.Page;
@@ -63,7 +63,7 @@ const initVirtualDom = (): JSDOM => {
 };
 
 /**
- ;* Tests our ability to interact with Puppeteer
+ * Tests our ability to interact with Puppeteer
  */
 describe('Asserts that we can access a headless browser', () => {
   before(async () => {
@@ -121,7 +121,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
 
   it('inserts an iframe using the Client ', async () => {
     // This is the only way to accurately pass the SDK methods from the node context,
-    // which is the context in which the tests are running and the browser context,
+    // which is the context in which the tests are running to the browser context,
     // which is what executes inside page.evaluate
     await page.addScriptTag({ path: './dist/protect.js' });
     await page.addScriptTag({ path: './node_modules/postmate/build/postmate.min.js' });
@@ -142,13 +142,15 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       container.classList.add('ns8-protect-client-iframe');
       body.appendChild(container);
 
-      const protectClient = new Protect.Client({
-        accessToken: '2953f28c-5820-443a-972a-23a2ee570b47',
-        iFrame: {
-          classNames: ['ns8-protect-client-iframe'],
-          attachToId: 'ns8-protect-wrapper',
-        },
-      });
+      const protectClient = Protect.createClient(
+        new Protect.ClientConfig({
+          accessToken: '2953f28c-5820-443a-972a-23a2ee570b47',
+          iFrame: {
+            classNames: ['ns8-protect-client-iframe'],
+            attachToId: 'ns8-protect-wrapper',
+          },
+        }),
+      );
 
       let success = false;
       const handshake = protectClient.render();
@@ -182,55 +184,46 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
 
   it('triggers a "ready" method without error ', async () => {
     const config = getClientConfig();
-    const client = new Client(config);
+    const client = createClient(config);
     // The `ready` method is defined and will not throw
     expect(() => client.trigger('ready')).not.to.throw();
   });
 
   it('throws when method does not exist ', async () => {
     const config = getClientConfig();
-    const client = new Client(config);
+    const client = createClient(config);
     // The `ready` method is defined and will not throw
     expect(() => client.trigger('does-not-exist')).to.throw();
-  });
-
-  it('throws when client container id does not exist ', async () => {
-    const config = getClientConfig();
-    config.iFrame.attachToId = '';
-    const client = new Client(config);
-    // The attachToId is invalid and this will throw
-    expect(client.render()).to.eventually.be.rejected;
   });
 
   it('does not throw when client container exists in the DOM ', async () => {
     initVirtualDom();
     const config = getClientConfig();
-    const client = new Client(config);
+    const client = createClient(config);
     expect(client.render()).to.eventually.be.fulfilled;
+  });
+
+  it('throws when client container id does not exist ', async () => {
+    const config = getClientConfig();
+    config.iFrame.attachToId = '';
+    const client = createClient(config);
+    // The attachToId is invalid and this will throw
+    expect(client.render()).to.eventually.be.rejected;
   });
 
   it('throws when client container does not exist in the DOM ', async () => {
     initVirtualDom();
     const config = getClientConfig();
     config.iFrame.attachToId = 'does-not-exist';
-    const client = new Client(config);
+    const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
   });
 
   it('throws when client container is not valid ', async () => {
     initVirtualDom();
     const config = getClientConfig();
-    const client = new Client(config);
+    const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
-  });
-
-  it('configures the protect client error log ', async () => {
-    initVirtualDom();
-    const config = getClientConfig();
-    const client = new Client(config);
-    const originalMethodFactory = log.methodFactory;
-    client.configureProtectClientLog();
-    expect(log.methodFactory).not.to.equal(originalMethodFactory);
   });
 
   after(async () => {

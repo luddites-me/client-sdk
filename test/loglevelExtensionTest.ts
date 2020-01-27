@@ -6,8 +6,8 @@ import log from 'loglevel';
 import nock from 'nock';
 import 'mocha';
 
-import { ProtectClientErrorLogOptions } from '../src/ClientConfig';
-import { configureRootLogger, getCurrentErrorLogRequestPromise } from '../src/ProtectClientErrorLog';
+import { ProtectClientErrorLogOptions } from '../src/types';
+import { configureLogger, getCurrentErrorLogRequestPromise } from '../src/loglevelExtension';
 
 describe('Protect Client Error Log extension for `loglevel`', () => {
   use(chaiAsPromised);
@@ -50,17 +50,17 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   });
 
   it('configures the `loglevel` root logger', async () => {
-    configureRootLogger(log, testLogConfig);
+    configureLogger(log, testLogConfig);
     expect(log.methodFactory).not.to.equal(originalMethodFactory);
   });
 
   it('throws exception when configured with invalid argument', async () => {
-    expect(() => configureRootLogger({} as log.RootLogger, testLogConfig)).to.throw();
+    expect(() => configureLogger({} as log.RootLogger, testLogConfig)).to.throw();
   });
 
   describe('when `loglevel` is configured to post to the protect client error log', () => {
     beforeEach(() => {
-      configureRootLogger(log, testLogConfig);
+      configureLogger(log, testLogConfig);
     });
 
     it('post logs to the endpoint', async () => {
@@ -120,7 +120,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
         ...testLogConfig,
         includeStack: true,
       };
-      configureRootLogger(log, logConfig);
+      configureLogger(log, logConfig);
       const body = JSON.stringify({
         errString: 'msg',
         stackTrace: 'XXX',

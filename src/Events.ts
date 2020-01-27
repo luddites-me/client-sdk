@@ -2,7 +2,7 @@
  * The signature for event callbacks.
  * @param data - An arbitrary event object that will be passed in the context of the callback
  */
-export type EventCallback = (data: any) => Promise<any>;
+export type EventCallback = (data: unknown) => Promise<unknown>;
 
 /**
  * TODO: Discover the best place to define these constants.
@@ -14,7 +14,7 @@ export enum EventNames {
 }
 
 /**
- * A collection of event bindings. This represents a simple dictionary where the key is the event name,
+ * A collection of event callbacks. This represents a simple dictionary where the key is the event name,
  * and the value is a callback which will be executed if that event fires. The keys must map to known
  * EventNames.
  */

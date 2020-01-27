@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import log from 'loglevel';
 import validate from 'uuid-validate';
 import { EventBinding, EventNames } from './Events';
+
 /**
  * Configuration options for rendering the Protect Client
  */
@@ -59,7 +59,7 @@ export class ClientConfig {
   public get events(): EventBinding {
     if (!this._events) {
       this._events = {};
-      this._events[EventNames.ORDER_DETAIL_NAME_CLICK] = (data: any): Promise<any> => {
+      this._events[EventNames.ORDER_DETAIL_NAME_CLICK] = (): Promise<void> => {
         return Promise.resolve();
       };
     }
@@ -124,10 +124,4 @@ export class IFrameConfig {
    * In Magento, this was `'ns8-protect-wrapper'`
    */
   public attachToId!: string;
-}
-
-export interface ProtectClientErrorLogOptions {
-  url: string;
-  level: log.LogLevelNumbers;
-  includeStack: boolean;
 }

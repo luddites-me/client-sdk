@@ -47,6 +47,11 @@ describe('Asserts that ClientConfig methods are valid', () => {
     ClientConfig.DEBUG = false;
   });
 
+  it('returns correct protect client error log endpoint', () => {
+    const config = getBasicConfig();
+    expect(config.protectClientLogEndpoint.toString().endsWith('/api/util/log-client-error')).to.be.true;
+  });
+
   it('throws if access token is missing ', async () => {
     expect(() => {
       const config = getNoAccessTokenConfig();

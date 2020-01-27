@@ -1,9 +1,9 @@
 import log from 'loglevel';
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import format from 'format-util';
 import stacktrace from 'stacktrace-js';
 
-import { ProtectClientErrorLogOptions } from './ClientConfig';
+import { ProtectClientErrorLogOptions } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ConsoleLogArgs = any[];
@@ -66,7 +66,7 @@ const pushMessage = (message: ConsoleLogArgs): void => {
   sendMessages();
 };
 
-export const configureRootLogger = (logger: log.RootLogger, options: ProtectClientErrorLogOptions): void => {
+export const configureLogger = (logger: log.Logger, options: ProtectClientErrorLogOptions): void => {
   if (!logger || !logger.methodFactory)
     throw new Error('loglevel instance has to be specified in order to be extended');
 

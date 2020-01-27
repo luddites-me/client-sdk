@@ -1,3 +1,5 @@
+import { LogLevel } from './logger';
+
 /**
  * Responsible for rendering the Protect Client SPA
  */
@@ -19,5 +21,11 @@ export interface ProtectClient {
    *
    * @returns The return of the registered event, if any.
    */
-  trigger(eventName: string, data: any): Promise<any>;
+  trigger(eventName: string, data?: unknown): Promise<unknown>;
+}
+
+export interface ProtectClientErrorLogOptions {
+  url: string;
+  level: LogLevel;
+  includeStack: boolean;
 }
