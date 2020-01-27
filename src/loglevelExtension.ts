@@ -27,7 +27,7 @@ const sendNextMessage = (errString: string): Promise<void> => {
   const { includeStack, url } = protectClientErrorLogOptions;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const voidFunc = (): void => {};
+  const voidFunc = (): void => {}; // swallow any `fetch` errors
   return getStack(includeStack)
     .then((stackTrace) =>
       fetch(url, {
@@ -62,7 +62,9 @@ const pushMessage = (message: ConsoleLogArgs): void => {
     const [formatStr, ...optionalArguments] = message;
     sendQueue.push(format(formatStr, ...optionalArguments));
     /* eslint-disable-next-line no-empty */
-  } catch (error) {}
+  } catch (error) {
+    /* swallow any `formatStr` errors */
+  }
   sendMessages();
 };
 
@@ -75,6 +77,8 @@ export const configureLogger = (logger: log.Logger, options: ProtectClientErrorL
     const wrappedMethod = wrappedFactory(methodName, logLevel, loggerName);
     const loggingMethod: log.LoggingMethod = (...message: ConsoleLogArgs) => {
       wrappedMethod(...message);
+      // It's important that `pushMessage` does not throw or result in unhandled rejections;
+      // the implementation should just swallow all errors
       pushMessage(message);
     };
     return loggingMethod;
