@@ -6,6 +6,7 @@
     "gamunu.vscode-yarn",
     "hookyqr.beautify",
     "markis.code-coverage",
+    "hbenl.vscode-mocha-test-adapter",
     "redhat.vscode-yaml",
     "yzhang.markdown-all-in-one",
   ]
