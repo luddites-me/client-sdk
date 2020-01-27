@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { configureLogger } from './loglevelExtension';
+import { configureLogger } from './internal/loglevelExtension';
 import { ProtectClientErrorLogOptions } from './types';
 
 /**

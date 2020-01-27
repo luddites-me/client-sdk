@@ -3,7 +3,7 @@ import fetch from 'cross-fetch';
 import format from 'format-util';
 import stacktrace from 'stacktrace-js';
 
-import { ProtectClientErrorLogOptions } from './types';
+import { ProtectClientErrorLogOptions } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ConsoleLogArgs = any[];
