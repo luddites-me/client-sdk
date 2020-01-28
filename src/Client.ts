@@ -2,7 +2,7 @@ import Postmate from 'postmate';
 
 import { ClientConfig } from './ClientConfig';
 import { ProtectClient } from './types';
-import { EventCallback } from './Events';
+import { EventCallback, EventName } from './Events';
 import { protectLogger } from './logger';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
@@ -25,8 +25,8 @@ class Client implements ProtectClient {
   // @inheritdoc
   /* istanbul ignore next: gutting with new `iframe-resizer` code soon */
   public async render(): Promise<void> {
-    const container: HTMLElement | null = document.getElementById(this.config.iFrame.attachToId);
-    if (!container) throw new Error(`Could not find element named "${this.config.iFrame.attachToId}"`);
+    const container: HTMLElement | null = document.getElementById(this.config.iFrameConfig.attachToId);
+    if (!container) throw new Error(`Could not find element named "${this.config.iFrameConfig.attachToId}"`);
 
     if (ClientConfig.DEBUG && Postmate != null) {
       Postmate.debug = true;
@@ -35,13 +35,13 @@ class Client implements ProtectClient {
     const handshake = new Postmate({
       container,
       url: this.config.getIFrameUrl(),
-      classListArray: this.config.iFrame.classNames,
+      classListArray: this.config.iFrameConfig.classNames,
     });
 
     try {
       const child = await handshake;
-      Object.keys(this.config.events).forEach((key) => {
-        child.on(key, this.config.events[key]);
+      Object.values(EventName).forEach((eventName) => {
+        child.on(eventName, this.config.eventBinding[eventName]);
       });
     } catch (error) {
       protectLogger.error(error);
@@ -50,8 +50,8 @@ class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  public trigger = (eventName: string, data: unknown = null): Promise<unknown> => {
-    const event: EventCallback | undefined = this.config.events[eventName];
+  public trigger = (eventName: EventName, data: unknown = null): Promise<unknown> => {
+    const event: EventCallback = this.config.eventBinding[eventName];
     if (!event) {
       throw new Error(`The event named '${eventName}' is not defined on this client.`);
     }

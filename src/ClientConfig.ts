@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import validate from 'uuid-validate';
-import { EventBinding, EventNames } from './Events';
+import { EventBinding, EventName, FullEventBinding } from './Events';
+
+const noopEventCallback = (): Promise<void> => Promise.resolve();
 
 /**
  * Configuration options for rendering the Protect Client
@@ -10,88 +12,57 @@ export class ClientConfig {
 
   public static readonly PROTECT_PROD_URL = 'https://protect-client.ns8.com';
 
-  /* istanbul ignore next: changing default events construction soon */
-  public constructor(partial?: Partial<ClientConfig>) {
-    Object.assign(this, partial || {});
-    if (!this.events && !this._events) {
-      // We will never reach this condition, because the events getter will initialize the _events object
-      throw new Error('Events cannot be empty');
-    }
-    Object.freeze(this._events);
-  }
-
   /**
    * This can be set to true to allow more verbose options when debugging.
    */
   public static DEBUG = false;
 
   /**
-   * Internal access token to allow for validation on set.
-   */
-  private _accessToken = '';
-
-  /**
    * The Protect access token required for authenticating the request to inject the IFrame.
    * This should always be a UUID.
    */
-  public get accessToken(): string {
-    return this._accessToken;
-  }
+  public accessToken: string;
 
   /**
-   * Sets the access token if the value is a valid UUID
+   * Configuration options for rendering the Client
    */
-  public set accessToken(val) {
-    if (!validate(val)) {
-      throw new Error(`${val} is not a valid UUID.`);
+  public iFrameConfig: IFrameConfig;
+
+  public protectClientUrl: string;
+
+  /**
+   * Internal collection of events.
+   */
+  public eventBinding: FullEventBinding = {
+    [EventName.NS8_PROTECT_CLIENT_CONNECTED]: noopEventCallback,
+    [EventName.ORDER_DETAIL_NAME_CLICK]: noopEventCallback,
+  };
+
+  /* istanbul ignore next: changing default events construction soon */
+  public constructor(partial: Partial<ClientConfig>, events?: EventBinding) {
+    if (partial.accessToken == null || !validate(partial.accessToken)) {
+      throw new Error(`${partial?.accessToken} is not a valid UUID.`);
     }
-    this._accessToken = val;
-  }
+    this.accessToken = partial.accessToken;
 
-  /**
-   * Internal collection of events. This should only ever be set once, on or immediately after construction.
-   */
-  private _events: EventBinding | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    this.iFrameConfig = new IFrameConfig(partial.iFrameConfig);
 
-  /**
-   * Events to which we will bind on client initialization
-   */
-  public get events(): EventBinding {
-    if (!this._events) {
-      this._events = {};
-      this._events[EventNames.ORDER_DETAIL_NAME_CLICK] = (): Promise<void> => {
-        return Promise.resolve();
-      };
-    }
-    return this._events;
-  }
+    Object.values(EventName).forEach((eventName) => {
+      if (events?.[eventName] != null) {
+        this.eventBinding[eventName] = events?.[eventName];
+      }
+    });
 
-  /**
-   * If events have not yet been defined, you can set them now. Note this can be done only once.
-   */
-  public set events(val) {
-    if (!this._events) {
-      this._events = val;
-    } else {
-      throw new Error('Events cannot be redefined once set.');
-    }
-  }
+    this.protectClientUrl =
+      partial?.protectClientUrl || ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
 
-  // TODO: allow setting protect-client URL
-  /* eslint-disable-next-line class-methods-use-this */
-  public get protectClientUrl(): string {
-    const urlStr = ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
-    return urlStr.replace(/\/+$/, '');
+    Object.freeze(this);
   }
 
   public get protectClientLogEndpoint(): URL {
     return new URL(`${this.protectClientUrl}/api/util/log-client-error`);
   }
-
-  /**
-   * Configuration options for rendering the Client
-   */
-  public iFrame!: IFrameConfig;
 
   /**
    * Constructs the URL for the IFrame which represents the Protect Client
@@ -109,19 +80,22 @@ export class ClientConfig {
  * Configuration options for rendering the Client
  */
 export class IFrameConfig {
-  public constructor(partial: Partial<IFrameConfig>) {
-    Object.assign(this, partial);
-  }
-
   /**
    * An array of CSS class names to attach to.
    * In Magento, this was `['ns8-protect-client-iframe']`
    */
-  public classNames!: string[];
+  public classNames: string[];
 
   /**
    * The ID of the root DOM node to which the Client is attached.
    * In Magento, this was `'ns8-protect-wrapper'`
    */
-  public attachToId!: string;
+  public attachToId: string;
+
+  public constructor(partial?: Partial<IFrameConfig>) {
+    /* istanbul ignore next: changing default events construction soon */
+    this.classNames = partial?.classNames || []; // FIXME: validate
+    /* istanbul ignore next: changing default events construction soon */
+    this.attachToId = partial?.attachToId || ''; // FIXME: validate
+  }
 }

@@ -100,6 +100,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
       for (let i = 0; i < callCount; i += 1) {
         log.error('msg : %d', i);
       }
+      expect(scope.isDone()).to.be.false;
       await errorLogPost();
       expect(scope.isDone()).to.be.true;
     });

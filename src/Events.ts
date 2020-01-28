@@ -8,7 +8,7 @@ export type EventCallback = (data: unknown) => Promise<unknown>;
  * TODO: Discover the best place to define these constants.
  * These are currently defined as strings inside the `ns8-protect-client` client project.
  */
-export enum EventNames {
+export enum EventName {
   NS8_PROTECT_CLIENT_CONNECTED = 'ns8-protect-client-connected',
   ORDER_DETAIL_NAME_CLICK = 'order-detail-name-click',
 }
@@ -18,6 +18,5 @@ export enum EventNames {
  * and the value is a callback which will be executed if that event fires. The keys must map to known
  * EventNames.
  */
-export interface EventBinding {
-  [key: string]: EventCallback;
-}
+export type EventBinding = { [evtName in EventName]?: EventCallback };
+export type FullEventBinding = { [evtName in EventName]: EventCallback };

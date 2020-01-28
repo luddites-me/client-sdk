@@ -9,13 +9,13 @@
 /* global Protect, Postmate */
 import { expect, use } from 'chai';
 import 'mocha';
-import { ClientConfig, EventNames, IFrameConfig } from '../src';
+import { ClientConfig, EventName, IFrameConfig } from '../src';
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const getBasicConfig = (): ClientConfig => {
   return new ClientConfig({
     accessToken: uuid,
-    iFrame: new IFrameConfig({
+    iFrameConfig: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
       attachToId: 'ns8-protect-wrapper',
     }),
@@ -25,7 +25,7 @@ const getBasicConfig = (): ClientConfig => {
 const getNoAccessTokenConfig = (): ClientConfig => {
   return new ClientConfig({
     accessToken: '',
-    iFrame: new IFrameConfig({
+    iFrameConfig: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
       attachToId: 'ns8-protect-wrapper',
     }),
@@ -35,7 +35,7 @@ const getNoAccessTokenConfig = (): ClientConfig => {
 const getInvalidAccessTokenConfig = (): ClientConfig => {
   return new ClientConfig({
     accessToken: '123!@$',
-    iFrame: new IFrameConfig({
+    iFrameConfig: new IFrameConfig({
       classNames: ['ns8-protect-client-iframe'],
       attachToId: 'ns8-protect-wrapper',
     }),
@@ -107,21 +107,13 @@ describe('Asserts that ClientConfig methods are valid', () => {
 
   it('has default order click event ', async () => {
     const config = getBasicConfig();
-    const defaultEvent = config.events[EventNames.ORDER_DETAIL_NAME_CLICK];
+    const defaultEvent = config.eventBinding[EventName.ORDER_DETAIL_NAME_CLICK];
     expect(defaultEvent).is.not.null;
   });
 
   it('default order click event does not throw ', async () => {
     const config = getBasicConfig();
-    const defaultEvent = config.events[EventNames.ORDER_DETAIL_NAME_CLICK];
+    const defaultEvent = config.eventBinding[EventName.ORDER_DETAIL_NAME_CLICK];
     expect(() => defaultEvent({})).not.to.throw();
-  });
-
-  it('events cannot be reassigned ', async () => {
-    expect(() => {
-      const config = getBasicConfig();
-      // Event object cannot be reassigned
-      config.events = {};
-    }).to.throw();
   });
 });
