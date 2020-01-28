@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import validate from 'uuid-validate';
 import { EventBinding, EventName, FullEventBinding } from './Events';
 
@@ -38,10 +37,9 @@ export class ClientConfig {
     [EventName.ORDER_DETAIL_NAME_CLICK]: noopEventCallback,
   };
 
-  /* istanbul ignore next: changing default events construction soon */
   public constructor(partial: Partial<ClientConfig>, events?: EventBinding) {
     if (partial.accessToken == null || !validate(partial.accessToken)) {
-      throw new Error(`${partial?.accessToken} is not a valid UUID.`);
+      throw new Error(`${partial.accessToken} is not a valid UUID.`);
     }
     this.accessToken = partial.accessToken;
 
@@ -49,13 +47,14 @@ export class ClientConfig {
     this.iFrameConfig = new IFrameConfig(partial.iFrameConfig);
 
     Object.values(EventName).forEach((eventName) => {
+      /* istanbul ignore next: optional chaining */
       if (events?.[eventName] != null) {
         this.eventBinding[eventName] = events?.[eventName];
       }
     });
 
     this.protectClientUrl =
-      partial?.protectClientUrl || ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
+      partial.protectClientUrl || ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
 
     Object.freeze(this);
   }
