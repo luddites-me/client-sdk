@@ -19,7 +19,7 @@ export const TRUE_STATS_URL = 'https://test-api-v1.ns8.com/web';
  */
 export const getTrackingScript = async (url: string | null = null): Promise<string> => {
   const trackingUrl = url || TRUE_STATS_URL;
-  // If we're asking for the official script AND we have it cached, serve the cached script
+  // If we're asking for the official script AND we have it cached, return the cached script
   if (trackingUrl === TRUE_STATS_URL && trackingScript) {
     return trackingScript;
   }

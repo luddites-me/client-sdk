@@ -1,100 +1,60 @@
 import validate from 'uuid-validate';
-import { EventBinding, EventName, FullEventBinding } from './Events';
+import { EventBinding, EventName, IFrameConfig, PartialConfig } from './types';
 
 const noopEventCallback = (): Promise<void> => Promise.resolve();
 
-/**
- * Configuration options for rendering the Protect Client
- */
-export class ClientConfig {
-  public static readonly PROTECT_TEST_URL = 'https://test-protect-client.ns8.com';
+const createIFrameConfig = (partialConfig: Partial<IFrameConfig>): IFrameConfig => {
+  const classNames = partialConfig?.classNames || [];
+  if (!Array.isArray(classNames) || classNames.filter((cn) => typeof cn !== 'string').length > 0) {
+    throw new Error('iFrameConfig.classNames must be an array of strings');
+  }
+  const attachToId = partialConfig?.attachToId;
+  if (typeof attachToId !== 'string') {
+    throw new Error('iFrameConfig.attachToId must be a string');
+  }
+  return Object.freeze({ attachToId, classNames });
+};
 
-  public static readonly PROTECT_PROD_URL = 'https://protect-client.ns8.com';
+export class ClientConfig {
+  public static readonly PROTECT_TEST_URL = new URL('https://test-protect-client.ns8.com');
+
+  public static readonly PROTECT_PROD_URL = new URL('https://protect-client.ns8.com');
 
   /**
    * This can be set to true to allow more verbose options when debugging.
    */
   public static DEBUG = false;
 
-  /**
-   * The Protect access token required for authenticating the request to inject the IFrame.
-   * This should always be a UUID.
-   */
   public accessToken: string;
 
-  /**
-   * Configuration options for rendering the Client
-   */
   public iFrameConfig: IFrameConfig;
 
-  public protectClientUrl: string;
+  public protectClientUrl: URL;
 
-  /**
-   * Internal collection of events.
-   */
-  public eventBinding: FullEventBinding = {
+  public eventBinding: EventBinding = {
     [EventName.NS8_PROTECT_CLIENT_CONNECTED]: noopEventCallback,
     [EventName.ORDER_DETAIL_NAME_CLICK]: noopEventCallback,
   };
 
-  public constructor(partial: Partial<ClientConfig>, events?: EventBinding) {
-    if (partial.accessToken == null || !validate(partial.accessToken)) {
-      throw new Error(`${partial.accessToken} is not a valid UUID.`);
-    }
+  public constructor(partial: PartialConfig) {
     this.accessToken = partial.accessToken;
+    if (this.accessToken == null || !validate(this.accessToken)) {
+      throw new Error(`An access token UUID is required. '${this.accessToken}' is not a valid access token.`);
+    }
 
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    this.iFrameConfig = new IFrameConfig(partial.iFrameConfig);
+    this.iFrameConfig = createIFrameConfig(partial.iFrameConfig);
 
     Object.values(EventName).forEach((eventName) => {
       /* istanbul ignore next: optional chaining */
-      if (events?.[eventName] != null) {
-        this.eventBinding[eventName] = events?.[eventName];
+      const binding = partial.eventBinding?.[eventName];
+      if (binding != null) {
+        this.eventBinding[eventName] = binding;
       }
     });
 
     this.protectClientUrl =
-      partial.protectClientUrl || ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
+      partial.protectClientUrl || (ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL);
 
     Object.freeze(this);
-  }
-
-  public get protectClientLogEndpoint(): URL {
-    return new URL(`${this.protectClientUrl}/api/util/log-client-error`);
-  }
-
-  /**
-   * Constructs the URL for the IFrame which represents the Protect Client
-   *
-   * @param accessToken - optional UUID to override the original access token.
-   */
-  public getIFrameUrl = (accessToken: string | undefined = undefined): string => {
-    const token = accessToken || this.accessToken;
-    if (!validate(token)) throw new Error(`An access token UUID is required. ${token} is not a valid access token.`);
-    return `${this.protectClientUrl}?accessToken=${token}&noredirect=1`;
-  };
-}
-
-/**
- * Configuration options for rendering the Client
- */
-export class IFrameConfig {
-  /**
-   * An array of CSS class names to attach to.
-   * In Magento, this was `['ns8-protect-client-iframe']`
-   */
-  public classNames: string[];
-
-  /**
-   * The ID of the root DOM node to which the Client is attached.
-   * In Magento, this was `'ns8-protect-wrapper'`
-   */
-  public attachToId: string;
-
-  public constructor(partial?: Partial<IFrameConfig>) {
-    /* istanbul ignore next: changing default events construction soon */
-    this.classNames = partial?.classNames || []; // FIXME: validate
-    /* istanbul ignore next: changing default events construction soon */
-    this.attachToId = partial?.attachToId || ''; // FIXME: validate
   }
 }

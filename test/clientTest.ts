@@ -13,7 +13,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
-import { ClientConfig, EventName, IFrameConfig, createClient } from '../src';
+import { ClientConfig, EventName, createClient } from '../src';
 
 let browser: puppeteer.Browser;
 let page: puppeteer.Page;
@@ -39,20 +39,18 @@ const ENABLE_DEVTOOLS_IN_BROWSER = false;
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const clientDomId = 'ns8-protect-client-iframe';
 const clientClassName = 'ns8-protect-client-iframe';
-const getClientConfig = (): any => {
-  return new ClientConfig(
-    {
-      accessToken: uuid,
-      iFrameConfig: new IFrameConfig({
-        classNames: [clientClassName],
-        attachToId: clientDomId,
-      }),
-    },
-    {
+const getConfig = (config?: object): ClientConfig =>
+  new ClientConfig({
+    accessToken: uuid,
+    eventBinding: {
       [EventName.NS8_PROTECT_CLIENT_CONNECTED]: (data: any): Promise<any> => Promise.resolve(),
     },
-  );
-};
+    iFrameConfig: {
+      classNames: [clientClassName],
+      attachToId: clientDomId,
+    },
+    ...config,
+  });
 
 /**
  * Initializes a virtual window/document object using JSDOM
@@ -147,7 +145,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       const protectClient = Protect.createClient(
         new Protect.ClientConfig({
           accessToken: '2953f28c-5820-443a-972a-23a2ee570b47',
-          iFrame: {
+          iFrameConfig: {
             classNames: ['ns8-protect-client-iframe'],
             attachToId: 'ns8-protect-wrapper',
           },
@@ -185,14 +183,14 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
   });
 
   it('triggers a "ready" method without error ', async () => {
-    const config = getClientConfig();
+    const config = getConfig();
     const client = createClient(config);
     // The `ready` method is defined and will not throw
     expect(() => client.trigger(EventName.NS8_PROTECT_CLIENT_CONNECTED)).not.to.throw();
   });
 
   it('throws when method does not exist ', async () => {
-    const config = getClientConfig();
+    const config = getConfig();
     const client = createClient(config);
     // The `ready` method is defined and will not throw
     expect(() => client.trigger('does-not-exist' as EventName)).to.throw();
@@ -200,30 +198,27 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
 
   it('does not throw when client container exists in the DOM ', async () => {
     initVirtualDom();
-    const config = getClientConfig();
+    const config = getConfig();
     const client = createClient(config);
     expect(client.render()).to.eventually.be.fulfilled;
   });
 
   it('throws when client container id does not exist ', async () => {
-    const config = getClientConfig();
-    config.iFrameConfig.attachToId = '';
+    const config = getConfig({ iFrameConfig: { attachToId: '' } });
     const client = createClient(config);
     // The attachToId is invalid and this will throw
     expect(client.render()).to.eventually.be.rejected;
   });
 
   it('throws when client container does not exist in the DOM ', async () => {
-    initVirtualDom();
-    const config = getClientConfig();
-    config.iFrameConfig.attachToId = 'does-not-exist';
+    const config = getConfig({ iFrameConfig: { attachToId: '' } });
     const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
   });
 
   it('throws when client container is not valid ', async () => {
     initVirtualDom();
-    const config = getClientConfig();
+    const config = getConfig();
     const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
   });

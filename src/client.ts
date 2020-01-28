@@ -1,8 +1,7 @@
 import Postmate from 'postmate';
 
-import { ClientConfig } from './ClientConfig';
-import { ProtectClient } from './types';
-import { EventCallback, EventName } from './Events';
+import { ClientConfig } from './clientConfig';
+import { EventCallback, EventName, ProtectClient } from './types';
 import { protectLogger } from './logger';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
@@ -34,7 +33,7 @@ class Client implements ProtectClient {
 
     const handshake = new Postmate({
       container,
-      url: this.config.getIFrameUrl(),
+      url: this.getIFrameUrl(),
       classListArray: this.config.iFrameConfig.classNames,
     });
 
@@ -56,6 +55,19 @@ class Client implements ProtectClient {
       throw new Error(`The event named '${eventName}' is not defined on this client.`);
     }
     return event(data);
+  };
+
+  private get protectClientLogEndpoint(): URL {
+    return new URL(`${this.config.protectClientUrl}/api/util/log-client-error`);
+  }
+
+  /**
+   * Constructs the URL for the IFrame which represents the Protect Client
+   *
+   * @param accessToken - optional UUID to override the original access token.
+   */
+  private getIFrameUrl = (): string => {
+    return `${this.config.protectClientUrl}?accessToken=${this.config.accessToken}&noredirect=1`;
   };
 }
 

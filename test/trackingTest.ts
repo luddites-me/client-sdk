@@ -4,7 +4,7 @@ import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import nock from 'nock';
 import 'mocha';
-import { TRUE_STATS_URL, getTrackingScript } from '../src/Tracking';
+import { TRUE_STATS_URL, getTrackingScript } from '../src/tracking';
 
 describe('Asserts that we can access the TrueStats tracking script', () => {
   use(chaiAsPromised);
