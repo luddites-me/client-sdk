@@ -14,6 +14,7 @@
     "@types/chai": "4.2.7",
     "@types/chai-as-promised": "7.1.2",
     "@types/format-util": "1.0.1",
+    "@types/glob": "^7.1.1",
     "@types/jsdom": "12.2.4",
     "@types/mocha": "5.2.7",
     "@types/node": "13.1.8",
@@ -29,7 +30,6 @@
     "chai-as-promised": "7.1.1",
     "create-ts-index": "1.12.0",
     "dotenv-extended": "2.7.1",
-    "dts-bundle": "0.7.3",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-config-prettier": "6.9.0",
@@ -70,11 +70,10 @@
   },
   "scripts": {
     "beautify": "ts-node ./build/sortJson.ts",
-    "build": "rm -rf dist && tsc -d && yarn bundle",
-    "build:dev": "rm -rf dist && tsc --sourceMap && yarn bundle",
-    "build:prod": "rm -rf dist && NODE_ENV=production yarn build",
+    "build": "rm -rf dist && tsc --emitDeclarationOnly && yarn bundle",
+    "build:prod": "NODE_ENV=production yarn build",
     "bundle": "yarn beautify && yarn generate:exports && webpack",
-    "clean": "rm -rf .awcache .tmp dist",
+    "clean": "rm -rf .awcache dist",
     "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && yarn docs:sync-build-scripts",
     "docs:sync-build-scripts": "ts-node build/scriptsDocumentation.ts",
     "generate:exports": "yarn cti create ./src -w",
@@ -130,5 +129,6 @@
       "dev": true
     }
   },
+  "types": "dist/types/index.d.ts",
   "version": "0.0.4"
 }

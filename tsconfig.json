@@ -13,11 +13,11 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "declarationDir": "dist/types",
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "incremental": true,
     "lib": [
       "dom",
       "dom.iterable",
@@ -28,7 +28,6 @@
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noLib": false,
-    "outDir": ".tmp",
     "removeComments": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,

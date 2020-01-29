@@ -60,7 +60,6 @@ dist
 
 # IDE
 .idea/
-.tmp/
 
 # Documentation
 docs/

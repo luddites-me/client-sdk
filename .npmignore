@@ -1,6 +1,5 @@
 .awcache/
 .nyc_output/
-.tmp/
 .vscode/
 build/
 coverage/

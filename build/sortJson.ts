@@ -11,7 +11,7 @@ const globOptions = {
   realPath: true,
 };
 
-glob('**/*.json', globOptions, (er, files: string[]) => {
+glob('**/*.json', globOptions, (er: unknown, files: string[]) => {
   if (er) {
     console.error(er);
   }

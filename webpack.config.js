@@ -10,24 +10,6 @@ const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 require('dotenv-extended').load();
 
-/**
- * This is the webpack plugin that compiles the TSD file for use in the final bundle.
- * NOTE: Using legacy JavaScript concepts to build this plugin, because it works as-is.
- */
-function DtsBundlePlugin() {}
-DtsBundlePlugin.prototype.apply = function(compiler) {
-  const dts = require('dts-bundle');
-  compiler.plugin('done', () => {
-    dts.bundle({
-      name: 'app',
-      main: '.tmp/index.d.ts',
-      out: '../dist/protect.d.ts',
-      removeSource: false,
-      outputAsModuleFolder: true, // to use npm in-package typings
-    });
-  });
-};
-
 let mode = 'production';
 if (process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase().startsWith('prod') !== true) {
   mode = 'development';
@@ -61,7 +43,7 @@ const config = {
       },
     ],
   },
-  plugins: [new DtsBundlePlugin(), new HardSourceWebpackPlugin()],
+  plugins: [new HardSourceWebpackPlugin()],
   target: 'web',
   node: {
     __dirname: false,
