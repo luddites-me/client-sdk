@@ -203,7 +203,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     expect(client.render()).to.eventually.be.fulfilled;
   });
 
-  it('throws when client container id does not exist ', async () => {
+  it('throws when client container id does not exist in the dom ', async () => {
     const config = getConfig({ iFrameConfig: { attachToId: '' } });
     const client = createClient(config);
     // The attachToId is invalid and this will throw

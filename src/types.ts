@@ -30,7 +30,10 @@ export interface PartialConfig {
 
   eventBinding?: Partial<EventBinding>;
 
-  iFrameConfig: Partial<IFrameConfig>;
+  iFrameConfig: {
+    attachToId: string;
+    classNames?: string[];
+  };
 
   protectClientUrl?: URL;
 }
@@ -78,7 +81,6 @@ export interface ProtectClient {
 }
 
 export interface ProtectClientErrorLogOptions {
-  url: string;
   level: LogLevel;
   includeStack: boolean;
 }

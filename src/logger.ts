@@ -1,5 +1,6 @@
 import log from 'loglevel';
 
+import { ClientConfig } from './clientConfig';
 import { configureLogger } from './internal/loglevelExtension';
 import { ProtectClientErrorLogOptions } from './types';
 
@@ -59,6 +60,7 @@ export const getLoggers: () => { [name: string]: Logger } = log.getLoggers;
 const PROTECT_LOGGER_NAME = 'protect';
 export const protectLogger = getLogger(PROTECT_LOGGER_NAME);
 
-export const configureProtectLogger = (options: ProtectClientErrorLogOptions): void => {
-  configureLogger(log.getLogger(PROTECT_LOGGER_NAME), options);
+export const configureProtectLogger = (options: ProtectClientErrorLogOptions, clientConfig: ClientConfig): void => {
+  const url = new URL(`${clientConfig.protectClientUrl}/api/util/log-client-error`);
+  configureLogger(log.getLogger(PROTECT_LOGGER_NAME), url, options);
 };

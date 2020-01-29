@@ -15,7 +15,6 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   const fakeClientErrorLogUrl = new URL('http://localhost:4000/api/util/log-client-error');
   const testLogConfig: ProtectClientErrorLogOptions = {
     includeStack: false,
-    url: fakeClientErrorLogUrl.toString(),
     level: log.levels.ERROR,
   };
 
@@ -50,17 +49,17 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   });
 
   it('configures the `loglevel` root logger', async () => {
-    configureLogger(log, testLogConfig);
+    configureLogger(log, fakeClientErrorLogUrl, testLogConfig);
     expect(log.methodFactory).not.to.equal(originalMethodFactory);
   });
 
   it('throws exception when configured with invalid argument', async () => {
-    expect(() => configureLogger({} as log.RootLogger, testLogConfig)).to.throw();
+    expect(() => configureLogger({} as log.RootLogger, fakeClientErrorLogUrl, testLogConfig)).to.throw();
   });
 
   describe('when `loglevel` is configured to post to the protect client error log', () => {
     beforeEach(() => {
-      configureLogger(log, testLogConfig);
+      configureLogger(log, fakeClientErrorLogUrl, testLogConfig);
     });
 
     it('post logs to the endpoint', async () => {
@@ -121,7 +120,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
         ...testLogConfig,
         includeStack: true,
       };
-      configureLogger(log, logConfig);
+      configureLogger(log, fakeClientErrorLogUrl, logConfig);
       const body = JSON.stringify({
         errString: 'msg',
         stackTrace: 'XXX',

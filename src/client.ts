@@ -57,10 +57,6 @@ class Client implements ProtectClient {
     return event(data);
   };
 
-  private get protectClientLogEndpoint(): URL {
-    return new URL(`${this.config.protectClientUrl}/api/util/log-client-error`);
-  }
-
   /**
    * Constructs the URL for the IFrame which represents the Protect Client
    *

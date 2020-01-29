@@ -10,7 +10,7 @@ type ConsoleLogArgs = any[];
 
 const sendQueue: string[] = [];
 let sendPromise: Promise<void> | null = null;
-let protectClientErrorLogOptions: ProtectClientErrorLogOptions | null = null;
+let protectClientErrorLogOptions: (ProtectClientErrorLogOptions & { url: URL }) | null = null;
 
 const getStack = async (includeStack: boolean): Promise<string> => {
   const stackFrames = includeStack ? await stacktrace.get() : [];
@@ -30,7 +30,7 @@ const sendNextMessage = (errString: string): Promise<void> => {
   const voidFunc = (): void => {}; // swallow any `fetch` errors
   return getStack(includeStack)
     .then((stackTrace) =>
-      fetch(url, {
+      fetch(url.toString(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ errString, stackTrace }),
@@ -68,7 +68,7 @@ const pushMessage = (message: ConsoleLogArgs): void => {
   sendMessages();
 };
 
-export const configureLogger = (logger: log.Logger, options: ProtectClientErrorLogOptions): void => {
+export const configureLogger = (logger: log.Logger, url: URL, options: ProtectClientErrorLogOptions): void => {
   if (!logger || !logger.methodFactory)
     throw new Error('loglevel instance has to be specified in order to be extended');
 
@@ -84,7 +84,7 @@ export const configureLogger = (logger: log.Logger, options: ProtectClientErrorL
     return loggingMethod;
   };
 
-  protectClientErrorLogOptions = options;
+  protectClientErrorLogOptions = { ...options, url };
 
   /* eslint-disable-next-line no-param-reassign */
   logger.methodFactory = methodFactory;
