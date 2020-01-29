@@ -18,8 +18,19 @@ export enum EventName {
  * A collection of event callbacks. This represents a simple dictionary where the key is the event name,
  * and the value is a callback which will be executed if that event fires. The keys must map to known
  * EventNames.
+ * {@link EventCallback}
  */
 export type EventBinding = { [evtName in EventName]: EventCallback };
+
+/**
+ * Page routes within the Protect Client SPA
+ */
+export enum ClientPage {
+  DASHBOARD = 'dashboard',
+  ORDER_DETAILS = 'order-details',
+  ORDER_RULES = 'rules',
+  SUSPICIOUS_ORDERS = 'report/suspicious-orders',
+}
 
 export interface PartialConfig {
   /**
@@ -28,13 +39,25 @@ export interface PartialConfig {
    */
   accessToken: string;
 
+  /**
+   * Pass in {@link EventCallback}s for the events you care to subscribe to from the client
+   * {@link EventBinding} */
   eventBinding?: Partial<EventBinding>;
 
+  /**
+   * A partial {@link IFrameConfig}, with optional `classNames`
+   */
   iFrameConfig: {
     attachToId: string;
     classNames?: string[];
   };
 
+  /**
+   * The Protect Client base URL
+   *
+   * This will default to {@link ClientConfig.PROTECT_PROD_URL} unless {@link ClientConfig.DEBUG}
+   * is `true`, in which case it defaults to {@link ClientConfig.PROTECT_TEST_URL}
+   */
   protectClientUrl?: URL;
 }
 
@@ -80,7 +103,17 @@ export interface ProtectClient {
   trigger(eventName: EventName, data?: unknown): Promise<unknown>;
 }
 
+/**
+ * Configuration for the {@link protectLogger}
+ */
 export interface ProtectClientErrorLogOptions {
+  /**
+   * Controls the minimum {@link LogLevel} a message needs to have to be logged.
+   */
   level: LogLevel;
+  /**
+   * Controls whether or not a stacktrace is included messages that are sent to
+   * the Protect client log API
+   */
   includeStack: boolean;
 }

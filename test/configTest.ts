@@ -1,15 +1,7 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable
-    @typescript-eslint/no-explicit-any,
-    @typescript-eslint/no-unused-vars,
-    no-console,
-    no-empty,
-    no-unused-vars,
-  */
-/* global Protect, Postmate */
-import { expect, use } from 'chai';
+import { expect } from 'chai';
 import 'mocha';
-import { ClientConfig, EventName, IFrameConfig, PartialConfig } from '../src';
+import { ClientConfig, EventName } from '../src';
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const getBasicConfig = (config?: object): ClientConfig =>

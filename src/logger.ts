@@ -58,8 +58,19 @@ export const getLogger: (name: string) => Logger = log.getLogger;
 export const getLoggers: () => { [name: string]: Logger } = log.getLoggers;
 
 const PROTECT_LOGGER_NAME = 'protect';
+
+/**
+ * This is may configured to send log messages to the Protect client log API.
+ */
 export const protectLogger = getLogger(PROTECT_LOGGER_NAME);
 
+/**
+ * Configures {@link protectLogger} to send log messages to the Protect client log API
+ * {@link ProtectClientErrorLogOptions}
+ *
+ * @param options - Configuration for the {@link Logger}
+ * @param clientConfig - Used to set the endpoint for the Protect client log API
+ */
 export const configureProtectLogger = (options: ProtectClientErrorLogOptions, clientConfig: ClientConfig): void => {
   const url = new URL(`${clientConfig.protectClientUrl}/api/util/log-client-error`);
   configureLogger(log.getLogger(PROTECT_LOGGER_NAME), url, options);
