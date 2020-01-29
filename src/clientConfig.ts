@@ -64,7 +64,7 @@ export class ClientConfig implements PartialConfig {
    */
   public constructor(partial: PartialConfig) {
     this.accessToken = partial.accessToken;
-    if (this.accessToken == null || !validate(this.accessToken)) {
+    if (!validate(this.accessToken)) {
       throw new Error(`An access token UUID is required. '${this.accessToken}' is not a valid access token.`);
     }
 
