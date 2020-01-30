@@ -8,7 +8,7 @@ const getBasicConfig = (): ClientConfig => {
   return new ClientConfig({
     accessToken: uuid,
     iFrameConfig: { attachToId: 'x' },
-    protectClientUrl: new URL('http://example.com/fakeUrl'),
+    protectClientUrl: new URL('http://example.com/'),
   });
 };
 

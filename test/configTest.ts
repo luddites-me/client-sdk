@@ -45,19 +45,33 @@ describe('Asserts that ClientConfig methods are valid', () => {
     expect(() => getBasicConfig({ iFrameConfig: { classNames: [43] } })).to.throw();
   });
 
-  it('gets production IFrame URL ', () => {
+  it('gets production protect client URL by default', () => {
     const config = getBasicConfig();
     const url = config.protectClientUrl.toString();
     const startsWithProd = url.startsWith(ClientConfig.PROTECT_PROD_URL.toString());
     expect(startsWithProd).to.be.true;
   });
 
-  it('gets test IFrame URL ', () => {
+  it('gets test protect client URL if `DEBUG === true`', () => {
     ClientConfig.DEBUG = true;
     const config = getBasicConfig();
     const url = config.protectClientUrl.toString();
     const startsWithProd = url.startsWith(ClientConfig.PROTECT_TEST_URL.toString());
     expect(startsWithProd).to.be.true;
+  });
+
+  it('throws if custom `protectClientUrl` path is not "/"', () => {
+    const protectClientUrl = new URL('http://example.com/whoa/');
+    expect(() => getBasicConfig({ protectClientUrl })).to.throw();
+  });
+
+  it('allows a custom custom `protectClientUrl` if path is "/"', () => {
+    let protectClientUrl = new URL('http://example.com');
+    let config = getBasicConfig({ protectClientUrl });
+    expect(config.protectClientUrl.pathname).to.equal('/');
+    protectClientUrl = new URL('http://example.com/');
+    config = getBasicConfig({ protectClientUrl });
+    expect(config.protectClientUrl.pathname).to.equal('/');
   });
 
   it('has default order click event ', () => {
