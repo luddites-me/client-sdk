@@ -68,6 +68,16 @@ const pushMessage = (message: ConsoleLogArgs): void => {
   sendMessages();
 };
 
+/**
+ * Configure a {@link log.Logger} to forward messages to the Protect client log API
+ *
+ * This method is internal only; clients use {@link logger.configureProtectLogger},
+ * which calls this.
+ *
+ * @param logger - the logger to configure (usually, {@link logger.protectLogger}, except in testing
+ * @param url - the URL of the protect client API endpoint to send messages to
+ * @param options - specifies minimum logLevel and whether stack traces should be included
+ */
 export const configureLogger = (logger: log.Logger, url: URL, options: ProtectClientErrorLogOptions): void => {
   if (!logger || !logger.methodFactory)
     throw new Error('loglevel instance has to be specified in order to be extended');
@@ -92,4 +102,8 @@ export const configureLogger = (logger: log.Logger, url: URL, options: ProtectCl
   logger.setLevel(options.level);
 };
 
+/**
+ * This just makes the internal `sendPromise` available to test scripts so that
+ * it can be `await`ed, to verify that things were called
+ */
 export const getCurrentErrorLogRequestPromise = (): Promise<void> | null => sendPromise;
