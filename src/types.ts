@@ -117,19 +117,3 @@ export interface ProtectClientErrorLogOptions {
    */
   includeStack: boolean;
 }
-
-export interface ProtectClientIFrameOptions {
-  classNames: Array<string>;
-  clientUrl: string;
-  debug?: boolean;
-  containerId: string;
-}
-
-export interface iFrameParams {
-  src: string;
-  classNames: string[];
-}
-
-export interface ProtectClientIFrame {
-  on(name: string, handler: Function): void;
-}

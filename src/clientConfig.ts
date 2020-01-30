@@ -78,8 +78,11 @@ export class ClientConfig implements PartialConfig {
       }
     });
 
-    this.protectClientUrl =
-      partial.protectClientUrl || (ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL);
+    if (partial.protectClientUrl != null) {
+      this.protectClientUrl = new URL(partial.protectClientUrl.toString());
+    } else {
+      this.protectClientUrl = ClientConfig.DEBUG ? ClientConfig.PROTECT_TEST_URL : ClientConfig.PROTECT_PROD_URL;
+    }
 
     if (this.protectClientUrl.pathname !== '/') {
       throw new Error('custom `protectClientUrl` must have `pathname === "/"`');

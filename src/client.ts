@@ -3,6 +3,7 @@ import Postmate from 'postmate';
 import { ClientConfig } from './clientConfig';
 import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
 import { protectLogger } from './logger';
+import { createIFrame } from './internal/iframe';
 
 // KLUDGE: Postmate is going away. For now, this is a hack to support differences between
 // the way that node require vs browser require behave
@@ -22,34 +23,15 @@ class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  /* istanbul ignore next: gutting with new `iframe-resizer` code soon */
   public async render(page: ClientPage = ClientPage.DASHBOARD, orderId?: string): Promise<void> {
-    const container: HTMLElement | null = document.getElementById(this.config.iFrameConfig.attachToId);
-    if (!container) throw new Error(`Could not find element named "${this.config.iFrameConfig.attachToId}"`);
-
-    if (page === ClientPage.ORDER_DETAILS && orderId == null) {
-      throw new Error('must specify `orderId` for `ClientPage.ORDER_DETAILS`');
-    }
-
-    if (ClientConfig.DEBUG && Postmate != null) {
-      Postmate.debug = true;
-    }
-
-    const handshake = new Postmate({
-      container,
-      url: this.getIFrameUrl(page, orderId || ''),
-      classListArray: this.config.iFrameConfig.classNames,
+    const { attachToId, classNames } = this.config.iFrameConfig;
+    createIFrame({
+      classNames,
+      containerId: attachToId,
+      clientUrl: this.getIFrameUrl(page, orderId || ''),
+      debug: ClientConfig.DEBUG,
+      eventBinding: this.config.eventBinding,
     });
-
-    try {
-      const child = await handshake;
-      Object.values(EventName).forEach((eventName) => {
-        child.on(eventName, this.config.eventBinding[eventName]);
-      });
-    } catch (error) {
-      protectLogger.error(error);
-      throw error;
-    }
   }
 
   // @inheritdoc
