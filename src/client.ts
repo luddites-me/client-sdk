@@ -1,6 +1,7 @@
 import { ClientConfig } from './clientConfig';
 import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
 import { createIFrame } from './internal/iframe';
+import { protectLogger } from './logger';
 
 /**
  * Responsible for rendering the Protect Client SPA
@@ -9,8 +10,7 @@ class Client implements ProtectClient {
   protected config: ClientConfig;
 
   /**
-   *
-   * @param config - Configuration object that defines the IDs and names to be fetched from the DOM
+   * @param config - {@link ClientConfig}
    */
   public constructor(config: ClientConfig) {
     this.config = config;
@@ -18,11 +18,20 @@ class Client implements ProtectClient {
 
   // @inheritdoc
   public async render(page: ClientPage = ClientPage.DASHBOARD, orderId?: string): Promise<void> {
+    const isValidPage = Object.values(ClientPage).some((p) => page === p);
+    if (!isValidPage) {
+      protectLogger.error('invalid ClientPage: %s', page);
+    }
+    let validPage = isValidPage ? page : ClientPage.DASHBOARD;
+    if (validPage === ClientPage.ORDER_DETAILS && (orderId == null || orderId === '')) {
+      protectLogger.error('invalid orderId for ClientPage.ORDER_DETAILS: %s', orderId);
+      validPage = ClientPage.DASHBOARD;
+    }
     const { attachToId, classNames } = this.config.iFrameConfig;
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(page, orderId || ''),
+      clientUrl: this.getIFrameUrl(validPage, orderId || ''),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });

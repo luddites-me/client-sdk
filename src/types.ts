@@ -86,9 +86,11 @@ export interface ProtectClient {
   /**
    * Initializes the Protect Client SPA in the platform context
    *
+   * @param page - The {@link ClientPage} to navigate to, defaults to {@link ClientPage.DASHBOARD}
+   * @param orderId - The platform orderId to show iff page is {@link ClientPage.ORDER_DETAILS}
    * @returns A promise which will be resolved when the iFrame is injected successfully.
    */
-  render(): Promise<void>;
+  render(page?: ClientPage, orderId?: string): Promise<void>;
 
   /**
    * Manually trigger an event on the client. Useful for testing/debugging.
