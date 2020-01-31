@@ -1,6 +1,5 @@
 import { ClientConfig } from './clientConfig';
 import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
-import { protectLogger } from './logger';
 import { createIFrame } from './internal/iframe';
 
 /**

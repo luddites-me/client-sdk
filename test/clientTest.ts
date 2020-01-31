@@ -8,11 +8,12 @@
   */
 /* global Protect, Postmate */
 import { expect, use } from 'chai';
-import chaiAsPromised = require('chai-as-promised');
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
 import { ClientConfig, EventName, createClient } from '../src';
+
+import chaiAsPromised = require('chai-as-promised');
 
 // We need to inform the compiler that Protect is a global variable
 declare let Protect: any;
@@ -107,5 +108,4 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
   });
-
 });

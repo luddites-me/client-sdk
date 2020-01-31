@@ -30,7 +30,9 @@ export interface ProtectClientIFrameOptions {
 
 /**
  *
- * Attaches an iframe to the page using the {@link attachToId} provided in the {@link Client Config}.
+ * Attaches an iframe to the page using the provided in the Client Config.
+ * {@link ClientConfig}
+ * {@link attachToId}
  * Sets up the onMessage and onResized handlers to enable iframe-resizer to
  * call event handlers triggered from within the NS8 protect client as well as update the iframe
  * height when the protect client page resizes.
