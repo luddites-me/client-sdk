@@ -7,16 +7,12 @@
     no-unused-vars,
   */
 /* global Protect, Postmate */
-import puppeteer from 'puppeteer';
 import { expect, use } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import chaiAsPromised = require('chai-as-promised');
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
 import { ClientConfig, EventName, createClient } from '../src';
-
-let browser: puppeteer.Browser;
-let page: puppeteer.Page;
 
 // We need to inform the compiler that Protect is a global variable
 declare let Protect: any;
@@ -112,7 +108,4 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     expect(client.render()).to.eventually.be.rejected;
   });
 
-  after(async () => {
-    await browser.close();
-  });
 });
