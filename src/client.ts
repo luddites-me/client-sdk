@@ -1,13 +1,8 @@
-import Postmate from 'postmate';
-
 import { ClientConfig } from './clientConfig';
 import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
 import { protectLogger } from './logger';
 import { createIFrame } from './internal/iframe';
 
-// KLUDGE: Postmate is going away. For now, this is a hack to support differences between
-// the way that node require vs browser require behave
-// const Postmate = require('postmate').default || require('postmate');
 /**
  * Responsible for rendering the Protect Client SPA
  */

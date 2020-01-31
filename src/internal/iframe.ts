@@ -18,6 +18,24 @@ export interface ProtectClientIFrameOptions {
   eventBinding: EventBinding;
 }
 
+/**
+ *
+ *
+ * @param containerId - the id of the Dom element that will act as the iframe container.
+ * @param classNames - a list of classNames to apply to the iframe element.
+ * @param clientUrl - the url of the NS8 protect client.
+ * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
+ *
+ */
+
+/**
+ *
+ * Attaches an iframe to the page using the {@link attachToId} provided in the {@link Client Config}.
+ * Sets up the onMessage and onResized handlers to enable iframe-resizer to
+ * call event handlers triggered from within the NS8 protect client as well as update the iframe
+ * height when the protect client page resizes.
+ */
+
 export const createIFrame = ({
   containerId,
   classNames,
