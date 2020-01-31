@@ -55,6 +55,7 @@ export const createIFrame = ({
   iframeEl.src = clientUrl;
   container.append(iframeEl);
 
+  /* istanbul ignore next */
   window.iFrameResize(
     {
       tolerance: 5,
