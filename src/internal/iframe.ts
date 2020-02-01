@@ -8,8 +8,16 @@ interface CustomWindow extends Window {
 
 declare let window: CustomWindow;
 
-const iFrameClassName = 'ns8-protect-client-iframe';
+const iFrameElId = 'ns8-protect-client-iframe';
 
+/**
+ * Interal interface used for testing `createIFrame`
+ *
+ * @param containerId - the id of the Dom element that will act as the iframe container.
+ * @param classNames - a list of classNames to apply to the iframe element.
+ * @param clientUrl - the url of the NS8 protect client.
+ * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
+ */
 export interface ProtectClientIFrameOptions {
   classNames: string[];
   clientUrl: string;
@@ -17,16 +25,6 @@ export interface ProtectClientIFrameOptions {
   containerId: string;
   eventBinding: EventBinding;
 }
-
-/**
- *
- *
- * @param containerId - the id of the Dom element that will act as the iframe container.
- * @param classNames - a list of classNames to apply to the iframe element.
- * @param clientUrl - the url of the NS8 protect client.
- * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
- *
- */
 
 /**
  *
@@ -42,6 +40,7 @@ export const createIFrame = ({
   containerId,
   classNames,
   clientUrl,
+  debug,
   eventBinding,
 }: ProtectClientIFrameOptions): void => {
   const container: HTMLElement | null = document.getElementById(containerId);
@@ -50,7 +49,7 @@ export const createIFrame = ({
   }
 
   const iframeEl = document.createElement('iframe');
-  iframeEl.classList.add(iFrameClassName);
+  iframeEl.id = iFrameElId;
   classNames.forEach((cn) => iframeEl.classList.add(cn));
   iframeEl.src = clientUrl;
   container.append(iframeEl);
@@ -58,8 +57,9 @@ export const createIFrame = ({
   /* istanbul ignore next */
   window.iFrameResize(
     {
+      checkOrigin: false,
+      log: debug,
       tolerance: 5,
-      checkorigin: false,
       onMessage: ({ message }: { message: { name?: string; data: unknown } }) => {
         if (message == null) {
           // TODO: log
@@ -77,6 +77,6 @@ export const createIFrame = ({
         iframeEl.style.height = `${height}px`;
       },
     },
-    `.${iFrameClassName}`,
+    `#${iFrameElId}`,
   );
 };

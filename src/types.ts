@@ -26,10 +26,10 @@ export type EventBinding = { [evtName in EventName]: EventCallback };
  * Page routes within the Protect Client SPA
  */
 export enum ClientPage {
-  DASHBOARD = 'dashboard',
-  ORDER_DETAILS = 'order-details',
-  ORDER_RULES = 'rules',
-  SUSPICIOUS_ORDERS = 'report/suspicious-orders',
+  DASHBOARD = 'DASHBOARD',
+  ORDER_DETAILS = 'ORDER_DETAILS',
+  ORDER_RULES = 'ORDER_RULES',
+  SUSPICIOUS_ORDERS = 'SUSPICIOUS_ORDERS',
 }
 
 export interface PartialConfig {

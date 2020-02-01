@@ -1,23 +1,13 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable
-    @typescript-eslint/no-explicit-any,
-    @typescript-eslint/no-unused-vars,
-    no-console,
-    no-empty,
-    no-unused-vars,
-  */
-/* global Protect, Postmate */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect, use } from 'chai';
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
-import { ClientConfig, EventName, createClient } from '../src';
+import { ClientConfig, ClientPage, EventName, createClient } from '../src';
+import { forTest } from '../src/client';
 
 import chaiAsPromised = require('chai-as-promised');
-
-// We need to inform the compiler that Protect is a global variable
-declare let Protect: any;
-declare let Postmate: any;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -28,10 +18,6 @@ declare global {
     }
   }
 }
-
-// Change these to enable debugging
-const USE_HEADLESS_BROWSER = true;
-const ENABLE_DEVTOOLS_IN_BROWSER = false;
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const clientDomId = 'ns8-protect-client-iframe';
@@ -107,5 +93,37 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     const config = getConfig();
     const client = createClient(config);
     expect(client.render()).to.eventually.be.rejected;
+  });
+
+  describe('ClientPage validation', () => {
+    /* These test are mostly redundant when calling from typescript, but
+       it's easy to get it wrong from javascript and we want to handle
+       it gracefully when it's wrong */
+    const { validatePage } = forTest;
+    it('goes to the dashboard by default', () => {
+      expect(validatePage()).to.equal(ClientPage.DASHBOARD);
+    });
+
+    it('goes to the dashboard if an invalid page is passed', () => {
+      expect(validatePage('' as any)).to.equal(ClientPage.DASHBOARD);
+      expect(validatePage(42 as any)).to.equal(ClientPage.DASHBOARD);
+    });
+
+    it('goes to the dashboard ORDER_DETAILS is passed and but orderId is not', () => {
+      expect(validatePage(ClientPage.ORDER_DETAILS)).to.equal(ClientPage.DASHBOARD);
+      expect(validatePage(ClientPage.ORDER_DETAILS, '')).to.equal(ClientPage.DASHBOARD);
+    });
+
+    it('goes returns the page as is if when it is valid', () => {
+      expect(validatePage(ClientPage.ORDER_DETAILS)).to.equal(ClientPage.DASHBOARD);
+      expect(validatePage(ClientPage.ORDER_DETAILS, '')).to.equal(ClientPage.DASHBOARD);
+    });
+
+    it('goes returns the page as is if when it is valid', () => {
+      Object.values(ClientPage).forEach((page) => {
+        const orderId = page === ClientPage.ORDER_DETAILS ? '42' : undefined;
+        expect(validatePage(page, orderId)).to.equal(page);
+      });
+    });
   });
 });

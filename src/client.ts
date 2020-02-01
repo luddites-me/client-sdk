@@ -3,6 +3,39 @@ import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
 import { createIFrame } from './internal/iframe';
 import { protectLogger } from './logger';
 
+/* istanbul ignore next: testing this would be basically just copying the code */
+// eslint-disable-next-line consistent-return
+const getPathForPage = (page: ClientPage, orderId: string): string => {
+  // requiring a default case here breaks TS exhaustive checking
+  // eslint-disable-next-line default-case
+  switch (page) {
+    case ClientPage.DASHBOARD:
+      return '/';
+    case ClientPage.ORDER_DETAILS:
+      return `/order-details/${btoa(orderId)}`;
+    case ClientPage.ORDER_RULES:
+      return '/rules';
+    case ClientPage.SUSPICIOUS_ORDERS:
+      return '/report/suspicious-orders';
+  }
+};
+
+const validatePage = (page?: ClientPage, orderId?: string): ClientPage => {
+  if (page == null) {
+    return ClientPage.DASHBOARD;
+  }
+  const isValidPage = Object.values(ClientPage).some((p) => page === p);
+  if (!isValidPage) {
+    protectLogger.error('invalid ClientPage: %s', page);
+  }
+  let validPage = isValidPage ? page : ClientPage.DASHBOARD;
+  if (validPage === ClientPage.ORDER_DETAILS && (orderId == null || orderId === '')) {
+    protectLogger.error('must pass orderId for ClientPage.ORDER_DETAILS');
+    validPage = ClientPage.DASHBOARD;
+  }
+  return validPage;
+};
+
 /**
  * Responsible for rendering the Protect Client SPA
  */
@@ -18,20 +51,11 @@ class Client implements ProtectClient {
 
   // @inheritdoc
   public async render(page: ClientPage = ClientPage.DASHBOARD, orderId?: string): Promise<void> {
-    const isValidPage = Object.values(ClientPage).some((p) => page === p);
-    if (!isValidPage) {
-      protectLogger.error('invalid ClientPage: %s', page);
-    }
-    let validPage = isValidPage ? page : ClientPage.DASHBOARD;
-    if (validPage === ClientPage.ORDER_DETAILS && (orderId == null || orderId === '')) {
-      protectLogger.error('invalid orderId for ClientPage.ORDER_DETAILS: %s', orderId);
-      validPage = ClientPage.DASHBOARD;
-    }
     const { attachToId, classNames } = this.config.iFrameConfig;
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(validPage, orderId || ''),
+      clientUrl: this.getIFrameUrl(validatePage(page), orderId || ''),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });
@@ -52,27 +76,11 @@ class Client implements ProtectClient {
    * @param accessToken - optional UUID to override the original access token.
    */
   private getIFrameUrl(page: ClientPage, orderId: string): string {
-    // eslint-disable-next-line consistent-return
-    const getPathForPage = (): string => {
-      // requiring a default case here breaks TS exhaustive checking
-      /* istanbul ignore next: write tests for this after `iframe-resizer` is integrated */
-      // eslint-disable-next-line default-case
-      switch (page) {
-        case ClientPage.DASHBOARD:
-          return '/';
-        case ClientPage.ORDER_DETAILS:
-          return `/order-details/${atob(orderId)}`;
-        case ClientPage.ORDER_RULES:
-          return '/rules';
-        case ClientPage.SUSPICIOUS_ORDERS:
-          return '/report/suspicious-orders';
-      }
-    };
-
     const url = new URL(this.config.protectClientUrl.toString());
-    url.pathname = getPathForPage();
+    url.pathname = getPathForPage(page, orderId);
     return `${url}?accessToken=${this.config.accessToken}&noredirect=1`;
   }
 }
 
 export const createClient = (config: ClientConfig): ProtectClient => new Client(config);
+export const forTest = { getPathForPage, validatePage };
