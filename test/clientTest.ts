@@ -26,7 +26,7 @@ const getConfig = (config?: object): ClientConfig =>
   new ClientConfig({
     accessToken: uuid,
     eventBinding: {
-      [EventName.NS8_PROTECT_CLIENT_CONNECTED]: (data: any): Promise<any> => Promise.resolve(),
+      [EventName.NS8_PROTECT_CLIENT_CONNECTED]: (): Promise<any> => Promise.resolve(),
     },
     iFrameConfig: {
       classNames: [clientClassName],

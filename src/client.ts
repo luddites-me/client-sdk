@@ -20,7 +20,14 @@ const getPathForPage = (page: ClientPage, orderId: string): string => {
   }
 };
 
-const validatePage = (page?: ClientPage, orderId?: string): ClientPage => {
+/**
+ * Performs runtime validation that a `page` passed from javascript is a valid
+ * {@link ClientPage} enum value, and ensures that the `platformId` is passed if
+ * `page` is {@link clientPage.ORDER_DETAILS}
+ * @param page - The `ClientPage` value to validate
+ * @param platformId - The `platformId` to display on the order details page
+ */
+const validatePage = (page?: ClientPage, platformId?: string): ClientPage => {
   if (page == null) {
     return ClientPage.DASHBOARD;
   }
@@ -29,7 +36,7 @@ const validatePage = (page?: ClientPage, orderId?: string): ClientPage => {
     protectLogger.error('invalid ClientPage: %s', page);
   }
   let validPage = isValidPage ? page : ClientPage.DASHBOARD;
-  if (validPage === ClientPage.ORDER_DETAILS && (orderId == null || orderId === '')) {
+  if (validPage === ClientPage.ORDER_DETAILS && (platformId == null || platformId === '')) {
     protectLogger.error('must pass orderId for ClientPage.ORDER_DETAILS');
     validPage = ClientPage.DASHBOARD;
   }
@@ -50,12 +57,12 @@ class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  public async render(page: ClientPage = ClientPage.DASHBOARD, orderId?: string): Promise<void> {
+  public async render(page: ClientPage = ClientPage.DASHBOARD, platformId?: string): Promise<void> {
     const { attachToId, classNames } = this.config.iFrameConfig;
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(validatePage(page), orderId || ''),
+      clientUrl: this.getIFrameUrl(validatePage(page), platformId || ''),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });
