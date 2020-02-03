@@ -8,6 +8,8 @@
 const path = require('path');
 // This plugin can increase the performance of the build by caching and incrementally building
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
 require('dotenv-extended').load();
 
 let mode = 'production';
@@ -43,7 +45,12 @@ const config = {
       },
     ],
   },
-  plugins: [new HardSourceWebpackPlugin()],
+  plugins: [
+    new HardSourceWebpackPlugin(),
+    new TsConfigPathsPlugin({
+      tsconfig: path.join(__dirname, 'tsconfig.bundle.json'),
+    }),
+  ],
   target: 'web',
   node: {
     __dirname: false,
