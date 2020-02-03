@@ -1,6 +1,7 @@
 import 'iframe-resizer';
 
 import { EventBinding, EventCallback, EventName } from '../types';
+import { protectLogger } from '../logger';
 
 interface CustomWindow extends Window {
   iFrameResize: Function;
@@ -35,7 +36,6 @@ export interface ProtectClientIFrameOptions {
  * call event handlers triggered from within the NS8 protect client as well as update the iframe
  * height when the protect client page resizes.
  */
-
 export const createIFrame = ({
   containerId,
   classNames,
@@ -62,13 +62,13 @@ export const createIFrame = ({
       tolerance: 5,
       onMessage: ({ message }: { message: { name?: string; data: unknown } }) => {
         if (message == null) {
-          // TODO: log
+          protectLogger.error('null "message" passed from child iframe');
           return;
         }
         const { name, data } = message;
         const handler: EventCallback | undefined = eventBinding[name as EventName];
         if (handler == null) {
-          // TODO: log
+          protectLogger.error('invalid event name "%s" passed from child iframe', name);
           return;
         }
         handler(data);
