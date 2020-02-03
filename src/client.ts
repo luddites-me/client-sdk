@@ -4,19 +4,21 @@ import { createIFrame } from './internal/iframe';
 import { protectLogger } from './logger';
 
 /* istanbul ignore next: testing this would be basically just copying the code */
-// eslint-disable-next-line consistent-return
-const getPathForPage = (page: ClientPage, orderId: string): string => {
-  // requiring a default case here breaks TS exhaustive checking
-  // eslint-disable-next-line default-case
+const getPathForPage = (page: ClientPage, platformId: string): string => {
+  const assertNever = (p: never): never => {
+    throw new Error(`Invalid page "${p}"`);
+  };
   switch (page) {
     case ClientPage.DASHBOARD:
       return '/';
     case ClientPage.ORDER_DETAILS:
-      return `/order-details/${btoa(orderId)}`;
+      return `/order-details/${btoa(platformId)}`;
     case ClientPage.ORDER_RULES:
       return '/rules';
     case ClientPage.SUSPICIOUS_ORDERS:
       return '/report/suspicious-orders';
+    default:
+      return assertNever(page);
   }
 };
 
