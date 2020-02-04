@@ -1,14 +1,11 @@
 # Test README
-
 [![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-js-sdk/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-js-sdk)
 
 # Getting Started
-
 Clone the repo and run `yarn` to install.
 
 
 ### Running Tests
-
 `yarn test`
 
 ### `package.json` scripts
