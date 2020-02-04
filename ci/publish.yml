@@ -16,10 +16,8 @@ run:
 
       cd protect-js-sdk-master
 
-      git log | head -n 5
-
       # prevent infinite loop from version bumping via ci
-      if git log | head -n 5 | tail -n 1 | grep 'Concourse CI' 
+      if git log | head -n 2 | tail -n 1 | grep 'Concourse CI'
       then
         echo "i am stopping the build"
         exit 0
