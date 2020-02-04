@@ -6,7 +6,7 @@ image_resource:
   source: { repository: node, tag: "12" }
 
 inputs:
-  - name: protect-js-sdk
+  - name: protect-js-sdk-master
 
 run:
   path: /bin/sh
@@ -16,7 +16,7 @@ run:
 
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
-      cd protect-js-sdk
+      cd protect-js-sdk-master
 
       if ! yarn version --patch
       then
