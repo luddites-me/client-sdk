@@ -33,4 +33,7 @@ run:
         exit 1
       fi
 
+      echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub 
+
       git push origin HEAD:master
