@@ -8,6 +8,7 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
   const assertNever = (p: never): never => {
     throw new Error(`Invalid page "${p}"`);
   };
+
   switch (page) {
     case ClientPage.DASHBOARD:
       return '/';
@@ -64,7 +65,7 @@ class Client implements ProtectClient {
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(validatePage(page), platformId || ''),
+      clientUrl: this.getIFrameUrl(validatePage(page, platformId), platformId || ''),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });
