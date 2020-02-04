@@ -14,6 +14,11 @@ run:
     - -c
     - |
 
+      if git log | head -n 5 | tail -n 1 | grep -q 'Concourse CI' 
+      then
+        exit 0
+      fi
+
       git config --global user.email 'noreply@ns8.com'
       git config --global user.name 'Concourse CI'
 
