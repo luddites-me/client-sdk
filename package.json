@@ -64,7 +64,7 @@
   "homepage": "https://github.com/ns8inc/protect-js-sdk#readme",
   "license": "MIT",
   "main": "dist/protect.js",
-  "name": "protect-js-sdk",
+  "name": "@ns8/protect-js-sdk",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ns8inc/protect-js-sdk.git"
