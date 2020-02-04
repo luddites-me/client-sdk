@@ -33,5 +33,4 @@ run:
         exit 1
       fi
 
-      git add -A .
-      git commit -m "Automatic update."
+      git push
