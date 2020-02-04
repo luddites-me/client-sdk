@@ -24,7 +24,8 @@ run:
         exit 1
       fi
 
-      if ! yarn publish
+      PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
+      if ! yarn publish --new-version $PACKAGE_VERSION
       then
         echo "ERROR: yarn publish failed"
         exit 1
