@@ -33,4 +33,4 @@ run:
         exit 1
       fi
 
-      git push
+      git push origin HEAD:master
