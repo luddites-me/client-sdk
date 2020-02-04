@@ -30,3 +30,4 @@ run:
         echo "ERROR: yarn publish failed"
         exit 1
       fi
+
