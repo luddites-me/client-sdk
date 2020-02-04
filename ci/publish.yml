@@ -9,7 +9,7 @@ inputs:
   - name: protect-js-sdk-master
 
 run:
-  path: /bin/sh
+  path: /bin/bash
   args:
     - -c
     - |
@@ -19,7 +19,7 @@ run:
       git log | head -n 5
 
       # prevent infinite loop from version bumping via ci
-      if git log | head -n 5 | tail -n 1 | grep -q 'Concourse CI' 
+      if git log | head -n 5 | tail -n 1 | grep 'Concourse CI' 
       then
         echo "i am stopping the build"
         exit 0
