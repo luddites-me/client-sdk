@@ -19,8 +19,11 @@ run:
       # prevent infinite loop from version bumping via ci
       if git log | head -n 5 | tail -n 1 | grep -q 'Concourse CI' 
       then
+        echo "i am stopping the build"
         exit 0
       fi
+
+      echo "i am not stopping the build"
 
       git config --global user.email 'noreply@ns8.com'
       git config --global user.name 'Concourse CI'
