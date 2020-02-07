@@ -14,12 +14,6 @@ run:
     - -c
     - |
 
-      if ! apt-get update && apt-get install -y jq
-      then
-        echo 'ERROR: jq install failed'
-        exit 1
-      fi
-
       cd protect-js-sdk-master
 
       # prevent infinite loop from version bumping via ci
@@ -32,7 +26,6 @@ run:
       git config --global user.name 'Concourse CI'
 
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
 
       if ! yarn version --patch
       then
@@ -52,8 +45,5 @@ run:
 
       echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
       ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
-
-      VERSION="$(jq .version package.json | sed s/\“//g)"
-      git tag "$VERSION"
 
       git push origin --tags HEAD:master
