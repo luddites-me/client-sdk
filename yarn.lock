@@ -3349,11 +3349,6 @@ log-symbols@2.2.0, log-symbols@^2.1.0:
   dependencies:
     chalk "^2.0.1"
 
-loglevel-plugin-remote@0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/loglevel-plugin-remote/-/loglevel-plugin-remote-0.6.8.tgz#9234b75520491dc5b1a34abbbba0101f02dd2b39"
-  integrity sha512-EMhWUOAx4/Wtge1bNzYDvvXzv6PLt07emqTjA+Sc8WfViNSYXxe6kWYFyjcqGS6mqNeOqQ3+AG0xuasynHK0XA==
-
 loglevel@1.6.6:
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.6.tgz#0ee6300cc058db6b3551fa1c4bf73b83bb771312"
