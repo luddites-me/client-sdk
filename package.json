@@ -20,7 +20,6 @@
     "@types/node": "13.1.8",
     "@types/node-fetch": "2.5.4",
     "@types/postmate": "1.5.0",
-    "@types/puppeteer": "2.0.0",
     "@types/semver": "6.2.0",
     "@types/uuid-validate": "0.0.1",
     "@typescript-eslint/eslint-plugin": "2.16.0",
