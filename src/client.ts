@@ -23,6 +23,10 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
   }
 };
 
+const hideNavBar = (page: ClientPage):boolean => {
+  return true;
+}
+
 /**
  * Performs runtime validation that a `page` passed from javascript is a valid
  * {@link ClientPage} enum value, and ensures that the `platformId` is passed if
@@ -63,6 +67,7 @@ class Client implements ProtectClient {
   public async render(page: ClientPage = ClientPage.DASHBOARD, platformId?: string): Promise<void> {
     const { attachToId, classNames } = this.config.iFrameConfig;
     createIFrame({
+      hideNavBar: hideNavBar(page),
       classNames,
       containerId: attachToId,
       clientUrl: this.getIFrameUrl(validatePage(page, platformId), platformId || ''),
