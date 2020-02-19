@@ -25,6 +25,6 @@ run:
 
       if ! yarn build:prod
       then
-        echo "ERROR: yarn build:prod failed"
+        echo "ERROR: yarn build:prod has failed"
         exit 1
       fi
