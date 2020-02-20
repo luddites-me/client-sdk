@@ -20,7 +20,6 @@ const iFrameElId = 'ns8-protect-client-iframe';
  * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
  */
 export interface ProtectClientIFrameOptions {
-  hideNavBar: boolean;
   classNames: string[];
   clientUrl: string;
   debug?: boolean;
@@ -38,7 +37,6 @@ export interface ProtectClientIFrameOptions {
  * height when the protect client page resizes.
  */
 export const createIFrame = ({
-  hideNavBar,
   containerId,
   classNames,
   clientUrl,

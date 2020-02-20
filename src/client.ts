@@ -13,7 +13,7 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
     case ClientPage.DASHBOARD:
       return '/';
     case ClientPage.ORDER_DETAILS:
-      return `/order-details/${btoa(platformId)}`;
+      return `/order-details/${window.btoa(platformId)}`;
     case ClientPage.ORDER_RULES:
       return '/rules';
     case ClientPage.SUSPICIOUS_ORDERS:
@@ -23,9 +23,29 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
   }
 };
 
-const hideNavBar = (page: ClientPage):boolean => {
-  return true;
-}
+const hideNavBar = (page: ClientPage): boolean => {
+  switch (page) {
+    case ClientPage.DASHBOARD:
+      return false;
+    default:
+      return true;
+  }
+};
+
+const getIFrameUrl = (page: ClientPage, orderId: string, config: ClientConfig): string => {
+  const url = new URL(config.protectClientUrl.toString());
+  const searchParams = new URLSearchParams();
+
+  url.pathname = getPathForPage(page, orderId);
+  searchParams.set('accessToken', config.accessToken);
+  searchParams.set('noredirect', '1');
+  if (hideNavBar(page)) {
+    searchParams.set('hideNavBar', '1');
+  }
+  url.search = `${searchParams}`;
+
+  return `${url}`;
+};
 
 /**
  * Performs runtime validation that a `page` passed from javascript is a valid
@@ -67,10 +87,9 @@ class Client implements ProtectClient {
   public async render(page: ClientPage = ClientPage.DASHBOARD, platformId?: string): Promise<void> {
     const { attachToId, classNames } = this.config.iFrameConfig;
     createIFrame({
-      hideNavBar: hideNavBar(page),
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(validatePage(page, platformId), platformId || ''),
+      clientUrl: this.getIFrameUrl(validatePage(page, platformId), platformId || '', this.config),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });
@@ -90,12 +109,8 @@ class Client implements ProtectClient {
    *
    * @param accessToken - optional UUID to override the original access token.
    */
-  private getIFrameUrl(page: ClientPage, orderId: string): string {
-    const url = new URL(this.config.protectClientUrl.toString());
-    url.pathname = getPathForPage(page, orderId);
-    return `${url}?accessToken=${this.config.accessToken}&noredirect=1`;
-  }
+  private getIFrameUrl = getIFrameUrl;
 }
 
 export const createClient = (config: ClientConfig): ProtectClient => new Client(config);
-export const forTest = { getPathForPage, validatePage };
+export const forTest = { getPathForPage, validatePage, getIFrameUrl };

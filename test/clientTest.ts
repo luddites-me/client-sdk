@@ -104,6 +104,22 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       expect(validatePage()).to.equal(ClientPage.DASHBOARD);
     });
 
+    it('appends a hideNavBar=1 queryParam to the clientUrl if the page is ClientPage.ORDER_DETAILS', async () => {
+      const { getIFrameUrl } = forTest;
+      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
+      const url = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', config));
+      const searchParams = new URLSearchParams(url.search);
+      expect(Boolean(searchParams.get('hideNavBar'))).to.be.true;
+    });
+
+    it('does not append a hideNavBar search param to the clientUrl if the page is the dashboard', async () => {
+      const { getIFrameUrl } = forTest;
+      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
+      const url = new URL(getIFrameUrl(ClientPage.DASHBOARD, '1', config));
+      const searchParams = new URLSearchParams(url.search);
+      expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
+    });
+
     it('goes to the dashboard if an invalid page is passed', () => {
       expect(validatePage('' as any)).to.equal(ClientPage.DASHBOARD);
       expect(validatePage(42 as any)).to.equal(ClientPage.DASHBOARD);
@@ -114,12 +130,12 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       expect(validatePage(ClientPage.ORDER_DETAILS, '')).to.equal(ClientPage.DASHBOARD);
     });
 
-    it('goes returns the page as is if when it is valid', () => {
+    it('returns the page as is if when it is valid', () => {
       expect(validatePage(ClientPage.ORDER_DETAILS)).to.equal(ClientPage.DASHBOARD);
       expect(validatePage(ClientPage.ORDER_DETAILS, '')).to.equal(ClientPage.DASHBOARD);
     });
 
-    it('goes returns the page as is if when it is valid', () => {
+    it('returns the page as is if when it is valid', () => {
       Object.values(ClientPage).forEach((page) => {
         const orderId = page === ClientPage.ORDER_DETAILS ? '42' : undefined;
         expect(validatePage(page, orderId)).to.equal(page);
