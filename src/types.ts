@@ -79,6 +79,11 @@ export interface IFrameConfig {
   attachToId: string;
 }
 
+/*
+ * The structure of an iframe message between sdk and embedded client
+ */
+export type CrossDomainMessage = { message: { name?: string; data: unknown } };
+
 /**
  * Responsible for rendering the Protect Client SPA
  */

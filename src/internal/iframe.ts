@@ -1,6 +1,6 @@
 import 'iframe-resizer';
 
-import { EventBinding, EventCallback, EventName } from '../types';
+import { EventBinding, EventCallback, EventName, CrossDomainMessage } from '../types';
 import { protectLogger } from '../logger';
 
 interface CustomWindow extends Window {
@@ -60,7 +60,7 @@ export const createIFrame = ({
       checkOrigin: false,
       log: debug,
       tolerance: 5,
-      onMessage: ({ message }: { message: { name?: string; data: unknown } }) => {
+      onMessage: ({ message }: CrossDomainMessage) => {
         if (message == null) {
           protectLogger.error('null "message" passed from child iframe');
           return;
