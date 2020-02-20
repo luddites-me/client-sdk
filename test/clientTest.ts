@@ -124,7 +124,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       const orderRulesSearchParams = new URLSearchParams(orderRulesUrl.search);
       expect(Boolean(orderRulesSearchParams.get('hideNavBar'))).to.be.true;
 
-      const suspiciousOrdersUrl = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
+      const suspiciousOrdersUrl = new URL(getIFrameUrl(ClientPage.SUSPICIOUS_ORDERS, '1', config));
       const suspiciousOrdersSearchParams = new URLSearchParams(suspiciousOrdersUrl.search);
       expect(Boolean(suspiciousOrdersSearchParams.get('hideNavBar'))).to.be.true;
     });

@@ -32,6 +32,13 @@ const hideNavBar = (page: ClientPage): boolean => {
   }
 };
 
+/**
+ * Constructs the URL for the IFrame which represents the Protect Client
+ *
+ * @param page - a {@link ClientPage} indicating which Protect Client base page is to be loaded in the iframe.
+ * @param orderId - an id used to fetch order details
+ * @param config - a {@link ClientConfig} that supplies an access token.
+ */
 const getIFrameUrl = (page: ClientPage, orderId: string, config: ClientConfig): string => {
   const url = new URL(config.protectClientUrl.toString());
   const searchParams = new URLSearchParams();
@@ -89,7 +96,7 @@ class Client implements ProtectClient {
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: this.getIFrameUrl(validatePage(page, platformId), platformId || '', this.config),
+      clientUrl: getIFrameUrl(validatePage(page, platformId), platformId || '', this.config),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });
@@ -103,13 +110,6 @@ class Client implements ProtectClient {
     }
     return event(data);
   }
-
-  /**
-   * Constructs the URL for the IFrame which represents the Protect Client
-   *
-   * @param accessToken - optional UUID to override the original access token.
-   */
-  private getIFrameUrl = getIFrameUrl;
 }
 
 export const createClient = (config: ClientConfig): ProtectClient => new Client(config);
