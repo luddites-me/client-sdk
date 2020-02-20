@@ -104,20 +104,29 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       expect(validatePage()).to.equal(ClientPage.DASHBOARD);
     });
 
-    it('appends a hideNavBar=1 queryParam to the clientUrl if the page is ClientPage.ORDER_DETAILS', async () => {
-      const { getIFrameUrl } = forTest;
-      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
-      const url = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', config));
-      const searchParams = new URLSearchParams(url.search);
-      expect(Boolean(searchParams.get('hideNavBar'))).to.be.true;
-    });
-
-    it('does not append a hideNavBar search param to the clientUrl if the page is the dashboard', async () => {
+    it('does not append a hideNavBar search param to the clientUrl if the page ClientPage.DASHBOARD', async () => {
       const { getIFrameUrl } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
       const url = new URL(getIFrameUrl(ClientPage.DASHBOARD, '1', config));
       const searchParams = new URLSearchParams(url.search);
       expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
+    });
+
+    it('appends a hideNavBar=1 queryParam to the clientUrl if the page is NOT ClientPage.DASHBOARD', async () => {
+      const { getIFrameUrl } = forTest;
+      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
+
+      const orderDetailsUrl = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', config));
+      const orderDetailsSearchParams = new URLSearchParams(orderDetailsUrl.search);
+      expect(Boolean(orderDetailsSearchParams.get('hideNavBar'))).to.be.true;
+
+      const orderRulesUrl = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
+      const orderRulesSearchParams = new URLSearchParams(orderRulesUrl.search);
+      expect(Boolean(orderRulesSearchParams.get('hideNavBar'))).to.be.true;
+
+      const suspiciousOrdersUrl = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
+      const suspiciousOrdersSearchParams = new URLSearchParams(suspiciousOrdersUrl.search);
+      expect(Boolean(suspiciousOrdersSearchParams.get('hideNavBar'))).to.be.true;
     });
 
     it('goes to the dashboard if an invalid page is passed', () => {
