@@ -62,17 +62,13 @@ export interface CustomWindow extends Window {
 export class ChildIFrame {
   public parent: ParentIFrameAPI | undefined;
 
-  constructor(window: CustomWindow, config: ChildIFrameConfig) {
-    this.init(window, config);
-  }
-
   /*
    * initialize the window's {@link ChildIFrameConfig} object required by iframe-resizer.
    *
    * @param window - a {@link CustomWindow} with optional iframe-resizer properties to be bound upon the library initialization.
    * @param config - a {@link ChildIFrameConfig} object used to instantiate the iframed application messaging object.
    */
-  private init(window: CustomWindow, config: ChildIFrameConfig): void {
+  constructor(window: CustomWindow, config: ChildIFrameConfig) {
     /* eslint-disable-next-line no-param-reassign */
     window.iFrameResizer = {
       heightCalculationMethod: config.heightCalculationMethod,
