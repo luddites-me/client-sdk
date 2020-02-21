@@ -19,6 +19,7 @@ interface ChildIFrameConfig {
 
   /*
    *  An optional function to define how the height is calculated from within the iframed page.
+   *  @returns the height in pixels or void
    */
   heightCalculationMethod?: () => number | void;
 }
@@ -55,9 +56,7 @@ export interface CustomWindow extends Window {
 }
 
 /*
- * Initialize the cross-domain iframe messanging library to enable cross-domain message passing to the parent application.
- * @param window - a {@link CustomWindow} with optional iframe-resizer properties to be bound upon the library initialization.
- * @param config - a {@link ChildIFrameConfig} object used to instantiate the iframed application messaging object.
+ * Initialize the cross-domain iframe messaging library to enable cross-domain message-passing to the parent application.
  */
 
 export class ChildIFrame {
@@ -68,10 +67,12 @@ export class ChildIFrame {
   }
 
   /*
-   * initialize the window's {@link ChildIFrameConfig} object required by iframe-resizer. 
+   * initialize the window's {@link ChildIFrameConfig} object required by iframe-resizer.
+   *
+   * @param window - a {@link CustomWindow} with optional iframe-resizer properties to be bound upon the library initialization.
+   * @param config - a {@link ChildIFrameConfig} object used to instantiate the iframed application messaging object.
    */
   private init(window: CustomWindow, config: ChildIFrameConfig): void {
-
     /* eslint-disable-next-line no-param-reassign */
     window.iFrameResizer = {
       heightCalculationMethod: config.heightCalculationMethod,
@@ -87,7 +88,8 @@ export class ChildIFrame {
   }
 
   /*
-   * Sends a {@link CrossDomainMessage} to the parent application domain. 
+   * Sends a {@link CrossDomainMessage} to the parent application domain.
+   * @param message - a {@link CrossDomainMessage} containing a name property and an optional data property.
    */
 
   /* istanbul ignore next */
