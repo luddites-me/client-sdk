@@ -49,13 +49,15 @@ export interface CustomWindow extends Window {
   iFrameResizer?: ChildIFrameConfig;
 
   /**
-   * A communication object that is bound to the window by iframe-resizer once it loads. Configured with a {@link ChildIFrameConfig}.
+   * A communication object bound to the window by iframe-resizer once it loads. iframe-resizer configures this with the {@link ChildIFrameConfig}.
    */
   parentIFrame?: ParentIFrameAPI | undefined;
 }
 
 /*
- *
+ * Initialize the cross-domain iframe messanging library to enable cross-domain message passing to the parent application.
+ * @param window - a {@link CustomWindow} with optional iframe-resizer properties to be bound upon the library initialization.
+ * @param config - a {@link ChildIFrameConfig} object used to instantiate the iframed application messaging object.
  */
 
 export class ChildIFrame {
@@ -65,10 +67,10 @@ export class ChildIFrame {
     this.init(window, config);
   }
 
+  /*
+   * initialize the window's {@link ChildIFrameConfig} object required by iframe-resizer. 
+   */
   private init(window: CustomWindow, config: ChildIFrameConfig): void {
-    // the window is required for the class instantiation,
-    // so we add the resizer config to it, so that once it loads,
-    // it can pick this up and register our config.
 
     /* eslint-disable-next-line no-param-reassign */
     window.iFrameResizer = {
@@ -83,6 +85,10 @@ export class ChildIFrame {
       },
     };
   }
+
+  /*
+   * Sends a {@link CrossDomainMessage} to the parent application domain. 
+   */
 
   /* istanbul ignore next */
   public sendMessage(message: CrossDomainMessage): void {
