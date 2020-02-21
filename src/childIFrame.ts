@@ -15,26 +15,22 @@ interface CustomWindow extends Window {
   parentIFrame?: ParentIFrameAPI | undefined;
 }
 
-declare let window: CustomWindow;
-
-
 export class ChildIFrame {
 
   private parent: ParentIFrameAPI | undefined;
 
-  constructor(window: Window, config: ChildIFrameConfig) {
-    this.init(config);
+  constructor(window: CustomWindow, config: ChildIFrameConfig) {
+    this.init(window, config);
   }
 
-  init(config: ChildIFrameConfig) {
-
+  init(window: CustomWindow, config: ChildIFrameConfig): void {
     // the window is required for the class instantiation,
     // so we add the resizer config to it, so that once it loads,
     // it can pick this up and register our config.
     window.iFrameResizer = {
       heightCalculationMethod: config.heightCalculationMethod,
       onMessage: config.onMessage,
-      onReady: () => {
+      onReady: (): void => {
         this.parent = window.parentIFrame;
         if (!this.parent) {
           return;
@@ -42,7 +38,5 @@ export class ChildIFrame {
         config.onReady();
       },
     };
-
   }
-
 }

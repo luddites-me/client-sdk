@@ -1,6 +1,6 @@
 import 'iframe-resizer';
 
-import { EventBinding, EventCallback, EventName, CrossDomainMessage } from '../types';
+import { CrossDomainMessage, EventBinding, EventCallback, EventName } from '../types';
 import { protectLogger } from '../logger';
 
 interface CustomWindow extends Window {
