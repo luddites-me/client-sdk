@@ -19,7 +19,7 @@ run:
 
       if ! yarn install
       then
-        echo "ERROR: yarn install failed" 
+        echo "ERROR: yarn install failed"
         exit 1
       fi
 

@@ -1,6 +1,6 @@
 # Test README
 
-[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-js-sdk/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-js-sdk)
+[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-sdk-js/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-sdk-js)
 
 # Getting Started
 
@@ -46,5 +46,3 @@ Clone the repo and run `yarn` to install.
 
 `yarn test`
 - Runs tests and calculates test coverage.
-
-

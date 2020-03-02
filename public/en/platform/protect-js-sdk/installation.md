@@ -1,15 +1,15 @@
 ## Installation
 
 ### yarn
-`yarn add protect-js-sdk` 
+`yarn add protect-sdk-js`
 
 ### NPM
-`npm install protect-js-sdk` 
+`npm install protect-sdk-js`
 
 ### CDN
 
 #### minified
-`<script src="protect-js-sdk.min.js"></script>`
+`<script src="protect-sdk-js.min.js"></script>`
 
 #### un-minified
-`<script src="protect-js-sdk.js"></script>`
+`<script src="protect-sdk-js.js"></script>`

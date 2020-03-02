@@ -16,7 +16,7 @@ run:
       # install JQ for easier version parsing
       apt-get update
       apt-get -y install jq
-      
+
       cd protect-sdk-client-master
 
       # prevent infinite loop from version bumping via ci
@@ -32,10 +32,10 @@ run:
 
       if ! yarn install
       then
-        echo "ERROR: yarn install failed" 
+        echo "ERROR: yarn install failed"
         exit 1
       fi
-      
+
       if ! yarn version --patch
       then
         echo "ERROR: yarn version patch update failed"
