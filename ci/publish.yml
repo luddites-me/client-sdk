@@ -6,7 +6,7 @@ image_resource:
   source: { repository: node, tag: "12" }
 
 inputs:
-  - name: protect-js-sdk-master
+  - name: protect-sdk-client-master
 
 run:
   path: /bin/bash
@@ -14,7 +14,7 @@ run:
     - -c
     - |
 
-      cd protect-js-sdk-master
+      cd protect-sdk-client-master
 
       # prevent infinite loop from version bumping via ci
       if git log | head -n 2 | tail -n 1 | grep 'Concourse CI'
