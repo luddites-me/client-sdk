@@ -1,6 +1,6 @@
 # Test README
 
-[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-sdk-js/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-sdk-js)
+[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-sdk-client/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-sdk-client)
 
 # Getting Started
 

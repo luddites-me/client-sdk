@@ -58,13 +58,13 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/ns8inc/protect-sdk-js#readme",
+  "homepage": "https://github.com/ns8inc/protect-sdk-client#readme",
   "license": "MIT",
   "main": "dist/protect.js",
-  "name": "@ns8/protect-sdk-js",
+  "name": "@ns8/protect-sdk-client",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ns8inc/protect-sdk-js.git"
+    "url": "git+https://github.com/ns8inc/protect-sdk-client.git"
   },
   "scripts": {
     "beautify": "ts-node ./build/sortJson.ts",

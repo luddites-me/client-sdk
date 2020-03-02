@@ -4,9 +4,9 @@ image_resource:
   type: registry-image
   source: { repository: node, tag: "12" }
 inputs:
-  - name: protect-sdk-js-dev
+  - name: protect-sdk-client-dev
 outputs:
-  - name: protect-sdk-js-dev
+  - name: protect-sdk-client-dev
 run:
   path: /bin/sh
   args:
@@ -15,7 +15,7 @@ run:
 
       echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
-      cd protect-sdk-js-dev
+      cd protect-sdk-client-dev
 
       if ! yarn install
       then

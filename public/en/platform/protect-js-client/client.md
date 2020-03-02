@@ -24,7 +24,7 @@ The Protect Client requires a minimal amount of configuration in order to render
 The following serve as examples of implementation of the Client to demonstrate intended uses:
 
 ```typescript
-import Client from '@ns8/protect-sdk-js';
+import Client from '@ns8/protect-sdk-client';
 
 // Instantiate the client with all of the platform specific options
 const protectClient = new Client({
