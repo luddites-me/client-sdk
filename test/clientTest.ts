@@ -99,12 +99,30 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     /* These test are mostly redundant when calling from typescript, but
        it's easy to get it wrong from javascript and we want to handle
        it gracefully when it's wrong */
+
     const { validatePage } = forTest;
+
     it('goes to the dashboard by default', () => {
       expect(validatePage()).to.equal(ClientPage.DASHBOARD);
     });
 
-    it('does not append a hideNavBar search param to the clientUrl if the page ClientPage.DASHBOARD', async () => {
+    it('appends a falsy navBar query param to clientUrl if the page is ClientPage.ORDER_RULES', async () => {
+      const { getIFrameUrl } = forTest;
+      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
+      const url = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
+      const searchParams = new URLSearchParams(url.search);
+      expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
+    });
+
+    it('appends a falsy navBar query param to clientUrl if the page is ClientPage.SUSPICIOUS_ORDERS', async () => {
+      const { getIFrameUrl } = forTest;
+      const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
+      const url = new URL(getIFrameUrl(ClientPage.SUSPICIOUS_ORDERS, '1', config));
+      const searchParams = new URLSearchParams(url.search);
+      expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
+    });
+
+    it('appends a falsy navBar query param to clientUrl if the page is ClientPage.DASHBOARD', async () => {
       const { getIFrameUrl } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
       const url = new URL(getIFrameUrl(ClientPage.DASHBOARD, '1', config));
@@ -112,21 +130,13 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
       expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
     });
 
-    it('appends a hideNavBar=1 queryParam to the clientUrl if the page is NOT ClientPage.DASHBOARD', async () => {
+    it('appends truthy navBar query param to clientUrl if the page is ClientPage.ORDER_DETAILS', async () => {
       const { getIFrameUrl } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
 
       const orderDetailsUrl = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', config));
       const orderDetailsSearchParams = new URLSearchParams(orderDetailsUrl.search);
       expect(Boolean(orderDetailsSearchParams.get('hideNavBar'))).to.be.true;
-
-      const orderRulesUrl = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
-      const orderRulesSearchParams = new URLSearchParams(orderRulesUrl.search);
-      expect(Boolean(orderRulesSearchParams.get('hideNavBar'))).to.be.true;
-
-      const suspiciousOrdersUrl = new URL(getIFrameUrl(ClientPage.SUSPICIOUS_ORDERS, '1', config));
-      const suspiciousOrdersSearchParams = new URLSearchParams(suspiciousOrdersUrl.search);
-      expect(Boolean(suspiciousOrdersSearchParams.get('hideNavBar'))).to.be.true;
     });
 
     it('goes to the dashboard if an invalid page is passed', () => {
