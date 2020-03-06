@@ -27,6 +27,10 @@ const hideNavBar = (page: ClientPage): boolean => {
   switch (page) {
     case ClientPage.DASHBOARD:
       return false;
+    case ClientPage.SUSPICIOUS_ORDERS:
+      return false;
+    case ClientPage.ORDER_RULES:
+      return false;
     default:
       return true;
   }
