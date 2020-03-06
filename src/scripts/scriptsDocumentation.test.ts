@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { formatScriptsDocumentation, updateReadme } from '../build/scriptsDocumentation';
+import { formatScriptsDocumentation, updateReadme } from '../../build/scriptsDocumentation';
 
 const removeBlankLines = (content: string): string => {
   return content

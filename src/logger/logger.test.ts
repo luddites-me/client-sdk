@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import { ClientConfig } from '../src/clientConfig';
-import { LogLevel, configureProtectLogger } from '../src/logger';
+import { ClientConfig } from '../config/clientConfig';
+import { LogLevel, configureProtectLogger } from './logger';
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const getBasicConfig = (): ClientConfig => {

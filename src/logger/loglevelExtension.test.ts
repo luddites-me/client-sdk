@@ -6,8 +6,8 @@ import log from 'loglevel';
 import nock from 'nock';
 import 'mocha';
 
-import { ProtectClientErrorLogOptions } from '../src/types';
-import { configureLogger, getCurrentErrorLogRequestPromise } from '../src/internal/loglevelExtension';
+import { ProtectClientErrorLogOptions } from '../types/types';
+import { configureLogger, getCurrentErrorLogRequestPromise } from '../internal/loglevelExtension';
 
 describe('Protect Client Error Log extension for `loglevel`', () => {
   use(chaiAsPromised);

@@ -4,8 +4,8 @@ import { expect, use } from 'chai';
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
-import { ClientConfig, ClientPage, EventName, createClient } from '../src';
-import { forTest } from '../src/client';
+import { ClientConfig, ClientPage, EventName, createClient } from '..';
+import { forTest } from './client';
 
 import chaiAsPromised = require('chai-as-promised');
 

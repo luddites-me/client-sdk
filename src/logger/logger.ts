@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
-import { ClientConfig } from './clientConfig';
-import { configureLogger } from './internal/loglevelExtension';
-import { ProtectClientErrorLogOptions } from './types';
+import { ClientConfig } from '../config/clientConfig';
+import { configureLogger } from '../internal/loglevelExtension';
+import { ProtectClientErrorLogOptions } from '../types/types';
 
 /**
  * Log levels

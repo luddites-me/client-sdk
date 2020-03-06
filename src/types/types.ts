@@ -1,4 +1,4 @@
-import { LogLevel } from './logger';
+import { LogLevel } from '../logger/logger';
 
 /**
  * The signature for event callbacks.

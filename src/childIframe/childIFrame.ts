@@ -1,4 +1,4 @@
-import { CrossDomainMessage } from './types';
+import { CrossDomainMessage } from '../types/types';
 
 /**
  *

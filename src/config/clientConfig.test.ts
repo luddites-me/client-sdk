@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import 'mocha';
-import { ClientConfig, EventName } from '../src';
+import { ClientConfig, EventName } from '..';
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
 const getBasicConfig = (config?: object): ClientConfig =>

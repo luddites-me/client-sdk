@@ -1,13 +1,16 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable
+  no-unused-expressions,
+  @typescript-eslint/no-explicit-any,
+  @typescript-eslint/no-namespace,
+*/
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
 
 import 'mocha';
-import { ChildIFrame, CrossDomainMessage, CustomWindow } from '../src';
+import { ChildIFrame, CustomWindow } from './childIFrame';
+import { CrossDomainMessage } from '../types/types';
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
       document: {};
@@ -19,7 +22,7 @@ declare global {
 describe('Asserts that the childIFrame is initialized on the Window object', () => {
   it('adds the iframe-resizer parent config to window on init', async () => {
     const { window } = new JSDOM('<!DOCTYPE html><div></div>');
-    const customWindow = window as CustomWindow;
+    const customWindow = (window as unknown) as CustomWindow;
     const childIFrameConfig = {
       heightCalculationMethod: (): number => 42,
       onMessage(message: CrossDomainMessage): void {
@@ -51,7 +54,7 @@ describe('Asserts that the childIFrame is initialized on the Window object', () 
 
   it('should not have a parent', async () => {
     const { window } = new JSDOM('<!DOCTYPE html><div></div>');
-    const customWindow = window as CustomWindow;
+    const customWindow = (window as unknown) as CustomWindow;
     const childIFrameConfig = {
       heightCalculationMethod: (): number => 42,
       onMessage(message: CrossDomainMessage): void {

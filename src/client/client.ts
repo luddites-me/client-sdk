@@ -1,7 +1,7 @@
-import { ClientConfig } from './clientConfig';
-import { ClientPage, EventCallback, EventName, ProtectClient } from './types';
-import { createIFrame } from './internal/iframe';
-import { protectLogger } from './logger';
+import { ClientConfig } from '../config/clientConfig';
+import { ClientPage, EventCallback, EventName, ProtectClient } from '../types/types';
+import { createIFrame } from '../internal/iframe';
+import { protectLogger } from '../logger/logger';
 
 /* istanbul ignore next: testing this would be basically just copying the code */
 const getPathForPage = (page: ClientPage, platformId: string): string => {

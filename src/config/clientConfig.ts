@@ -1,5 +1,5 @@
 import validate from 'uuid-validate';
-import { EventBinding, EventCallback, EventName, IFrameConfig, PartialConfig } from './types';
+import { EventBinding, EventCallback, EventName, IFrameConfig, PartialConfig } from '../types/types';
 
 /**
  * The default callback for all events

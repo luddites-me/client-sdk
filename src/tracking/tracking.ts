@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 
-import { protectLogger } from './logger';
+import { protectLogger } from '../logger/logger';
 
 let trackingScript: string;
 

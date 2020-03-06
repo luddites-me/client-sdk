@@ -15,7 +15,6 @@ overrides:
       - '**/*.test.ts'
       - '**/*.spec.ts'
       - '**/*-spec.ts'
-      - test/**/*
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 2019
