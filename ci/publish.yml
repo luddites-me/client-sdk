@@ -61,7 +61,7 @@ run:
 
       current_version=$(yarn info --json | jq -r '.["data"]["dist-tags"]["latest"]')
       cp dist/protect.min.js dist/protect-$current_version.min.js
-      cp -rp dist ../protect-sdk-client-dist
+      cp -rp dist/* ../protect-sdk-client-dist/
 
       mkdir ~/.ssh && chmod 700 ~/.ssh
 
