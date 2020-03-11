@@ -4,5 +4,5 @@ export default getWebpackConfig({
   bundleTarget: BundleTarget.WEB,
   distDirectory: './dist',
   sourceDirectory: './src/index.ts',
-  libraryName: 'protect',
+  libraryName: 'Protect',
 });
