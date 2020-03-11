@@ -44,7 +44,7 @@ run:
 
       if ! npm publish
       then
-        echo "ERROR: yarn publish failed"
+        echo "ERROR: npm publish failed"
         exit 1
       fi
 
