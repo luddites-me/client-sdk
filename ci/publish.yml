@@ -8,6 +8,9 @@ image_resource:
 inputs:
   - name: protect-sdk-client-master
 
+outputs:
+  - name: protect-sdk-client-master-update
+
 run:
   path: /bin/bash
   args:
