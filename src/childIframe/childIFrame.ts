@@ -1,97 +1,82 @@
-import { CrossDomainMessage } from '../types/types';
+/// <reference path="./iframe-resizer.d.ts" />
 
-/**
- *
- * Interface for the iframed application configuration object.
- *
- */
+import { iframeResizerContentWindow } from 'iframe-resizer';
+import { IFRAME_PAGE_INFO_EVENT_NAME, LAST_PAGE_INFO_GLOBAL, ParentPageInfo } from '../types';
 
-interface ChildIFrameConfig {
-  /*
-   * Called once, when the iframe-resizer's iframed script is fully initialized
-   */
+interface ResizerConfig {
   onReady: () => void;
-
-  /*
-   *  Called when the child/iframed application receives a message from the parent application.
-   */
-  onMessage: (message: CrossDomainMessage) => void;
-
-  /*
-   *  An optional function to define how the height is calculated from within the iframed page.
-   *  @returns the height in pixels or void
-   */
-  heightCalculationMethod?: () => number | void;
+  heightCalculationMethod: () => number | undefined;
 }
 
-/*
- *
- * Interface for the communicating with the parent iframe.
- *
- */
-
-interface ParentIFrameAPI {
-  /**
-   * Send a {@link CrossDomainMessage} to the parent application embedding the iframed application.
-   */
-  sendMessage: (message: CrossDomainMessage, targetOrigin?: string) => void;
+interface ParentIFrame {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  sendMessage: (message: any, targetOrigin?: string) => void;
+  getPageInfo: (callback: (pageInfo: ParentPageInfo) => void) => void;
 }
-
-/*
- * Extends the {@link Window} interface allowing for optional properties
- * that the iframe-resizer library adds to the window global.
- */
 
 export interface CustomWindow extends Window {
-  /**
-   * A {@link ChildIFrame} configuration object that the iframe-resizer picks up once it loads.
-   */
-
-  iFrameResizer?: ChildIFrameConfig;
-
-  /**
-   * A communication object bound to the window by iframe-resizer once it loads. iframe-resizer configures this with the {@link ChildIFrameConfig}.
-   */
-  parentIFrame?: ParentIFrameAPI | undefined;
+  [LAST_PAGE_INFO_GLOBAL]?: ParentPageInfo;
+  iFrameResizer?: ResizerConfig;
+  parentIFrame?: ParentIFrame | undefined;
 }
 
-/*
- * Initialize the cross-domain iframe messaging library to enable cross-domain message-passing to the parent application.
- */
+declare let window: CustomWindow;
 
-export class ChildIFrame {
-  public parent: ParentIFrameAPI | undefined;
+export const getCurrentMinIframeHeight = (globalWindow: CustomWindow): number => {
+  const DEFAULT_IFRAME_HEIGHT = 600;
+  const pageInfo: ParentPageInfo | undefined = globalWindow[LAST_PAGE_INFO_GLOBAL];
+  if (pageInfo == null) {
+    return DEFAULT_IFRAME_HEIGHT;
+  }
+  const { scrollTop, offsetTop, windowHeight } = pageInfo;
+  const distFrmTopToWinTop = offsetTop - scrollTop;
+  return windowHeight - distFrmTopToWinTop;
+};
 
-  /*
-   * initialize the window's {@link ChildIFrameConfig} object required by iframe-resizer.
-   *
-   * @param window - a {@link CustomWindow} with optional iframe-resizer properties to be bound upon the library initialization.
-   * @param config - a {@link ChildIFrameConfig} object used to instantiate the iframed application messaging object.
-   */
-  constructor(window: CustomWindow, config: ChildIFrameConfig) {
-    /* eslint-disable-next-line no-param-reassign */
-    window.iFrameResizer = {
-      heightCalculationMethod: config.heightCalculationMethod,
-      onMessage: config.onMessage,
-      onReady: (): void => {
-        this.parent = window.parentIFrame;
-        if (!this.parent) {
-          return;
+export function initIFrame(container: Element, globalWindow: CustomWindow): void {
+  // eslint-disable-next-line
+  iframeResizerContentWindow; // required to prevent tree-shaking the iframed-window dependency
+  // eslint-disable-next-line no-param-reassign
+  globalWindow.iFrameResizer = {
+    /**
+     * We want the height of the iframe to be large enough to hold the content on the iframe,
+     * and also extend to the bottom of the containing window at a minimum to ensure we also
+     * have enough space to display a modal (assuming there's enough space in the containing
+     * window).
+     */
+    heightCalculationMethod: (): number => {
+      const { height } = container.getBoundingClientRect();
+      return Math.max(height, getCurrentMinIframeHeight(globalWindow));
+    },
+    onReady: (): void => {
+      const parent = globalWindow.parentIFrame;
+      if (parent == null) {
+        throw new Error('`onReady()` called, but `parentIFrame == null`');
+      }
+      // istanbul ignore next
+      parent.sendMessage({ name: 'ns8-protect-client-connected' });
+      // istanbul ignore next
+      globalWindow.document.addEventListener('order-detail-name-click', ((e: CustomEvent) => {
+        // istanbul ignore next
+        if (parent) {
+          parent.sendMessage({
+            name: 'order-detail-name-click',
+            data: e.detail,
+          });
         }
-        config.onReady();
-      },
-    };
-  }
+      }) as EventListener);
 
-  /*
-   * Sends a {@link CrossDomainMessage} to the parent application domain.
-   * @param message - a {@link CrossDomainMessage} containing a name property and an optional data property.
-   */
-
-  /* istanbul ignore next */
-  public sendMessage(message: CrossDomainMessage): void {
-    if (this.parent) {
-      this.parent.sendMessage(message);
-    }
-  }
+      // istanbul ignore next
+      parent.getPageInfo((pageInfo: ParentPageInfo): void => {
+        // eslint-disable-next-line no-param-reassign
+        globalWindow[LAST_PAGE_INFO_GLOBAL] = pageInfo;
+        globalWindow.document.dispatchEvent(
+          new CustomEvent(IFRAME_PAGE_INFO_EVENT_NAME, {
+            detail: { pageInfo },
+            bubbles: false,
+          }),
+        );
+      });
+    },
+  };
 }

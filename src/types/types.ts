@@ -1,5 +1,53 @@
 import { LogLevel } from '../logger/logger';
 
+export const IFRAME_PAGE_INFO_EVENT_NAME = 'iframe-resize-page-info';
+export const LAST_PAGE_INFO_GLOBAL = '__latestIframePageInfo';
+
+export interface ParentPageInfo {
+  /**
+   * The height of the iframe in pixels
+   */
+  iframeHeight: number;
+  /**
+   * The width of the iframe in pixels
+   */
+  iframeWidth: number;
+  /**
+   * The number of pixels between the left edge of the containing page and the left edge of the iframe
+   */
+  offsetLeft: number;
+  /**
+   * The number of pixels between the top edge of the containing page and the top edge of the iframe
+   */
+  offsetTop: number;
+  /**
+   * The number of pixels between the left edge of the iframe and the left edge of the iframe viewport
+   */
+  scrollLeft: number;
+  /**
+   * The number of pixels between the top edge of the iframe and the top edge of the iframe viewport
+   */
+  scrollTop: number;
+  /**
+   * The containing document's height in pixels (the equivalent of document.documentElement.clientHeight
+   * in the container)
+   */
+  documentHeight: number;
+  /**
+   * The containing document's width in pixels (the equivalent of document.documentElement.clientWidth
+   * in the container)
+   */
+  documentWidth: number;
+  /**
+   * The containing window's height in pixels (the equivalent of window.innerHeight in the container)
+   */
+  windowHeight: number;
+  /**
+   * The containing window's width in pixels (the equivalent of window.innerWidth in the container)
+   */
+  windowWidth: number;
+}
+
 /**
  * The signature for event callbacks.
  * @param data - An arbitrary event object that will be passed in the context of the callback
