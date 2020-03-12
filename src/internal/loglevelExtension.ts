@@ -85,13 +85,12 @@ export const configureLogger = (logger: log.Logger, url: URL, options: ProtectCl
   const wrappedFactory = logger.methodFactory;
   const methodFactory: log.MethodFactory = (methodName, logLevel, loggerName) => {
     const wrappedMethod = wrappedFactory(methodName, logLevel, loggerName);
-    const loggingMethod: log.LoggingMethod = (...message: ConsoleLogArgs) => {
+    return (...message: ConsoleLogArgs): void => {
       wrappedMethod(...message);
       // It's important that `pushMessage` does not throw or result in unhandled rejections;
       // the implementation should just swallow all errors
       pushMessage(message);
     };
-    return loggingMethod;
   };
 
   protectClientErrorLogOptions = { ...options, url };

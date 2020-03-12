@@ -119,6 +119,8 @@ const { scriptsDocumentation: docs } = parsedPackageJson;
 const updates = formatScriptsDocumentation(docs);
 
 describe('SYNC-BUILD-SCRIPTS-WITH-README: script updates README.md', () => {
+  const packageJsonScriptsHeader = '### `package.json` scripts';
+
   it('concatenates build script info to the end of readme when there is no build script section.', () => {
     const README_NO_SCRIPT_DOCS_ACTUAL = `
 # Test README
@@ -142,12 +144,13 @@ Clone the repo and run yarn install
 \`yarn script4\`
 - script 4 description
 `;
+
     const expected = removeBlankLines(README_NO_SCRIPT_DOCS_EXPECTED);
     const actual = removeBlankLines(
       updateReadme({
         readme: README_NO_SCRIPT_DOCS_ACTUAL,
         updates,
-        targetHeader: '### `package.json` scripts',
+        targetHeader: packageJsonScriptsHeader,
       }),
     );
 
@@ -160,7 +163,7 @@ Clone the repo and run yarn install
       updateReadme({
         readme: README_SCRIPT_AT_END_DOCS_ACTUAL,
         updates,
-        targetHeader: '### `package.json` scripts',
+        targetHeader: packageJsonScriptsHeader,
       }),
     );
 
@@ -173,7 +176,7 @@ Clone the repo and run yarn install
       updateReadme({
         readme: README_SCRIPT_IN_MIDDLE_DOCS_ACTUAL,
         updates,
-        targetHeader: '### `package.json` scripts',
+        targetHeader: packageJsonScriptsHeader,
       }),
     );
 

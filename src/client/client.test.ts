@@ -83,12 +83,6 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     expect(client.render()).to.eventually.be.rejected;
   });
 
-  it('throws when client container does not exist in the DOM ', async () => {
-    const config = getConfig({ iFrameConfig: { attachToId: '' } });
-    const client = createClient(config);
-    expect(client.render()).to.eventually.be.rejected;
-  });
-
   it('throws when client container is not valid ', async () => {
     const config = getConfig();
     const client = createClient(config);

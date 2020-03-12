@@ -13,6 +13,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   use(chaiAsPromised);
 
   const fakeClientErrorLogUrl = new URL('http://localhost:4000/api/util/log-client-error');
+  const loggedReply = '{ "logged": true }';
   const testLogConfig: ProtectClientErrorLogOptions = {
     includeStack: false,
     level: log.levels.ERROR,
@@ -21,7 +22,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   const mockNetwork = (body?: nock.RequestBodyMatcher): nock.Scope =>
     nock(fakeClientErrorLogUrl.origin)
       .post(fakeClientErrorLogUrl.pathname, body)
-      .reply(200, '{ "logged": true }');
+      .reply(200, loggedReply);
 
   const errorLogPost = async (): Promise<void> => {
     const p = getCurrentErrorLogRequestPromise();
@@ -94,7 +95,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
       const scope = nock(fakeClientErrorLogUrl.origin)
         .post(fakeClientErrorLogUrl.pathname)
         .times(callCount)
-        .reply(200, '{ "logged": true }');
+        .reply(200, loggedReply);
 
       for (let i = 0; i < callCount; i += 1) {
         log.error('msg : %d', i);
@@ -128,7 +129,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
       const scope = nock(fakeClientErrorLogUrl.origin)
         .filteringRequestBody(/"stackTrace":".+"/, '"stackTrace":"XXX"')
         .post(fakeClientErrorLogUrl.pathname, body)
-        .reply(200, '{ "logged": true }');
+        .reply(200, loggedReply);
       log.error('msg');
       await errorLogPost();
       expect(scope.isDone()).to.be.true;
