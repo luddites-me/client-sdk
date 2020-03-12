@@ -46,18 +46,17 @@ run:
         exit 1
       fi
 
-      if ! npm publish
-      then
-        echo "ERROR: npm publish failed"
-        exit 1
-      fi
-
       if ! yarn build:prod
       then
         echo "ERROR: yarn build:prod failed"
         exit 1
       fi
 
+      if ! npm publish
+      then
+        echo "ERROR: npm publish failed"
+        exit 1
+      fi
 
       current_version=$(yarn info --json | jq -r '.["data"]["dist-tags"]["latest"]')
       cp dist/protect.min.js dist/protect-$current_version.min.js
