@@ -55,7 +55,7 @@
   ],
   "homepage": "https://github.com/ns8inc/protect-sdk-client#readme",
   "license": "MIT",
-  "main": "dist/protect.js",
+  "main": "dist/protect.min.js",
   "name": "@ns8/protect-sdk-client",
   "repository": {
     "type": "git",
