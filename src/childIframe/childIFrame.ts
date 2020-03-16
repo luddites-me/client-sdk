@@ -1,3 +1,10 @@
+/* eslint-disable
+
+  spaced-comment,
+  @typescript-eslint/triple-slash-reference
+
+*/
+
 /// <reference path="./iframe-resizer.d.ts" />
 
 import { iframeResizerContentWindow } from 'iframe-resizer';

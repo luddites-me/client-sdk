@@ -23,12 +23,14 @@ declare global {
   }
 }
 
+const testDivMarkup = '<div id="test"></div>';
+
 describe('Test utility functions', () => {
   const { window } = new JSDOM('<!DOCTYPE html><div></div>');
   const customWindow = (window as unknown) as CustomWindow;
-  window.document.body.innerHTML = '<div id="test2"></div>';
+  window.document.body.innerHTML = testDivMarkup;
 
-  const testDiv = window.document.body.querySelector('#test2') as HTMLDivElement;
+  const testDiv = window.document.body.querySelector('#test') as HTMLDivElement;
   initIFrame(testDiv, customWindow);
 
   it('getCurrentMinIframeHeight returns 600 by default with a null pageInfo object', () => {
@@ -41,7 +43,7 @@ describe('Test utility functions', () => {
 describe('Asserts that the childIFrame is initialized on the Window object', () => {
   const { window } = new JSDOM('<!DOCTYPE html><div></div>');
   const customWindow = (window as unknown) as CustomWindow;
-  window.document.body.innerHTML = '<div id="test"></div>';
+  window.document.body.innerHTML = testDivMarkup;
 
   it('getCurrentMinIframeHeight returns a value dependent on pageInfo object.', () => {
     customWindow[LAST_PAGE_INFO_GLOBAL] = {
@@ -78,7 +80,7 @@ describe('Asserts that the childIFrame is initialized on the Window object', () 
       sendMessage: (message: any): void => {},
       getPageInfo: (any): void => {},
     };
-    window.document.body.innerHTML = '<div id="test2"></div>';
+    window.document.body.innerHTML = '<div id="test"></div>';
     const testDiv = window.document.querySelector('#test') as Element;
 
     initIFrame(testDiv, customWindow);
@@ -91,7 +93,7 @@ describe('Asserts that the childIFrame is initialized on the Window object', () 
 
   it('should throw if the child iframe object isnt available', () => {
     customWindow.parentIFrame = undefined;
-    window.document.body.innerHTML = '<div id="test2"></div>';
+    window.document.body.innerHTML = testDivMarkup;
     const testDiv = window.document.querySelector('#test') as Element;
 
     initIFrame(testDiv, customWindow);
