@@ -68,11 +68,11 @@ export function initIFrame(container: Element, globalWindow: CustomWindow): void
       // istanbul ignore next
       parent.sendMessage({ name: EventName.NS8_PROTECT_CLIENT_CONNECTED });
       // istanbul ignore next
-      globalWindow.document.addEventListener('order-detail-name-click', ((e: CustomEvent) => {
+      globalWindow.document.addEventListener(EventName.ORDER_DETAIL_NAME_CLICK, ((e: CustomEvent) => {
         // istanbul ignore next
         if (parent) {
           parent.sendMessage({
-            name: 'order-detail-name-click',
+            name: EventName.ORDER_DETAIL_NAME_CLICK,
             data: e.detail,
           });
         }
