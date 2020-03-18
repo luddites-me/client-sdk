@@ -80,7 +80,7 @@ describe('Asserts that the childIFrame is initialized on the Window object', () 
       sendMessage: (message: any): void => {},
       getPageInfo: (any): void => {},
     };
-    window.document.body.innerHTML = '<div id="test"></div>';
+    window.document.body.innerHTML = testDivMarkup;
     const testDiv = window.document.querySelector('#test') as Element;
 
     initIFrame(testDiv, customWindow);

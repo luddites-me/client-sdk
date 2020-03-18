@@ -130,7 +130,7 @@ export interface IFrameConfig {
 /*
  * The shared message interface for cross-domain iframe messages sent via iframe-resizer.
  */
-export type CrossDomainMessage = { message: { name: string; data?: unknown } };
+export type CrossDomainMessage = { name: string; data?: unknown };
 
 /**
  * Responsible for rendering the Protect Client SPA

@@ -8,7 +8,13 @@
 /// <reference path="./iframe-resizer.d.ts" />
 
 import { iframeResizerContentWindow } from 'iframe-resizer';
-import { IFRAME_PAGE_INFO_EVENT_NAME, LAST_PAGE_INFO_GLOBAL, ParentPageInfo } from '../types';
+import {
+  CrossDomainMessage,
+  EventName,
+  IFRAME_PAGE_INFO_EVENT_NAME,
+  LAST_PAGE_INFO_GLOBAL,
+  ParentPageInfo,
+} from '../types';
 
 interface ResizerConfig {
   onReady: () => void;
@@ -16,8 +22,7 @@ interface ResizerConfig {
 }
 
 interface ParentIFrame {
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  sendMessage: (message: any, targetOrigin?: string) => void;
+  sendMessage: (message: CrossDomainMessage, targetOrigin?: string) => void;
   getPageInfo: (callback: (pageInfo: ParentPageInfo) => void) => void;
 }
 
@@ -41,7 +46,7 @@ export const getCurrentMinIframeHeight = (globalWindow: CustomWindow): number =>
 };
 
 export function initIFrame(container: Element, globalWindow: CustomWindow): void {
-  // eslint-disable-next-line
+  // eslint-disable-next-line no-unused-expressions
   iframeResizerContentWindow; // required to prevent tree-shaking the iframed-window dependency
   // eslint-disable-next-line no-param-reassign
   globalWindow.iFrameResizer = {
@@ -61,7 +66,7 @@ export function initIFrame(container: Element, globalWindow: CustomWindow): void
         throw new Error('`onReady()` called, but `parentIFrame == null`');
       }
       // istanbul ignore next
-      parent.sendMessage({ name: 'ns8-protect-client-connected' });
+      parent.sendMessage({ name: EventName.NS8_PROTECT_CLIENT_CONNECTED });
       // istanbul ignore next
       globalWindow.document.addEventListener('order-detail-name-click', ((e: CustomEvent) => {
         // istanbul ignore next
