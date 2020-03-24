@@ -20,9 +20,7 @@ describe('Protect Client Error Log extension for `loglevel`', () => {
   };
 
   const mockNetwork = (body?: nock.RequestBodyMatcher): nock.Scope =>
-    nock(fakeClientErrorLogUrl.origin)
-      .post(fakeClientErrorLogUrl.pathname, body)
-      .reply(200, loggedReply);
+    nock(fakeClientErrorLogUrl.origin).post(fakeClientErrorLogUrl.pathname, body).reply(200, loggedReply);
 
   const errorLogPost = async (): Promise<void> => {
     const p = getCurrentErrorLogRequestPromise();

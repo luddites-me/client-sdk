@@ -4,10 +4,7 @@ import 'mocha';
 import { formatScriptsDocumentation, updateReadme } from '../../build/scriptsDocumentation';
 
 const removeBlankLines = (content: string): string => {
-  return content
-    .split('\n')
-    .filter(Boolean)
-    .join('\n');
+  return content.split('\n').filter(Boolean).join('\n');
 };
 
 /*
