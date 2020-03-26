@@ -4,10 +4,9 @@ jobs:
       - image: node:12
     steps:
       - checkout
-      - npm-config/set-registry:
-          auth-token: ${NPM_TOKEN}
-          registry-prurl: //registry.npmjs.org/
-          scope: '@ns8'
+      - run:
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Configure NPM
       - run:
           command: yarn
           name: Install Dependencies
@@ -63,10 +62,9 @@ jobs:
       - image: node:12
     steps:
       - checkout
-      - npm-config/set-registry:
-          auth-token: ${NPM_TOKEN}
-          registry-prurl: //registry.npmjs.org/
-          scope: '@ns8'
+      - run:
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Configure NPM
       - run:
           command: yarn
           name: Install Dependencies
@@ -108,10 +106,9 @@ jobs:
               circleci step halt
             fi
           name: Skip if CI Made the Last Commit
-      - npm-config/set-registry:
-          auth-token: ${NPM_TOKEN}
-          registry-prurl: //registry.npmjs.org/
-          scope: '@ns8'
+      - run:
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Configure NPM
       - run:
           command: yarn
           name: Install Dependencies
@@ -124,7 +121,6 @@ jobs:
 
 orbs:
   aws-s3: circleci/aws-s3@1.0.15
-  npm-config: cobli/npm-config@1.0.0
 
 version: 2.1
 
