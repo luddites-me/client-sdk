@@ -1,5 +1,5 @@
 jobs:
-  deploy-dev:
+  deploy_dev:
     docker:
       - image: node:12
     steps:
@@ -22,7 +22,7 @@ jobs:
             --content-type application/javascript
           from: dist/protect.min.js
           to: s3://protect-sdk-client/assets/js/protect-dev.min.js
-  deploy-prod:
+  deploy_prod:
     docker:
       - image: node:12
     steps:
@@ -120,21 +120,6 @@ orbs:
 version: 2.1
 
 workflows:
-  test_and_deploy:
-    jobs:
-      - test
-      - deploy-dev:
-          filters:
-            branches:
-              only: dev
-          requires:
-            - test
-      - deploy-prod:
-          filters:
-            branches:
-              only: master
-          requires:
-            - test
   publish:
     jobs:
       - publish:
@@ -143,3 +128,18 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+$/
+  test_and_deploy:
+    jobs:
+      - test
+      - deploy_dev:
+          filters:
+            branches:
+              only: dev
+          requires:
+            - test
+      - deploy_prod:
+          filters:
+            branches:
+              only: master
+          requires:
+            - test
