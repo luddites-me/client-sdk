@@ -1,11 +1,10 @@
 # Test README
 
-[![Concourse-CI](https://concourse.ns8-infrastructure.com/api/v1/teams/main/pipelines/protect-sdk-client/jobs/test/badge)](https://concourse.ns8-infrastructure.com/teams/main/pipelines/protect-sdk-client)
+[![CircleCI](https://circleci.com/gh/ns8inc/protect-sdk-client.svg?style=svg&circle-token=91f2dda1fe4873ce83070a4dfa42edf0d3f20328)](https://app.circleci.com/pipelines/github/ns8inc/protect-sdk-client)
 
 # Getting Started
 
 Clone the repo and run `yarn` to install.
-
 
 ### Running Tests
 
@@ -46,3 +45,9 @@ Clone the repo and run `yarn` to install.
 
 `yarn test`
 - Runs tests and calculates test coverage.
+
+## License
+
+See [License](./LICENSE)
+
+ © [ns8inc](https://ns8.com)
