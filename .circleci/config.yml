@@ -87,8 +87,8 @@ jobs:
           from: dist/protect.min.js
           to: s3://protect-sdk-client/assets/js/protect.min.js
       - run:
-          name: Publish
           command: npm publish
+          name: Publish
   test:
     docker:
       - image: node:12
