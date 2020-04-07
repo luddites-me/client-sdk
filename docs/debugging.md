@@ -1,5 +1,11 @@
 # Debugging
 
+## Table of Contents
+
+- [Debugging](#debugging)
+  - [Unit Tests](#unit-tests)
+    - [VS Code](#vs-code)
+
 ## Unit Tests
 
 Mocha unit tests can be debugged to allow testing the code while in development as well as diagnosing issues with the unit tests themselves.
