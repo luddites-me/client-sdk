@@ -61,11 +61,11 @@
     "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && yarn docs:sync-build-scripts",
     "docs:standardize": "npx ./node_modules/@ns8/protect-tools-js/dist/readme/standardizeReadme.js",
     "generate:exports": "yarn cti create ./src -w",
-    "lint": "yarn eslint -c 'node_modules/protect-tools-lint/eslintrc.yml' 'src/**/*.ts'",
-    "lint:fix": "yarn eslint -c 'node_modules/protect-tools-lint/eslintrc.yml' --fix 'src/**/*.ts'",
+    "lint": "yarn eslint -c 'node_modules/@ns8/protect-tools-lint/eslintrc.yml' 'src/**/*.ts'",
+    "lint:fix": "yarn eslint -c 'node_modules/@ns8/protect-tools-lint/eslintrc.yml' --fix 'src/**/*.ts'",
     "sortJson": "npx ./node_modules/@ns8/protect-tools-js/dist/sortJson/sortJson.js",
-    "test": "yarn build && nyc --nycrc-path 'node_modules/protect-tools-lint/nycrc.yml' mocha 'src/**/*.test.ts'",
-    "test:coverage": "nyc --nycrc-path 'node_modules/protect-tools-lint/nycrc.yml' yarn test:debug",
+    "test": "yarn build && nyc --nycrc-path 'node_modules/@ns8/protect-tools-lint/nycrc.yml' mocha 'src/**/*.test.ts'",
+    "test:coverage": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-lint/nycrc.yml' yarn test:debug",
     "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'"
   },
   "scriptsDocumentation": {
