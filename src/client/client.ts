@@ -59,6 +59,15 @@ const getIFrameUrl = (page: ClientPage, orderId: string, config: ClientConfig): 
 };
 
 /**
+ * Checks whether a string is empty or null.
+ *
+ * @param myString - The string to check
+ */
+const isEmptyString = (myString?: string): boolean => {
+  return myString == null || myString === '';
+};
+
+/**
  * Performs runtime validation that a `page` passed from javascript is a valid
  * {@link ClientPage} enum value, and ensures that the `platformId` is passed if
  * `page` is {@link clientPage.ORDER_DETAILS}
@@ -69,12 +78,12 @@ const validatePage = (page?: ClientPage, platformId?: string): ClientPage => {
   if (page == null) {
     return ClientPage.DASHBOARD;
   }
-  const isValidPage = Object.values(ClientPage).some((p) => page === p);
-  if (!isValidPage) {
+  let validPage = page;
+  if (!Object.values(ClientPage).some((p) => page === p)) {
     protectLogger.error('invalid ClientPage: %s', page);
+    validPage = ClientPage.DASHBOARD;
   }
-  let validPage = isValidPage ? page : ClientPage.DASHBOARD;
-  if (validPage === ClientPage.ORDER_DETAILS && (platformId == null || platformId === '')) {
+  if (validPage === ClientPage.ORDER_DETAILS && isEmptyString(platformId)) {
     protectLogger.error('must pass orderId for ClientPage.ORDER_DETAILS');
     validPage = ClientPage.DASHBOARD;
   }
