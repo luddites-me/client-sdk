@@ -63,9 +63,7 @@ const getIFrameUrl = (page: ClientPage, orderId: string, config: ClientConfig): 
  *
  * @param myString - The string to check
  */
-const isEmptyString = (myString?: string): boolean => {
-  return myString == null || myString === '';
-};
+const isEmptyString = (myString?: string): boolean => myString == null || myString === '';
 
 /**
  * Performs runtime validation that a `page` passed from javascript is a valid
