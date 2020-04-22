@@ -63,3 +63,6 @@ dist
 
 # Documentation
 *.bak
+.tmp/
+temp/
+api/

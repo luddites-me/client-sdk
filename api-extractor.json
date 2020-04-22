@@ -1,0 +1,16 @@
+{
+  "apiReport": {
+    "enabled": true,
+    "reportFileName": "project-api.md",
+    "reportFolder": "<projectFolder>/docs/"
+  },
+  "docModel": {
+    "enabled": true
+  },
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "<projectFolder>/dist/protect.d.ts"
+  },
+  "mainEntryPointFilePath": "<projectFolder>/.tmp/index.d.ts",
+  "newlineKind": "lf"
+}

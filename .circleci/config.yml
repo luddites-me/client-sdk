@@ -73,6 +73,9 @@ jobs:
           command: yarn build:prod
           name: Build for Production
       - run:
+          command: yarn docs:publish
+          name: Publish API to GitHub Pages
+      - run:
           command: |
             version=$(node -p -e "require('./package.json').version")
             echo "export VERSION=$version" >> $BASH_ENV
@@ -136,7 +139,10 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
   test_and_deploy:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
       - deploy_dev:
           filters:
             branches:
