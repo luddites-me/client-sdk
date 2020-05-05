@@ -66,7 +66,7 @@ export const createIFrame = ({
       checkOrigin: false,
       log: debug,
       tolerance: 5,
-      onMessage: (message: CrossDomainMessage) => {
+      onMessage: ({ message }: { message: CrossDomainMessage }) => {
         if (message == null) {
           protectLogger.error('null "message" passed from child iframe');
           return;
