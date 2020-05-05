@@ -6,17 +6,24 @@
 
 - [Test README](#test-readme)
 - [Getting Started](#getting-started)
-  - [Running Tests](#running-tests)
-  - [`package.json` scripts](#packagejson-scripts)
+  - [Environment Variables](#environment-variables)
+    - [Running Tests](#running-tests)
+    - [`package.json` scripts](#packagejson-scripts)
   - [License](#license)
 
 # Getting Started
 
 To get started, take a look at the documentation listed below:
 
-- [Protect Client Documentation](docs/client.md)
-- [Debugging](docs/debugging.md)
-- [Installation](docs/installation.md)
+- docs
+  - [Protect Client Documentation](docs/client.md)
+  - [Debugging](docs/debugging.md)
+  - [Installation](docs/installation.md)
+  - [API Report File for "@ns8/protect-sdk-client"](docs/project-api.md)
+
+## Environment Variables
+
+- `NODE_ENV`: Environment name. Options are: dev, test and prod. Default: dev
 
 ### Running Tests
 
@@ -24,17 +31,22 @@ To get started, take a look at the documentation listed below:
 
 ### `package.json` scripts
 
-- `yarn build`: Builds and bundles the project.
-- `yarn build:dev`: Build the project with source maps for easier development.
-- `yarn build:prod`: Builds and minifies the project for distribution.
-- `yarn bundle`: Bundles the project.
-- `yarn clean`: Removes build artifacts.
-- `yarn docs`: Generates documentation from typescript code.
-- `yarn docs:standardize`: Updates the project's documentation according to the markdown standard.
-- `yarn generate:exports`: Exports SDK functions to a top-level index.ts file in the src directory.
-- `yarn lint`: Lints the codebase.
-- `yarn sortJson`: Perform aesthetic operations to make the project files easier to navigate and read.
-- `yarn test`: Runs tests and calculates test coverage.
+- `yarn build`: Assembles `src` code into a single, minified JS module with type definitions. Exports `build` scripts into a build folder.
+- `yarn bundle`: Runs WebPack on the `src` code.
+- `yarn clean`: Purges all temporary folders
+- `yarn count`: Counts lines of source code.
+- `yarn docs:all`: Standardizes markdown and generates the API metadata.
+- `yarn docs:api`: Creates a `project-api` Markdown in docs and an `index.d.ts` file in dist.
+- `yarn docs:publish`: Generates end-to-end documentation for the entire project and publishes it to the `gh-pages` branch.
+- `yarn docs:standardize`: Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an NS8 license
+- `yarn generate:exports`: Generates index.ts files for all exports recursively in the 'src' folder
+- `yarn lint`: Lints the codebase and the documentation
+- `yarn lint:fix`: Lints the codebase and fixes auto-correctable errors. Runs prettier on the code.
+- `yarn sortJson`: Performs aesthetic operations to make the project files easier to navigate and read
+- `yarn test`: Builds and then runs tests and calculates test coverage. This should be run by CI.
+- `yarn test:coverage`: Runs tests, calculates test coverage in debug mode.
+- `yarn test:debug`: Runs tests with the debugger attached.
+- `yarn test:only`: Runs tests and calculates test coverage. This should be run for local development.
 
 ## License
 

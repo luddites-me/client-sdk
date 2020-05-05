@@ -11,7 +11,7 @@ jobs:
           command: yarn
           name: Install Dependencies
       - run:
-          command: yarn build:prod
+          command: yarn build
           name: Build for Production
       - run:
           command: ln -s ~/bin/aws /usr/local/bin/
@@ -52,6 +52,12 @@ jobs:
               exit 1
             fi
           name: Tag Release in GitHub
+      - run:
+          command: |
+            git checkout dev
+            git merge -m 'Merge branch `master` into `dev`' master
+            git push origin dev
+          name: Merge Changes Back to Development Branch
   publish:
     docker:
       - image: node:12
@@ -64,8 +70,11 @@ jobs:
           command: yarn
           name: Install Dependencies
       - run:
-          command: yarn build:prod
+          command: yarn build
           name: Build for Production
+      - run:
+          command: yarn docs:publish
+          name: Publish API to GitHub Pages
       - run:
           command: |
             version=$(node -p -e "require('./package.json').version")
@@ -130,7 +139,10 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
   test_and_deploy:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
       - deploy_dev:
           filters:
             branches:

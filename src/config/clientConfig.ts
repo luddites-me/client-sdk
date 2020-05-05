@@ -56,6 +56,7 @@ export class ClientConfig implements PartialConfig {
    * Create a complete {@link ClientConfig} from a {@link PartialConfig}.
    * All values are validated and any omitted values are kept to their defaults.
    *
+   * @remarks
    * Since this is called from JS clients, we don't assume that the parameters are
    * checked at compile time as they would be with typescript, so we check that the
    * values have the expected type/shape at runtime.

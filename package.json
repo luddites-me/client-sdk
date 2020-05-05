@@ -1,46 +1,34 @@
 {
   "author": "ns8inc",
   "dependencies": {
-    "@ns8/protect-tools-bundle": "0.0.13",
-    "@ns8/protect-tools-js": "0.0.10",
     "cross-fetch": "3.0.4",
     "format-util": "1.0.5",
     "iframe-resizer": "4.2.10",
-    "loglevel": "1.6.7",
+    "loglevel": "1.6.8",
     "stacktrace-js": "2.0.2",
     "typescript": "3.8.3",
-    "webpack-cli": "3.3.11"
+    "uuid-validate": "0.0.3"
   },
   "description": "NS8 Protect JavaScript SDK",
   "devDependencies": {
-    "@ns8/protect-tools-lint": "0.0.4",
+    "@ns8/protect-tools-js": "0.1.3",
     "@types/chai": "4.2.11",
     "@types/chai-as-promised": "7.1.2",
     "@types/format-util": "1.0.1",
     "@types/glob": "^7.1.1",
-    "@types/jsdom": "16.2.0",
+    "@types/jsdom": "16.2.1",
     "@types/mocha": "7.0.2",
-    "@types/node": "13.11.0",
-    "@types/node-fetch": "2.5.5",
-    "@types/semver": "7.1.0",
+    "@types/node": "13.13.2",
+    "@types/node-fetch": "2.5.6",
     "@types/uuid-validate": "0.0.1",
-    "chai": "4.2.0",
-    "chai-as-promised": "7.1.1",
-    "create-ts-index": "1.12.1",
-    "dotenv-extended": "2.8.0",
-    "husky": "4.2.3",
     "jsdom": "16.2.2",
-    "mocha": "7.1.1",
     "nock": "12.0.3",
-    "node-fetch": "2.6.0",
-    "nyc": "15.0.1",
-    "semver": "7.2.1",
-    "sorted-json": "0.2.6",
-    "ts-mocha": "7.0.0",
-    "ts-node": "8.8.2",
-    "typedoc": "0.17.4",
-    "typedoc-plugin-markdown": "2.2.17",
-    "uuid-validate": "0.0.3"
+    "node-fetch": "2.6.0"
+  },
+  "envDocumentation": {
+    "NODE_ENV": {
+      "description": "Environment name. Options are: dev, test and prod. Default: dev"
+    }
   },
   "files": [
     "dist"
@@ -54,63 +42,86 @@
     "url": "git+https://github.com/ns8inc/protect-sdk-client.git"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc --emitDeclarationOnly && yarn bundle",
-    "build:prod": "NODE_ENV=production yarn build",
-    "bundle": "yarn sortJson && yarn generate:exports && webpack && yarn docs:standardize",
-    "clean": "rm -rf .awcache dist",
-    "docs": "rm -rf docs && yarn typedoc --plugin typedoc-plugin-markdown && yarn docs:sync-build-scripts",
+    "build": "yarn && yarn generate:exports && tsc -d && yarn bundle",
+    "bundle": "yarn sortJson && webpack && yarn docs:all",
+    "clean": "rm -rf .tmp .nyc_output api dist temp",
+    "count": "cloc ./src ./build ./docs",
+    "docs:all": "yarn docs:standardize && yarn docs:api",
+    "docs:api": "npx ./node_modules/@ns8/protect-tools-js/dist/docs/generateApi.js --path=./api-extractor.json",
+    "docs:publish": "npx ./node_modules/@ns8/protect-tools-js/dist/docs/generateApiDocs.js",
     "docs:standardize": "npx ./node_modules/@ns8/protect-tools-js/dist/readme/standardizeReadme.js",
-    "generate:exports": "yarn cti create ./src -w",
-    "lint": "yarn eslint -c 'node_modules/@ns8/protect-tools-lint/eslintrc.yml' 'src/**/*.ts'",
-    "lint:fix": "yarn eslint -c 'node_modules/@ns8/protect-tools-lint/eslintrc.yml' --fix 'src/**/*.ts'",
-    "sortJson": "npx ./node_modules/@ns8/protect-tools-js/dist/sortJson/sortJson.js",
-    "test": "yarn build && nyc --nycrc-path 'node_modules/@ns8/protect-tools-lint/nycrc.yml' mocha 'src/**/*.test.ts'",
-    "test:coverage": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-lint/nycrc.yml' yarn test:debug",
-    "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'"
+    "generate:exports": "cti create ./src -w -b",
+    "lint": "yarn eslint -c 'node_modules/@ns8/protect-tools-js/.eslintrc.yml' 'src/**/*.ts'",
+    "lint:fix": "yarn prettier --write 'src/**/*.ts' && yarn lint --fix",
+    "sortJson": "npx ./node_modules/@ns8/protect-tools-js/dist/lint/sortJson.js",
+    "test": "yarn build && yarn test:only",
+    "test:coverage": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' yarn test:debug",
+    "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'",
+    "test:only": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' mocha 'src/**/*.test.ts'"
   },
   "scriptsDocumentation": {
     "build": {
-      "description": "Builds and bundles the project.",
-      "dev": true
-    },
-    "build:dev": {
-      "description": "Build the project with source maps for easier development.",
-      "dev": true
-    },
-    "build:prod": {
-      "description": "Builds and minifies the project for distribution.",
+      "description": "Assembles `src` code into a single, minified JS module with type definitions. Exports `build` scripts into a build folder.",
       "dev": false
     },
     "bundle": {
-      "description": "Bundles the project.",
-      "dev": true
+      "description": "Runs WebPack on the `src` code.",
+      "dev": false
     },
     "clean": {
-      "description": "Removes build artifacts.",
+      "description": "Purges all temporary folders",
       "dev": true
     },
-    "docs": {
-      "description": "Generates documentation from typescript code.",
+    "count": {
+      "description": "Counts lines of source code.",
+      "dev": true
+    },
+    "docs:all": {
+      "description": "Standardizes markdown and generates the API metadata.",
+      "dev": true
+    },
+    "docs:api": {
+      "description": "Creates a `project-api` Markdown in docs and an `index.d.ts` file in dist.",
+      "dev": true
+    },
+    "docs:publish": {
+      "description": "Generates end-to-end documentation for the entire project and publishes it to the `gh-pages` branch.",
       "dev": true
     },
     "docs:standardize": {
-      "description": "Updates the project's documentation according to the markdown standard.",
+      "description": "Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an NS8 license",
       "dev": true
     },
     "generate:exports": {
-      "description": "Exports SDK functions to a top-level index.ts file in the src directory.",
+      "description": "Generates index.ts files for all exports recursively in the 'src' folder",
       "dev": true
     },
     "lint": {
-      "description": "Lints the codebase.",
+      "description": "Lints the codebase and the documentation",
+      "dev": true
+    },
+    "lint:fix": {
+      "description": "Lints the codebase and fixes auto-correctable errors. Runs prettier on the code.",
       "dev": true
     },
     "sortJson": {
-      "description": "Perform aesthetic operations to make the project files easier to navigate and read.",
+      "description": "Performs aesthetic operations to make the project files easier to navigate and read",
       "dev": true
     },
     "test": {
-      "description": "Runs tests and calculates test coverage.",
+      "description": "Builds and then runs tests and calculates test coverage. This should be run by CI.",
+      "dev": true
+    },
+    "test:coverage": {
+      "description": "Runs tests, calculates test coverage in debug mode.",
+      "dev": true
+    },
+    "test:debug": {
+      "description": "Runs tests with the debugger attached.",
+      "dev": true
+    },
+    "test:only": {
+      "description": "Runs tests and calculates test coverage. This should be run for local development.",
       "dev": true
     }
   },

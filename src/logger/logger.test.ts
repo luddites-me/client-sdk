@@ -12,6 +12,9 @@ const getBasicConfig = (): ClientConfig => {
   });
 };
 
+/**
+ * Verifies logger module configuration logic
+ */
 describe('protect logger module', () => {
   it('configures the protect client error log ', () => {
     expect(() =>
