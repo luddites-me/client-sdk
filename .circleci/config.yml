@@ -11,7 +11,7 @@ jobs:
           command: yarn
           name: Install Dependencies
       - run:
-          command: yarn build:prod
+          command: yarn build
           name: Build for Production
       - run:
           command: ln -s ~/bin/aws /usr/local/bin/
@@ -70,7 +70,7 @@ jobs:
           command: yarn
           name: Install Dependencies
       - run:
-          command: yarn build:prod
+          command: yarn build
           name: Build for Production
       - run:
           command: yarn docs:publish

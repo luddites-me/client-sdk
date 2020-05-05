@@ -42,8 +42,7 @@
     "url": "git+https://github.com/ns8inc/protect-sdk-client.git"
   },
   "scripts": {
-    "build": "yarn && yarn clean && yarn generate:exports && tsc -d && yarn bundle && yarn sortJson",
-    "build:prod": "NODE_ENV=production yarn build",
+    "build": "yarn && yarn generate:exports && tsc -d && yarn bundle",
     "bundle": "yarn sortJson && webpack && yarn docs:all",
     "clean": "rm -rf .tmp .nyc_output api dist temp",
     "count": "cloc ./src ./build ./docs",
@@ -56,18 +55,14 @@
     "lint:fix": "yarn prettier --write 'src/**/*.ts' && yarn lint --fix",
     "sortJson": "npx ./node_modules/@ns8/protect-tools-js/dist/lint/sortJson.js",
     "test": "yarn build && yarn test:only",
-    "test:only": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' mocha 'src/**/*.test.ts'",
     "test:coverage": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' yarn test:debug",
-    "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'"
+    "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'",
+    "test:only": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' mocha 'src/**/*.test.ts'"
   },
   "scriptsDocumentation": {
     "build": {
       "description": "Assembles `src` code into a single, minified JS module with type definitions. Exports `build` scripts into a build folder.",
       "dev": false
-    },
-    "build:prod": {
-      "description": "Builds in production mode.",
-      "dev": true
     },
     "bundle": {
       "description": "Runs WebPack on the `src` code.",
@@ -117,16 +112,16 @@
       "description": "Builds and then runs tests and calculates test coverage. This should be run by CI.",
       "dev": true
     },
-    "test:only": {
-      "description": "Runs tests and calculates test coverage. This should be run for local development.",
-      "dev": true
-    },
     "test:coverage": {
       "description": "Runs tests, calculates test coverage in debug mode.",
       "dev": true
     },
     "test:debug": {
       "description": "Runs tests with the debugger attached.",
+      "dev": true
+    },
+    "test:only": {
+      "description": "Runs tests and calculates test coverage. This should be run for local development.",
       "dev": true
     }
   },

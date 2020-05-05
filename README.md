@@ -32,7 +32,6 @@ To get started, take a look at the documentation listed below:
 ### `package.json` scripts
 
 - `yarn build`: Assembles `src` code into a single, minified JS module with type definitions. Exports `build` scripts into a build folder.
-- `yarn build:prod`: Builds in production mode.
 - `yarn bundle`: Runs WebPack on the `src` code.
 - `yarn clean`: Purges all temporary folders
 - `yarn count`: Counts lines of source code.
