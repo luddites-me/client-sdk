@@ -123,5 +123,14 @@ class Client implements ProtectClient {
   }
 }
 
+/**
+ * Create client utilizing config
+ * @param config - The client config data used for initialization
+ * @internal
+ */
 export const createClient = (config: ClientConfig): ProtectClient => new Client(config);
+/**
+ * Values required for testing
+ * @internal
+ */
 export const forTest = { getPathForPage, validatePage, getIFrameUrl };

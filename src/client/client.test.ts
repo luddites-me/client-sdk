@@ -9,6 +9,9 @@ import { forTest } from './client';
 
 import chaiAsPromised = require('chai-as-promised');
 
+/**
+ * Global reference space to define NodeJS in test context
+ */
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {

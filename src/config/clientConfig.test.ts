@@ -14,6 +14,9 @@ const getBasicConfig = (config?: object): ClientConfig =>
     ...config,
   });
 
+/**
+ * Verifies ClientConfig methods work as intended
+ */
 describe('Asserts that ClientConfig methods are valid', () => {
   beforeEach(() => {
     ClientConfig.DEBUG = false;

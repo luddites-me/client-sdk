@@ -42,11 +42,12 @@ To get started, take a look at the documentation listed below:
 - `yarn docs:standardize`: Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an NS8 license
 - `yarn generate:exports`: Generates index.ts files for all exports recursively in the 'src' folder
 - `yarn lint`: Lints the codebase and the documentation
-- `yarn lint:fix`: Lints the codebase and automatically fixes what it can
+- `yarn lint:fix`: Lints the codebase and fixes auto-correctable errors. Runs prettier on the code.
 - `yarn sortJson`: Performs aesthetic operations to make the project files easier to navigate and read
-- `yarn test`: Runs tests and calculates test coverage
-- `yarn test:coverage`: Calculates test coverage
-- `yarn test:debug`: Runs tests with the debugger
+- `yarn test`: Builds and then runs tests and calculates test coverage. This should be run by CI.
+- `yarn test:coverage`: Runs tests, calculates test coverage in debug mode.
+- `yarn test:debug`: Runs tests with the debugger attached.
+- `yarn test:only`: Runs tests and calculates test coverage. This should be run for local development.
 
 ## License
 

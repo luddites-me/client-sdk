@@ -38,13 +38,17 @@ export enum ClientPage {
     SUSPICIOUS_ORDERS = "SUSPICIOUS_ORDERS"
 }
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "configureProtectLogger" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const configureProtectLogger: (options: ProtectClientErrorLogOptions, clientConfig: ClientConfig) => void;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "createClient" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const createClient: (config: ClientConfig) => ProtectClient;
 
-// @public (undocumented)
+// @public
 export type CrossDomainMessage = {
     name: string;
     data?: unknown;
@@ -75,7 +79,9 @@ export enum EventName {
     ORDER_DETAIL_NAME_CLICK = "order-detail-name-click"
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "forTest" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const forTest: {
     getPathForPage: (page: ClientPage, platformId: string) => string;
     validatePage: (page?: ClientPage | undefined, platformId?: string | undefined) => ClientPage;
@@ -95,7 +101,7 @@ export const getLoggers: () => {
     [name: string]: Logger;
 };
 
-// @public (undocumented)
+// @public
 export const IFRAME_PAGE_INFO_EVENT_NAME = "iframe-resize-page-info";
 
 // @public
@@ -107,7 +113,7 @@ export interface IFrameConfig {
 // @public
 export function initIFrame(container: Element, globalWindow: CustomWindow): void;
 
-// @public (undocumented)
+// @public
 export const LAST_PAGE_INFO_GLOBAL = "__latestIframePageInfo";
 
 // @public
@@ -122,7 +128,7 @@ export enum LogLevel {
     WARN = 3
 }
 
-// @public (undocumented)
+// @public
 export interface ParentPageInfo {
     documentHeight: number;
     documentWidth: number;
@@ -136,7 +142,7 @@ export interface ParentPageInfo {
     windowWidth: number;
 }
 
-// @public (undocumented)
+// @public
 export interface PartialConfig {
     accessToken: string;
     eventBinding?: Partial<EventBinding>;
@@ -159,7 +165,9 @@ export interface ProtectClientErrorLogOptions {
     level: LogLevel;
 }
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "protectLogger" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const protectLogger: Logger;
 
 

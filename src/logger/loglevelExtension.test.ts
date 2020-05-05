@@ -9,6 +9,9 @@ import 'mocha';
 import { ProtectClientErrorLogOptions } from '../types/types';
 import { configureLogger, getCurrentErrorLogRequestPromise } from '../internal/loglevelExtension';
 
+/**
+ * Tests to ensure error logging level logic functions as intended
+ */
 describe('Protect Client Error Log extension for `loglevel`', () => {
   use(chaiAsPromised);
 

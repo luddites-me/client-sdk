@@ -1,8 +1,22 @@
-import { LogLevel } from '../logger/logger';
+/* eslint-disable */
+import { LogLevel } from "../logger/logger";
 
-export const IFRAME_PAGE_INFO_EVENT_NAME = 'iframe-resize-page-info';
-export const LAST_PAGE_INFO_GLOBAL = '__latestIframePageInfo';
+/**
+ * Custom event to fire for childiFrame logic to call
+ * @public
+ */
+export const IFRAME_PAGE_INFO_EVENT_NAME = "iframe-resize-page-info";
 
+/**
+ * Constant referencing based off of the last page
+ * @public
+ */
+export const LAST_PAGE_INFO_GLOBAL = "__latestIframePageInfo";
+
+/**
+ * Attributes of the parent page
+ * @public
+ */
 export interface ParentPageInfo {
   /**
    * The height of the iframe in pixels
@@ -51,15 +65,17 @@ export interface ParentPageInfo {
 /**
  * The signature for event callbacks.
  * @param data - An arbitrary event object that will be passed in the context of the callback
+ * @public
  */
 export type EventCallback = (data: unknown) => Promise<unknown>;
 
 /**
  * Events that can be triggered from the protect client to the parent window
+ * @public
  */
 export enum EventName {
-  NS8_PROTECT_CLIENT_CONNECTED = 'ns8-protect-client-connected',
-  ORDER_DETAIL_NAME_CLICK = 'order-detail-name-click',
+  NS8_PROTECT_CLIENT_CONNECTED = "ns8-protect-client-connected",
+  ORDER_DETAIL_NAME_CLICK = "order-detail-name-click",
 }
 
 /**
@@ -67,19 +83,25 @@ export enum EventName {
  * and the value is a callback which will be executed if that event fires. The keys must map to known
  * EventNames.
  * {@link EventCallback}
+ * @public
  */
 export type EventBinding = { [evtName in EventName]: EventCallback };
 
 /**
  * Page routes within the Protect Client SPA
+ * @public
  */
 export enum ClientPage {
-  DASHBOARD = 'DASHBOARD',
-  ORDER_DETAILS = 'ORDER_DETAILS',
-  ORDER_RULES = 'ORDER_RULES',
-  SUSPICIOUS_ORDERS = 'SUSPICIOUS_ORDERS',
+  DASHBOARD = "DASHBOARD",
+  ORDER_DETAILS = "ORDER_DETAILS",
+  ORDER_RULES = "ORDER_RULES",
+  SUSPICIOUS_ORDERS = "SUSPICIOUS_ORDERS",
 }
 
+/**
+ * Interface representing partial config data for the SDK
+ * @public
+ */
 export interface PartialConfig {
   /**
    * The Protect access token required for authenticating the request to inject the IFrame.
@@ -111,8 +133,8 @@ export interface PartialConfig {
 
 /**
  * Configuration options for rendering the Client
+ * @public
  */
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IFrameConfig {
   /**
    * An array of CSS class names to attach to.
@@ -127,13 +149,15 @@ export interface IFrameConfig {
   attachToId: string;
 }
 
-/*
+/**
  * The shared message interface for cross-domain iframe messages sent via iframe-resizer.
+ * @public
  */
 export type CrossDomainMessage = { name: string; data?: unknown };
 
 /**
  * Responsible for rendering the Protect Client SPA
+ * @public
  */
 export interface ProtectClient {
   /**
@@ -160,6 +184,7 @@ export interface ProtectClient {
 
 /**
  * Configuration for the {@link protectLogger}
+ * @public
  */
 export interface ProtectClientErrorLogOptions {
   /**

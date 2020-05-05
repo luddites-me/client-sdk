@@ -18,6 +18,8 @@ const iFrameElId = 'ns8-protect-client-iframe';
  * @param classNames - a list of classNames to apply to the iframe element.
  * @param clientUrl - the url of the NS8 protect client.
  * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
+ *
+ * @internal
  */
 export interface ProtectClientIFrameOptions {
   classNames: string[];
@@ -32,9 +34,13 @@ export interface ProtectClientIFrameOptions {
  * Attaches an iframe to the page using the provided in the Client Config.
  * {@link ClientConfig}
  * {@link attachToId}
+ *
+ * @remarks
  * Sets up the onMessage and onResized handlers to enable iframe-resizer to
  * call event handlers triggered from within the NS8 protect client as well as update the iframe
  * height when the protect client page resizes.
+ *
+ * @internal
  */
 export const createIFrame = ({
   containerId,

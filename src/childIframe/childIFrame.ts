@@ -51,6 +51,8 @@ interface ParentIFrame {
 /**
  * Custom Window extends the global DOM window object to include optional global iframe-resizer
  * properties and the containing page {@link ParentPageInfo} properties.
+ *
+ * @public
  */
 export interface CustomWindow extends Window {
   /**

@@ -14,6 +14,9 @@ import 'mocha';
 import { CustomWindow, getCurrentMinIframeHeight, initIFrame } from './childIFrame';
 import { LAST_PAGE_INFO_GLOBAL } from '../types/types';
 
+/**
+ * Global reference space to define NodeJS in test context
+ */
 declare global {
   namespace NodeJS {
     interface Global {
@@ -23,8 +26,14 @@ declare global {
   }
 }
 
+/**
+ * HTML div to utilize int esting
+ */
 const testDivMarkup = '<div id="test"></div>';
 
+/**
+ * Test utility functions to ensure the logic runs as expected
+ */
 describe('Test utility functions', () => {
   const { window } = new JSDOM('<!DOCTYPE html><div></div>');
   const customWindow = (window as unknown) as CustomWindow;
@@ -40,6 +49,9 @@ describe('Test utility functions', () => {
   });
 });
 
+/**
+ * Ensures that the childIframe functions as expected
+ */
 describe('Asserts that the childIFrame is initialized on the Window object', () => {
   const { window } = new JSDOM('<!DOCTYPE html><div></div>');
   const customWindow = (window as unknown) as CustomWindow;
