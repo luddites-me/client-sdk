@@ -23,7 +23,7 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
   }
 };
 
-const hideNavBar = (page: ClientPage): boolean => {
+const getHideNavBarDefault = (page: ClientPage): boolean => {
   switch (page) {
     case ClientPage.DASHBOARD:
       return false;
@@ -43,14 +43,14 @@ const hideNavBar = (page: ClientPage): boolean => {
  * @param orderId - an id used to fetch order details
  * @param config - a {@link ClientConfig} that supplies an access token.
  */
-const getIFrameUrl = (page: ClientPage, orderId: string, config: ClientConfig): string => {
+const getIFrameUrl = (page: ClientPage, orderId: string, hideNavBar: boolean, config: ClientConfig): string => {
   const url = new URL(config.protectClientUrl.toString());
   const searchParams = new URLSearchParams();
 
   url.pathname = getPathForPage(page, orderId);
   searchParams.set('accessToken', config.accessToken);
   searchParams.set('noredirect', '1');
-  if (hideNavBar(page)) {
+  if (hideNavBar) {
     searchParams.set('hideNavBar', '1');
   }
   url.search = `${searchParams}`;
@@ -102,12 +102,18 @@ class Client implements ProtectClient {
   }
 
   // @inheritdoc
-  public async render(page: ClientPage = ClientPage.DASHBOARD, platformId?: string): Promise<void> {
+  public async render(
+    page: ClientPage = ClientPage.DASHBOARD,
+    platformId?: string,
+    forceHideNaveBar?: boolean,
+  ): Promise<void> {
     const { attachToId, classNames } = this.config.iFrameConfig;
+    const validatedPage = validatePage(page, platformId);
+    const hideNavBar = forceHideNaveBar != null ? forceHideNaveBar : getHideNavBarDefault(validatedPage);
     createIFrame({
       classNames,
       containerId: attachToId,
-      clientUrl: getIFrameUrl(validatePage(page, platformId), platformId || '', this.config),
+      clientUrl: getIFrameUrl(validatedPage, platformId || '', hideNavBar, this.config),
       debug: ClientConfig.DEBUG,
       eventBinding: this.config.eventBinding,
     });

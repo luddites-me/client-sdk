@@ -165,9 +165,10 @@ export interface ProtectClient {
    *
    * @param page - The {@link ClientPage} to navigate to, defaults to {@link ClientPage.DASHBOARD}
    * @param platformId - The platform orderId to show iff page is {@link ClientPage.ORDER_DETAILS}
+   * @param forceHideNaveBar - Explicitly show/hide the nav bar instead of using default based on `page`
    * @returns A promise which will be resolved when the iFrame is injected successfully.
    */
-  render(page?: ClientPage, platformId?: string): Promise<void>;
+  render(page?: ClientPage, platformId?: string, forceHideNaveBar?: boolean): Promise<void>;
 
   /**
    * Manually trigger an event on the client. Useful for testing/debugging.
