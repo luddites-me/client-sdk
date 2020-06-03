@@ -85,7 +85,9 @@ export enum EventName {
 export const forTest: {
     getPathForPage: (page: ClientPage, platformId: string) => string;
     validatePage: (page?: ClientPage | undefined, platformId?: string | undefined) => ClientPage;
-    getIFrameUrl: (page: ClientPage, orderId: string, config: ClientConfig) => string;
+    getIFrameUrl: (page: ClientPage, orderId: string, hideNavBar: boolean, config: ClientConfig) => string;
+    getHideNavBarDefault: (page: ClientPage) => boolean;
+    getHideNavBarSetting: (validatedPage: ClientPage, overrideHideNavBar?: boolean | undefined) => boolean;
 };
 
 // @public
@@ -155,7 +157,7 @@ export interface PartialConfig {
 
 // @public
 export interface ProtectClient {
-    render(page?: ClientPage, platformId?: string): Promise<void>;
+    render(page?: ClientPage, platformId?: string, overrideHideNavBar?: boolean): Promise<void>;
     trigger(eventName: EventName, data?: unknown): Promise<unknown>;
 }
 

@@ -31,9 +31,7 @@ The following serve as examples of implementation of the Client to demonstrate i
 
 ```typescript
 import { createClient, ClientConfig, ClientPage, EventName, EventBinding, IFrameConfig } from '@ns8/protect-sdk-client';
-
 const accessToken = '27802062-34c4-450c-a18f-667324f14375';
-
 const eventBinding: EventBinding = {
   // Define a response to this event that will navigate the user from Protect back to the Platform order page
   [EventName.ORDER_DETAIL_NAME_CLICK]: (data: unknown): Promise<unknown> => {
@@ -43,15 +41,12 @@ const eventBinding: EventBinding = {
     return Promise.resolve();
   },
 };
-
 const iFrameConfig: {
-  classNames: ['ns8-protect-client-iframe'],
-  attachToId: 'ns8-protect-wrapper',
+  classNames: ['ns8-protect-client-iframe'];
+  attachToId: 'ns8-protect-wrapper';
 };
-
 // Instantiate the client with all of the platform specific options
 const protectClient = createClient(new ClientConfig({ accessToken, eventBinding, iFrameConfig }));
-
 // Render the client in an iframe and attach to all events. Returns a promise which resolves when the client is ready.
 const clientReady = protectClient.render(ClientPage.DASHBOARD);
 ```
