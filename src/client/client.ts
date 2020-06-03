@@ -36,6 +36,9 @@ const getHideNavBarDefault = (page: ClientPage): boolean => {
   }
 };
 
+const getHideNavBarSetting = (validatedPage: ClientPage, overrideHideNavBar?: boolean): boolean =>
+  overrideHideNavBar != null ? overrideHideNavBar : getHideNavBarDefault(validatedPage);
+
 /**
  * Constructs the URL for the IFrame which represents the Protect Client
  *
@@ -105,11 +108,11 @@ class Client implements ProtectClient {
   public async render(
     page: ClientPage = ClientPage.DASHBOARD,
     platformId?: string,
-    forceHideNaveBar?: boolean,
+    overrideHideNavBar?: boolean,
   ): Promise<void> {
     const { attachToId, classNames } = this.config.iFrameConfig;
     const validatedPage = validatePage(page, platformId);
-    const hideNavBar = forceHideNaveBar != null ? forceHideNaveBar : getHideNavBarDefault(validatedPage);
+    const hideNavBar = getHideNavBarSetting(validatedPage, overrideHideNavBar);
     createIFrame({
       classNames,
       containerId: attachToId,
@@ -139,4 +142,10 @@ export const createClient = (config: ClientConfig): ProtectClient => new Client(
  * Values required for testing
  * @internal
  */
-export const forTest = { getPathForPage, validatePage, getIFrameUrl };
+export const forTest = {
+  getPathForPage,
+  validatePage,
+  getIFrameUrl,
+  getHideNavBarDefault,
+  getHideNavBarSetting,
+};

@@ -104,36 +104,49 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     });
 
     it('appends a falsy navBar query param to clientUrl if the page is ClientPage.ORDER_RULES', async () => {
-      const { getIFrameUrl } = forTest;
+      const { getIFrameUrl, getHideNavBarDefault } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
-      const url = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', config));
+      const hideNavBar = getHideNavBarDefault(ClientPage.ORDER_RULES);
+      const url = new URL(getIFrameUrl(ClientPage.ORDER_RULES, '1', hideNavBar, config));
       const searchParams = new URLSearchParams(url.search);
       expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
     });
 
     it('appends a falsy navBar query param to clientUrl if the page is ClientPage.SUSPICIOUS_ORDERS', async () => {
-      const { getIFrameUrl } = forTest;
+      const { getIFrameUrl, getHideNavBarDefault } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
-      const url = new URL(getIFrameUrl(ClientPage.SUSPICIOUS_ORDERS, '1', config));
+      const hideNavBar = getHideNavBarDefault(ClientPage.SUSPICIOUS_ORDERS);
+      const url = new URL(getIFrameUrl(ClientPage.SUSPICIOUS_ORDERS, '1', hideNavBar, config));
       const searchParams = new URLSearchParams(url.search);
       expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
     });
 
     it('appends a falsy navBar query param to clientUrl if the page is ClientPage.DASHBOARD', async () => {
-      const { getIFrameUrl } = forTest;
+      const { getIFrameUrl, getHideNavBarDefault } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
-      const url = new URL(getIFrameUrl(ClientPage.DASHBOARD, '1', config));
+      const hideNavBar = getHideNavBarDefault(ClientPage.DASHBOARD);
+      const url = new URL(getIFrameUrl(ClientPage.DASHBOARD, '1', hideNavBar, config));
       const searchParams = new URLSearchParams(url.search);
       expect(Boolean(searchParams.get('hideNavBar'))).to.be.false;
     });
 
     it('appends truthy navBar query param to clientUrl if the page is ClientPage.ORDER_DETAILS', async () => {
-      const { getIFrameUrl } = forTest;
+      const { getIFrameUrl, getHideNavBarDefault } = forTest;
       const config = getConfig({ iFrameConfig: { attachToId: clientDomId } });
-
-      const orderDetailsUrl = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', config));
+      const hideNavBar = getHideNavBarDefault(ClientPage.ORDER_DETAILS);
+      const orderDetailsUrl = new URL(getIFrameUrl(ClientPage.ORDER_DETAILS, '1', hideNavBar, config));
       const orderDetailsSearchParams = new URLSearchParams(orderDetailsUrl.search);
       expect(Boolean(orderDetailsSearchParams.get('hideNavBar'))).to.be.true;
+    });
+
+    it('can override the hideNavBar property', async () => {
+      const { getHideNavBarDefault, getHideNavBarSetting } = forTest;
+      const noOverride = getHideNavBarSetting(ClientPage.ORDER_DETAILS);
+      const overrideToFalse = getHideNavBarSetting(ClientPage.ORDER_DETAILS, false);
+      const overrideToTrue = getHideNavBarSetting(ClientPage.ORDER_DETAILS, true);
+      expect(noOverride).to.equal(getHideNavBarDefault(ClientPage.ORDER_DETAILS));
+      expect(overrideToFalse).to.be.false;
+      expect(overrideToTrue).to.be.true;
     });
 
     it('goes to the dashboard if an invalid page is passed', () => {
