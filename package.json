@@ -6,7 +6,7 @@
     "iframe-resizer": "4.2.11",
     "loglevel": "1.6.8",
     "stacktrace-js": "2.0.2",
-    "typescript": "3.8.3",
+    "typescript": "3.9.3",
     "uuid-validate": "0.0.3"
   },
   "description": "NS8 Protect JavaScript SDK",
