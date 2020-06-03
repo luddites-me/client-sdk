@@ -20,8 +20,6 @@ To get started, take a look at the documentation listed below:
   - [Debugging](docs/debugging.md)
   - [Installation](docs/installation.md)
   - [API Report File for "@ns8/protect-sdk-client"](docs/project-api.md)
-- temp
-  - [API Report File for "@ns8/protect-sdk-client"](temp/project-api.md)
 
 ## Environment Variables
 
