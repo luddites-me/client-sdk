@@ -3,7 +3,7 @@
   "dependencies": {
     "cross-fetch": "3.0.4",
     "format-util": "1.0.5",
-    "iframe-resizer": "4.2.10",
+    "iframe-resizer": "4.2.11",
     "loglevel": "1.6.8",
     "stacktrace-js": "2.0.2",
     "typescript": "3.8.3",
