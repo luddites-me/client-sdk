@@ -16,7 +16,7 @@
     "@types/chai-as-promised": "7.1.2",
     "@types/format-util": "1.0.1",
     "@types/glob": "^7.1.1",
-    "@types/jsdom": "16.2.1",
+    "@types/jsdom": "16.2.3",
     "@types/mocha": "7.0.2",
     "@types/node": "13.13.2",
     "@types/node-fetch": "2.5.6",
