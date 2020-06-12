@@ -24,6 +24,7 @@ To get started, take a look at the documentation listed below:
 ## Environment Variables
 
 - `NODE_ENV`: Environment name. Options are: dev, test and prod. Default: dev
+  - Default Value: "undefined"
 
 ### Running Tests
 
