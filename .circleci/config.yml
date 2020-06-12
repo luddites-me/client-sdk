@@ -55,12 +55,6 @@ jobs:
               exit 1
             fi
           name: Tag Release in GitHub
-      - run:
-          command: |
-            git checkout dev
-            git merge -m 'Merge branch `master` into `dev`' master
-            git push origin dev
-          name: Merge Changes Back to Development Branch
   publish:
     docker:
       - image: node:12
@@ -148,7 +142,7 @@ workflows:
       - deploy_dev:
           filters:
             branches:
-              only: dev
+              only: master
           requires:
             - test
       - deploy_prod:
