@@ -135,11 +135,10 @@ workflows:
   publish:
     jobs:
       - publish:
+          type: approval
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: master
   test_and_deploy:
     jobs:
       - test:
