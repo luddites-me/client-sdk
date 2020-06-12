@@ -1,7 +1,11 @@
+executors:
+  nodeaws-executor:
+    docker:
+      - image: ns8inc/nodeaws:node-erbium
+
 jobs:
   deploy_dev:
-    docker:
-      - image: node:12
+    executor: nodeaws-executor
     steps:
       - checkout
       - run:
@@ -14,17 +18,34 @@ jobs:
           command: yarn build
           name: Build for Production
       - run:
-          command: ln -s ~/bin/aws /usr/local/bin/
-          name: Create Symlink for AWS CLI
-      - aws-s3/copy:
-          arguments: |
-            --acl private \
-            --content-type application/javascript
-          from: dist/protect.min.js
-          to: s3://protect-sdk-client/assets/js/protect-dev.min.js
+          command: aws s3 copy --acl private --content-type application/javascript dist/protect.min.js s3://protect-sdk-client/assets/js/protect-dev.min.js
+          name: Deploy to S3 (dev)
   deploy_prod:
-    docker:
-      - image: node:12
+    executor: nodeaws-executor
+    steps:
+      - checkout
+      - run:
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Configure NPM
+      - run:
+          command: yarn
+          name: Install Dependencies
+      - run:
+          command: yarn build
+          name: Build for Production
+      - run:
+          command: |
+            version=$(node -p -e "require('./package.json').version")
+            echo "export VERSION=$version" >> $BASH_ENV
+          name: Get Version
+      - run:
+          command: aws s3 copy --acl private --content-type application/javascript dist/protect.min.js s3://protect-sdk-client/assets/js/protect.min.js
+          name: Deploy to S3 (prod)
+      - run:
+          command: aws s3 copy --acl private --content-type application/javascript dist/protect.min.js s3://protect-sdk-client/assets/js/protect-${VERSION}.min.js
+          name: Deploy to S3 (prod, versioned)
+  publish:
+    executor: nodeaws-executor
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -37,6 +58,15 @@ jobs:
               circleci step halt
             fi
           name: Skip if CI Made the Last Commit
+      - run:
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          name: Configure NPM
+      - run:
+          command: yarn
+          name: Install Dependencies
+      - run:
+          command: yarn build
+          name: Build for Production
       - run:
           command: |
             git config user.email noreply@ns8.com
@@ -55,49 +85,14 @@ jobs:
               exit 1
             fi
           name: Tag Release in GitHub
-  publish:
-    docker:
-      - image: node:12
-    steps:
-      - checkout
-      - run:
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          name: Configure NPM
-      - run:
-          command: yarn
-          name: Install Dependencies
-      - run:
-          command: yarn build
-          name: Build for Production
-      - run:
-          command: yarn docs:publish
-          name: Publish API to GitHub Pages
-      - run:
-          command: |
-            version=$(node -p -e "require('./package.json').version")
-            echo "export VERSION=$version" >> $BASH_ENV
-          name: Get Version
-      - run:
-          command: ln -s ~/bin/aws /usr/local/bin/
-          name: Create Symlink for AWS CLI
-      - aws-s3/copy:
-          arguments: |
-            --acl private \
-            --content-type application/javascript
-          from: dist/protect.min.js
-          to: s3://protect-sdk-client/assets/js/protect-${VERSION}.min.js
-      - aws-s3/copy:
-          arguments: |
-            --acl private \
-            --content-type application/javascript
-          from: dist/protect.min.js
-          to: s3://protect-sdk-client/assets/js/protect.min.js
       - run:
           command: npm publish
           name: Publish
+      - run:
+          command: yarn docs:publish
+          name: Publish API to GitHub Pages
   test:
-    docker:
-      - image: node:12
+    executor: nodeaws-executor
     steps:
       - checkout
       - run:
@@ -120,20 +115,18 @@ jobs:
           command: yarn test
           name: Run Tests
 
-orbs:
-  aws-s3: circleci/aws-s3@1.0.15
-
 version: 2.1
 
 workflows:
-  publish:
+  deploy_to_prod:
     jobs:
-      - publish:
-          type: approval
+      - deploy_prod:
           filters:
             branches:
-              only: master
-  test_and_deploy:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+  test_and_deploy_and_publish:
     jobs:
       - test:
           filters:
@@ -145,9 +138,16 @@ workflows:
               only: master
           requires:
             - test
-      - deploy_prod:
+      - approve:
+          type: approval
           filters:
             branches:
               only: master
           requires:
             - test
+      - publish:
+          filters:
+            branches:
+              only: master
+          requires:
+            - approve
