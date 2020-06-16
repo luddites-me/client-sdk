@@ -17,6 +17,9 @@ jobs:
       - run:
           command: yarn build
           name: Build for Production
+      - assume-role/assume-role:
+          account-id: "529464811624"
+          role-name: circle-ci-role
       - run:
           command: aws s3 cp --acl private --content-type application/javascript dist/protect.min.js s3://protect-sdk-client/assets/js/protect-dev.min.js
           name: Deploy to S3 (dev)
@@ -38,6 +41,9 @@ jobs:
             version=$(node -p -e "require('./package.json').version")
             echo "export VERSION=$version" >> $BASH_ENV
           name: Get Version
+      - assume-role/assume-role:
+          account-id: "529464811624"
+          role-name: circle-ci-role
       - run:
           command: aws s3 cp --acl private --content-type application/javascript dist/protect.min.js s3://protect-sdk-client/assets/js/protect.min.js
           name: Deploy to S3 (prod)
@@ -114,6 +120,9 @@ jobs:
       - run:
           command: yarn test
           name: Run Tests
+
+orbs:
+  assume-role: airswap/assume-role@0.2.0
 
 version: 2.1
 
