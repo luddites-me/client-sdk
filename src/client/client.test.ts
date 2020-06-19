@@ -1,13 +1,15 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable
+  @typescript-eslint/ban-types,
+  @typescript-eslint/no-explicit-any,
+  no-unused-expressions,
+*/
 import { expect, use } from 'chai';
 import { JSDOM } from 'jsdom';
-
 import 'mocha';
 import { ClientConfig, ClientPage, EventName, createClient } from '..';
 import { forTest } from './client';
 
-import chaiAsPromised = require('chai-as-promised');
+const chaiAsPromised = require('chai-as-promised');
 
 /**
  * Global reference space to define NodeJS in test context
@@ -45,7 +47,7 @@ const initVirtualDom = (): JSDOM => {
   const jsdom = new JSDOM(`<!DOCTYPE html><div id="${clientDomId}" class="${clientClassName}"></div>`);
   global.document = jsdom.window.document;
   // KLUDGE: fixes the `Type 'DOMWindow' is not assignable to type 'Window & typeof globalThis'` error
-  global.window = jsdom.window as unknown as Window & typeof globalThis;
+  global.window = (jsdom.window as unknown) as Window & typeof globalThis;
   return jsdom;
 };
 

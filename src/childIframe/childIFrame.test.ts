@@ -5,7 +5,7 @@
   @typescript-eslint/no-namespace,
   @typescript-eslint/no-unused-vars,
   @typescript-eslint/no-empty-function,
-
+  @typescript-eslint/ban-types,
 */
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
@@ -27,7 +27,7 @@ declare global {
 }
 
 /**
- * HTML div to utilize int esting
+ * HTML div to utilize unit testing
  */
 const testDivMarkup = '<div id="test"></div>';
 

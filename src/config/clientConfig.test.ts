@@ -1,4 +1,7 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable
+  @typescript-eslint/ban-types,
+  no-unused-expressions,
+*/
 import { expect } from 'chai';
 import 'mocha';
 import { ClientConfig, EventName } from '..';
