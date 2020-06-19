@@ -6,10 +6,9 @@
 import { expect, use } from 'chai';
 import { JSDOM } from 'jsdom';
 import 'mocha';
+import chaiAsPromised from 'chai-as-promised';
 import { ClientConfig, ClientPage, EventName, createClient } from '..';
 import { forTest } from './client';
-
-const chaiAsPromised = require('chai-as-promised');
 
 /**
  * Global reference space to define NodeJS in test context
