@@ -44,7 +44,8 @@ const getConfig = (config?: object): ClientConfig =>
 const initVirtualDom = (): JSDOM => {
   const jsdom = new JSDOM(`<!DOCTYPE html><div id="${clientDomId}" class="${clientClassName}"></div>`);
   global.document = jsdom.window.document;
-  global.window = jsdom.window;
+  // KLUDGE: fixes the `Type 'DOMWindow' is not assignable to type 'Window & typeof globalThis'` error
+  global.window = jsdom.window as unknown as Window & typeof globalThis;
   return jsdom;
 };
 
