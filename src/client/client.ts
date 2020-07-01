@@ -10,8 +10,12 @@ const getPathForPage = (page: ClientPage, platformId: string): string => {
   };
 
   switch (page) {
+    case ClientPage.CAMPAIGN_ACTIVITY:
+      return '/report/campaign-activity';
     case ClientPage.DASHBOARD:
       return '/';
+    case ClientPage.MONITORS:
+      return '/monitors';
     case ClientPage.ORDER_DETAILS:
       return `/order-details/${window.btoa(platformId)}`;
     case ClientPage.ORDER_RULES:

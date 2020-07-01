@@ -29,7 +29,11 @@ export class ClientConfig implements PartialConfig {
 // @public
 export enum ClientPage {
     // (undocumented)
+    CAMPAIGN_ACTIVITY = "CAMPAIGN_ACTIVITY",
+    // (undocumented)
     DASHBOARD = "DASHBOARD",
+    // (undocumented)
+    MONITORS = "MONITORS",
     // (undocumented)
     ORDER_DETAILS = "ORDER_DETAILS",
     // (undocumented)

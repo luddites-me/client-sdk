@@ -92,7 +92,9 @@ export type EventBinding = { [evtName in EventName]: EventCallback };
  * @public
  */
 export enum ClientPage {
+  CAMPAIGN_ACTIVITY = "CAMPAIGN_ACTIVITY",
   DASHBOARD = "DASHBOARD",
+  MONITORS = "MONITORS",
   ORDER_DETAILS = "ORDER_DETAILS",
   ORDER_RULES = "ORDER_RULES",
   SUSPICIOUS_ORDERS = "SUSPICIOUS_ORDERS",
