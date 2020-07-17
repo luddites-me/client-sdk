@@ -37,7 +37,39 @@ jobs:
           name: Build for Production
       - run:
           command: |
-            version=$(node -p -e "require('./package.json').version")
+            git config user.email noreply@ns8.com
+            git config user.name 'CircleCI'
+          name: Setup Git
+      - run:
+          command: |
+            yarn config set version-tag-prefix ''
+            current_version="$(jq -r .version package.json)"
+
+            while
+              new_version="$(jq -r .version package.json)"
+              [[ "$(git tag | grep -c $new_version)" -gt "0" ]]
+            do yarn version --no-git-tag-version --patch; done
+
+            if [ "$new_version" = "$current_version" ]; then
+              # Someone manually bumped the version in package.json, so don't bump, only tag.
+              git tag $new_version
+            else
+              # Reset then bump and tag like usual.
+              git checkout package.json
+              yarn version --new-version $new_version
+            fi
+          name: Bump Version
+      - run:
+          command: |
+            if ! git push -u origin master --tags; then
+              echo "Push failed. Please add this CircleCI deploy key to your repo with write access:"
+              ssh-keygen -y -f ~/.ssh/id_rsa
+              exit 1
+            fi
+          name: Tag Release in GitHub
+      - run:
+          command: |
+            version="$(jq -r .version package.json)"
             echo "export VERSION=$version" >> $BASH_ENV
           name: Get Version
       - assume-role/assume-role:
@@ -57,13 +89,6 @@ jobs:
             - "03:a4:f7:67:d3:99:d1:d3:a1:91:25:c0:8c:09:dc:8e"
       - checkout
       - run:
-          command: |
-            set +eo pipefail
-            if git log | head -n 2 | tail -n 1 | grep 'Author: CircleCI'; then
-              circleci step halt
-            fi
-          name: Skip if CI Made the Last Commit
-      - run:
           command: echo "//registry.npmjs.org/:_authToken=${NS8_GLOBAL_NPM_TOKEN}" > ~/.npmrc
           name: Configure NPM
       - run:
@@ -73,40 +98,25 @@ jobs:
           command: yarn build
           name: Build for Production
       - run:
-          command: |
-            git config user.email noreply@ns8.com
-            git config user.name 'CircleCI'
-          name: Setup Git
-      - run:
-          command: |
-            yarn config set version-tag-prefix ''
-            yarn version --patch
-          name: Bump Version
-      - run:
-          command: |
-            if ! git push -u origin master --follow-tags; then
-              echo "Push failed. Please add this CircleCI deploy key to your repo with write access:"
-              ssh-keygen -y -f ~/.ssh/id_rsa
-              exit 1
-            fi
-          name: Tag Release in GitHub
-      - run:
           command: npm publish
           name: Publish
       - run:
           command: yarn docs:publish
           name: Publish API to GitHub Pages
+      - run:
+          command: |
+            version=$(jq -r .version package.json)
+            echo "export VERSION=$version" >> $BASH_ENV
+          name: Get Version
+      - run:
+          command: |
+            yarn gren release -m -t $VERSION -T $GITHUB_ACCESS_TOKEN
+            yarn gren release -o -t $VERSION -T $GITHUB_ACCESS_TOKEN
+          name: Create GitHub Release
   test:
     executor: nodeaws-executor
     steps:
       - checkout
-      - run:
-          command: |
-            set +eo pipefail
-            if git log | head -n 2 | tail -n 1 | grep 'Author: CircleCI'; then
-              circleci step halt
-            fi
-          name: Skip if CI Made the Last Commit
       - run:
           command: echo "//registry.npmjs.org/:_authToken=${NS8_GLOBAL_NPM_TOKEN}" > ~/.npmrc
           name: Configure NPM
@@ -123,41 +133,41 @@ orbs:
   assume-role: airswap/assume-role@0.2.0
 version: 2.1
 workflows:
-  deploy_to_prod:
+  publish:
     jobs:
-      - deploy_prod:
+      - publish:
+          context: org-global
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+$/
-          context: org-global
-  test_and_deploy_and_publish:
+  test_and_deploy:
     jobs:
       - test:
+          context: org-global
           filters:
             branches:
               ignore: gh-pages
-          context: org-global
       - deploy_dev:
+          context: org-global
           filters:
             branches:
               only: master
           requires:
             - test
-          context: org-global
       - approve:
-          type: approval
+          context: org-global
           filters:
             branches:
               only: master
           requires:
             - test
+          type: approval
+      - deploy_prod:
           context: org-global
-      - publish:
           filters:
             branches:
               only: master
           requires:
             - approve
-          context: org-global
