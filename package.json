@@ -4,7 +4,7 @@
     "cross-fetch": "3.0.5",
     "format-util": "1.0.5",
     "iframe-resizer": "4.2.11",
-    "loglevel": "1.6.8",
+    "loglevel": "1.7.0",
     "stacktrace-js": "2.0.2",
     "typescript": "3.9.7",
     "uuid-validate": "0.0.3"
