@@ -1,24 +1,24 @@
 {
-  "author": "ns8inc",
+  "author": "Christopher Froehlich",
   "dependencies": {
-    "cross-fetch": "3.0.5",
+    "cross-fetch": "3.0.6",
     "format-util": "1.0.5",
     "iframe-resizer": "4.2.11",
     "loglevel": "1.7.0",
     "stacktrace-js": "2.0.2",
-    "typescript": "3.9.7",
+    "typescript": "4.0.3",
     "uuid-validate": "0.0.3"
   },
-  "description": "NS8 Protect JavaScript SDK",
+  "description": "Client JavaScript SDK",
   "devDependencies": {
-    "@ns8/protect-tools-js": "1.0.6",
+    "@luddites-me/ts-tools": "1.1.1",
     "@types/chai": "4.2.12",
     "@types/chai-as-promised": "7.1.3",
     "@types/format-util": "1.0.1",
     "@types/glob": "^7.1.3",
     "@types/jsdom": "16.2.4",
     "@types/mocha": "8.0.3",
-    "@types/node": "14.6.4",
+    "@types/node": "14.11.2",
     "@types/node-fetch": "2.5.7",
     "@types/uuid-validate": "0.0.1",
     "github-release-notes": "^0.17.3",
@@ -34,13 +34,13 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/ns8inc/protect-sdk-client#readme",
-  "license": "UNLICENSED",
+  "homepage": "https://github.com/luddites-me/client-sdk#readme",
+  "license": "Unlicense",
   "main": "dist/protect.min.js",
-  "name": "@ns8/protect-sdk-client",
+  "name": "@luddites-me/client-sdk",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ns8inc/protect-sdk-client.git"
+    "url": "git+https://github.com/luddites-me/client-sdk.git"
   },
   "scripts": {
     "build": "yarn && yarn generate:exports && tsc -d && yarn bundle",
@@ -48,17 +48,17 @@
     "clean": "rm -rf .tmp .nyc_output api dist temp",
     "count": "cloc ./src ./build ./docs",
     "docs:all": "yarn docs:standardize && yarn docs:api",
-    "docs:api": "npx ./node_modules/@ns8/protect-tools-js/dist/docs/generateApi.js --path=./api-extractor.json",
-    "docs:publish": "npx ./node_modules/@ns8/protect-tools-js/dist/docs/generateApiDocs.js",
-    "docs:standardize": "npx ./node_modules/@ns8/protect-tools-js/dist/readme/standardizeReadme.js",
+    "docs:api": "npx ./node_modules/@luddites-me/ts-tools/dist/docs/generateApi.js --path=./api-extractor.json",
+    "docs:publish": "npx ./node_modules/@luddites-me/ts-tools/dist/docs/generateApiDocs.js",
+    "docs:standardize": "npx ./node_modules/@luddites-me/ts-tools/dist/readme/standardizeReadme.js",
     "generate:exports": "cti create ./src -w -b",
-    "lint": "yarn eslint -c 'node_modules/@ns8/protect-tools-js/.eslintrc.yml' 'src/**/*.ts'",
+    "lint": "yarn eslint -c 'node_modules/@luddites-me/ts-tools/.eslintrc.yml' 'src/**/*.ts'",
     "lint:fix": "yarn prettier --write 'src/**/*.ts' && yarn lint --fix",
-    "sortJson": "npx ./node_modules/@ns8/protect-tools-js/dist/lint/sortJson.js",
+    "sortJson": "npx ./node_modules/@luddites-me/ts-tools/dist/lint/sortJson.js",
     "test": "yarn build && yarn test:only",
-    "test:coverage": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' yarn test:debug",
+    "test:coverage": "nyc --nycrc-path 'node_modules/@luddites-me/ts-tools/.nycrc.yml' yarn test:debug",
     "test:debug": "mocha -r ts-node/register 'src/**/*.test.ts'",
-    "test:only": "nyc --nycrc-path 'node_modules/@ns8/protect-tools-js/.nycrc.yml' mocha 'src/**/*.test.ts'"
+    "test:only": "nyc --nycrc-path 'node_modules/@luddites-me/ts-tools/.nycrc.yml' mocha 'src/**/*.test.ts'"
   },
   "scriptsDocumentation": {
     "build": {
@@ -90,7 +90,7 @@
       "dev": true
     },
     "docs:standardize": {
-      "description": "Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an NS8 license",
+      "description": "Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and a license",
       "dev": true
     },
     "generate:exports": {
@@ -127,5 +127,5 @@
     }
   },
   "types": "dist/types/index.d.ts",
-  "version": "0.0.136"
+  "version": "1.0.0"
 }

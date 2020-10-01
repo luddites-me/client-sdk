@@ -2,14 +2,14 @@
 
 ## Table of Contents
 
-- [Protect Client Documentation](#protect-client-documentation)
-  - [Purpose of the Protect Client](#purpose-of-the-protect-client)
-  - [Configuration](#configuration)
-  - [Example Protect Client Implementations](#example-protect-client-implementations)
+- [Table of Contents](#table-of-contents)
+- [Purpose of the Protect Client](#purpose-of-the-protect-client)
+- [Configuration](#configuration)
+- [Example Protect Client Implementations](#example-protect-client-implementations)
 
 ## Purpose of the Protect Client
 
-The purpose of the Action Client is to render the NS8 Protect Client SPA in an iframe within a Platform (e.g. Shopify, Magento, BigCommerc, etc), attach/repond to events and match the platform styles.
+The purpose of the Action Client is to render the LUDDITES Protect Client SPA in an iframe within a Platform (e.g. Shopify, Magento, BigCommerc, etc), attach/repond to events and match the platform styles.
 Goals:
 
 - Render the Protect application for display/interaction
@@ -21,7 +21,7 @@ Goals:
 
 The Protect Client requires a minimal amount of configuration in order to render on the platform. This requires instantiating the `Client` class with a `ClientConfig` object. This defines:
 
-- `accessToken`: your NS8 Protect access token used for authenticating API calls to Protect. This is required for loading the IFrame.
+- `accessToken`: your LUDDITES Protect access token used for authenticating API calls to Protect. This is required for loading the IFrame.
 - `eventBinding`: a collection of events to which you will bind. The `EventName` enum defines static events which are guaranteed to execute.
 - `IFrameConfig`: an object representing the configuration of the IFrame that Protect will occupy. `attachToId` is required, and `classNames` is optional.
 
@@ -30,7 +30,7 @@ The Protect Client requires a minimal amount of configuration in order to render
 The following serve as examples of implementation of the Client to demonstrate intended uses:
 
 ```typescript
-import { createClient, ClientConfig, ClientPage, EventName, EventBinding, IFrameConfig } from '@ns8/protect-sdk-client';
+import { createClient, ClientConfig, ClientPage, EventName, EventBinding, IFrameConfig } from '@luddites-me/protect-sdk-client';
 const accessToken = '27802062-34c4-450c-a18f-667324f14375';
 const eventBinding: EventBinding = {
   // Define a response to this event that will navigate the user from Protect back to the Platform order page
@@ -42,8 +42,8 @@ const eventBinding: EventBinding = {
   },
 };
 const iFrameConfig: {
-  classNames: ['ns8-protect-client-iframe'];
-  attachToId: 'ns8-protect-wrapper';
+  classNames: ['luddites-protect-client-iframe'];
+  attachToId: 'luddites-protect-wrapper';
 };
 // Instantiate the client with all of the platform specific options
 const protectClient = createClient(new ClientConfig({ accessToken, eventBinding, iFrameConfig }));

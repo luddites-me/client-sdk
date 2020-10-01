@@ -10,14 +10,14 @@ interface CustomWindow extends Window {
 
 declare let window: CustomWindow;
 
-const iFrameElId = 'ns8-protect-client-iframe';
+const iFrameElId = 'luddites-protect-client-iframe';
 
 /**
  * Interal interface used for testing `createIFrame`
  *
  * @param containerId - the id of the Dom element that will act as the iframe container.
  * @param classNames - a list of classNames to apply to the iframe element.
- * @param clientUrl - the url of the NS8 protect client.
+ * @param clientUrl - the url of the LUDDITES protect client.
  * @param eventBinding - a mapping of enums to eventNames. {@link EventBinding }
  *
  * @internal
@@ -38,7 +38,7 @@ export interface ProtectClientIFrameOptions {
  *
  * @remarks
  * Sets up the onMessage and onResized handlers to enable iframe-resizer to
- * call event handlers triggered from within the NS8 protect client as well as update the iframe
+ * call event handlers triggered from within the LUDDITES protect client as well as update the iframe
  * height when the protect client page resizes.
  *
  * @internal

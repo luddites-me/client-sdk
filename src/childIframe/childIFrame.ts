@@ -136,7 +136,7 @@ export function initIFrame(container: Element, globalWindow: CustomWindow): void
         throw new Error('`onReady()` called, but `parentIFrame == null`');
       }
       // istanbul ignore next
-      parent.sendMessage({ name: EventName.NS8_PROTECT_CLIENT_CONNECTED });
+      parent.sendMessage({ name: EventName.LUDDITES_PROTECT_CLIENT_CONNECTED });
       // istanbul ignore next
       globalWindow.document.addEventListener(EventName.ORDER_DETAIL_NAME_CLICK, ((e: CustomEvent) => {
         // istanbul ignore next

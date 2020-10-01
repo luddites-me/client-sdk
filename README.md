@@ -1,15 +1,12 @@
 # Test README
 
-[![CircleCI](https://circleci.com/gh/ns8inc/protect-sdk-client.svg?style=svg&circle-token=91f2dda1fe4873ce83070a4dfa42edf0d3f20328)](https://app.circleci.com/pipelines/github/ns8inc/protect-sdk-client)
-
 ## Table of Contents
 
-- [Test README](#test-readme)
-- [Getting Started](#getting-started)
-  - [Environment Variables](#environment-variables)
-    - [Running Tests](#running-tests)
-    - [`package.json` scripts](#packagejson-scripts)
-  - [License](#license)
+- [Table of Contents](#table-of-contents)
+- [Environment Variables](#environment-variables)
+  - [Running Tests](#running-tests)
+  - [`package.json` scripts](#packagejson-scripts)
+- [License](#license)
 
 # Getting Started
 
@@ -19,7 +16,7 @@ To get started, take a look at the documentation listed below:
   - [Protect Client Documentation](docs/client.md)
   - [Debugging](docs/debugging.md)
   - [Installation](docs/installation.md)
-  - [API Report File for "@ns8/protect-sdk-client"](docs/project-api.md)
+  - [API Report File for "@luddites-me/protect-sdk-client"](docs/project-api.md)
 
 ## Environment Variables
 
@@ -39,7 +36,7 @@ To get started, take a look at the documentation listed below:
 - `yarn docs:all`: Standardizes markdown and generates the API metadata.
 - `yarn docs:api`: Creates a `project-api` Markdown in docs and an `index.d.ts` file in dist.
 - `yarn docs:publish`: Generates end-to-end documentation for the entire project and publishes it to the `gh-pages` branch.
-- `yarn docs:standardize`: Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an NS8 license
+- `yarn docs:standardize`: Creates or updates a new readme with a standard set of readme sections, including a toc, yarn script documention, links to repo documentation files and an LUDDITES license
 - `yarn generate:exports`: Generates index.ts files for all exports recursively in the 'src' folder
 - `yarn lint`: Lints the codebase and the documentation
 - `yarn lint:fix`: Lints the codebase and fixes auto-correctable errors. Runs prettier on the code.
@@ -52,4 +49,4 @@ To get started, take a look at the documentation listed below:
 ## License
 
 See [License](./LICENSE)
-© [ns8inc](https://ns8.com)
+© [Luddites](https://github.com/luddites-me)

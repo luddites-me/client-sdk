@@ -11,8 +11,8 @@ const getBasicConfig = (config?: object): ClientConfig =>
   new ClientConfig({
     accessToken: uuid,
     iFrameConfig: {
-      classNames: ['ns8-protect-client-iframe'],
-      attachToId: 'ns8-protect-wrapper',
+      classNames: ['luddites-protect-client-iframe'],
+      attachToId: 'luddites-protect-wrapper',
     },
     ...config,
   });

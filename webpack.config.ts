@@ -1,4 +1,4 @@
-import { BundleDevTool, BundleMode, BundleTarget, getWebpackConfig } from '@ns8/protect-tools-js';
+import { BundleDevTool, BundleMode, BundleTarget, getWebpackConfig } from '@luddites-me/ts-tools';
 
 export default getWebpackConfig({
   bundleTarget: BundleTarget.WEB,

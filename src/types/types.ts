@@ -74,7 +74,7 @@ export type EventCallback = (data: unknown) => Promise<unknown>;
  * @public
  */
 export enum EventName {
-  NS8_PROTECT_CLIENT_CONNECTED = "ns8-protect-client-connected",
+  LUDDITES_PROTECT_CLIENT_CONNECTED = "luddites-protect-client-connected",
   ORDER_DETAIL_NAME_CLICK = "order-detail-name-click",
 }
 
@@ -140,13 +140,13 @@ export interface PartialConfig {
 export interface IFrameConfig {
   /**
    * An array of CSS class names to attach to.
-   * In Magento, this was `['ns8-protect-client-iframe']`
+   * In Magento, this was `['luddites-protect-client-iframe']`
    */
   classNames: string[];
 
   /**
    * The ID of the root DOM node to which the Client is attached.
-   * In Magento, this was `'ns8-protect-wrapper'`
+   * In Magento, this was `'luddites-protect-wrapper'`
    */
   attachToId: string;
 }

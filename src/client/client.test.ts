@@ -24,13 +24,13 @@ declare global {
 }
 
 const uuid = '27802062-34c4-450c-a18f-667324f14375';
-const clientDomId = 'ns8-protect-client-iframe';
-const clientClassName = 'ns8-protect-client-iframe';
+const clientDomId = 'luddites-protect-client-iframe';
+const clientClassName = 'luddites-protect-client-iframe';
 const getConfig = (config?: object): ClientConfig =>
   new ClientConfig({
     accessToken: uuid,
     eventBinding: {
-      [EventName.NS8_PROTECT_CLIENT_CONNECTED]: (): Promise<any> => Promise.resolve(),
+      [EventName.LUDDITES_PROTECT_CLIENT_CONNECTED]: (): Promise<any> => Promise.resolve(),
     },
     iFrameConfig: {
       classNames: [clientClassName],
@@ -65,7 +65,7 @@ describe('Asserts that we can manipulate an iframe through the Client', () => {
     const config = getConfig();
     const client = createClient(config);
     // The `ready` method is defined and will not throw
-    expect(() => client.trigger(EventName.NS8_PROTECT_CLIENT_CONNECTED)).not.to.throw();
+    expect(() => client.trigger(EventName.LUDDITES_PROTECT_CLIENT_CONNECTED)).not.to.throw();
   });
 
   it('throws when method does not exist ', async () => {

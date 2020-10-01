@@ -28,9 +28,9 @@ const createIFrameConfig = (partialConfig: Partial<IFrameConfig>): IFrameConfig 
  * All configuration values for a {@link ProtectClient}.
  */
 export class ClientConfig implements PartialConfig {
-  public static readonly PROTECT_TEST_URL = new URL('https://test-protect-client.ns8.com');
+  public static readonly PROTECT_TEST_URL = new URL('https://test-protect-client.luddites.me');
 
-  public static readonly PROTECT_PROD_URL = new URL('https://protect-client.ns8.com');
+  public static readonly PROTECT_PROD_URL = new URL('https://protect-client.luddites.me');
 
   /**
    * This can be set to true to allow more verbose options when debugging.
@@ -48,7 +48,7 @@ export class ClientConfig implements PartialConfig {
 
   /** {@link EventBinding} */
   public eventBinding: EventBinding = {
-    [EventName.NS8_PROTECT_CLIENT_CONNECTED]: noopEventCallback,
+    [EventName.LUDDITES_PROTECT_CLIENT_CONNECTED]: noopEventCallback,
     [EventName.ORDER_DETAIL_NAME_CLICK]: noopEventCallback,
   };
 
