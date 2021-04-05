@@ -699,9 +699,9 @@
   dependencies:
     "@types/node" "*"
 
-"@types/jsdom@16.2.4":
-  version "16.2.4"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-16.2.4.tgz#527ca99943e00561ca4056b1904fd5f4facebc3b"
+"@types/jsdom@16.2.10":
+  version "16.2.10"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-16.2.10.tgz#c05ea94682d035943ae2453b79d56178496b6653"
   dependencies:
     "@types/node" "*"
     "@types/parse5" "*"
